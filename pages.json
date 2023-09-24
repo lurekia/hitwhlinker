@@ -1,17 +1,94 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "uni-app"
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "pages/trip/trip",
+			"style": {
+				"navigationBarTitleText": "行程",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		},
+		{
+			"path": "pages/activityDetail/activityDetail",
+			"style": {
+				"navigationBarTitleText": "行程",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		},
+		{
+			"path": "pages/activityList/activityList",
+			"style": {
+				"navigationBarTitleText": "活动列表",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		},
+		{
+			"path": "pages/me/me",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/chatIndex/chatIndex",
+			"style": {
+				"navigationBarTitleText": "聊天列表",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
 		}
-	}],
+	    ,{
+            "path" : "pages/chat/chat",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "会话",
+                "enablePullDownRefresh": "false",
+				"navigationStyle": "custom"
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
-		"app-plus": {
-			"background": "#efeff4"
-		}
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"list": [{
+				"pagePath": "pages/home/home",
+				"iconPath": "static/images/home.svg",
+				"selectedIconPath": "static/images/home_active.svg"
+			},
+			{
+				"pagePath": "pages/trip/trip",
+				"iconPath": "static/images/trip.svg",
+				"selectedIconPath": "static/images/trip_active.svg"
+			},
+			{
+				"pagePath": "pages/chatIndex/chatIndex",
+				"iconPath": "static/images/chatList.svg",
+				"selectedIconPath": "static/images/chatList_active.svg"
+			},
+			{
+				"pagePath": "pages/me/me",
+				"iconPath": "static/images/me.svg",
+				"selectedIconPath": "static/images/me_active.svg"
+			}
+		]
 	}
 }

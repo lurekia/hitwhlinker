@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no"> 
+  <title>Document</title>
+  <!-- 地圖 -->
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: '868c41a6460a22634ecee3efc61abe07',
+    }
+  </script>
+  <script src="https://webapi.amap.com/loader.js"></script>
+  <!-- vus -->
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+ 
+
+</head>
+<body>
+  <div id="app">
+    <div id="container"></div>
+  </div>
+</body>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {}
+    },
+    mounted() {
+      this.initr()
+    },
+    methods: {
+      initr(){
+         AMapLoader.load({
+            "key": "11326b9fd9fdfa988cd15851bc55525a",  // 申请好的Web端开发者Key，首次调用 load 时必填
+            "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+            "plugins": ['AMap.Driving'],           // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+            "AMapUI": {             // 是否加载 AMapUI，缺省不加载
+                "version": '1.1',   // AMapUI 版本
+                "plugins":['overlay/SimpleMarker'],       // 需要加载的 AMapUI ui插件
+            },
+            "Loca":{                // 是否加载 Loca， 缺省不加载
+                "version": '2.0'  // Loca 版本
+            },
+        }).then((AMap)=>{
+                var map = new AMap.Map('container',{
+                  center: [118.045616, 24.366646],
+                  resizeEnable: true,
+								  zoom: 13 //地图显示的缩放级别
+                });
+
+                // // 根据经纬度标记地理位置
+                // var marker = new AMap.Marker({
+                //     position: new AMap.LngLat(118.045616, 24.366646),  
+                //     title: '默认图标' //可以自定义icon图标展示
+                // });
+
+                // // 将创建的点标记添加到已有的地图实例
+                // map.add(marker);
+
+                // 构造路线导航类
+                var driving = new AMap.Driving({
+                    map: map,
+                }); 
+                // 根据起终点经纬度规划驾车导航路线
+                driving.search(new AMap.LngLat(118.099481, 24.583817), new AMap.LngLat(118.045616, 24.366646), 
+                function(status, result) {
+                    if (status === 'complete') {
+                      console.log('绘制驾车路线完成') 
+                      // console.log(status,'status')
+                    } else {
+                      console.log('获取驾车数据失败：' + result)
+                    }
+                });
+
+        }).catch((e)=>{
+                console.error(e);  //加载错误提示
+        });  
+      }
+    },
+  })
+</script>
+
+<style scoped>
+*{
+  margin: 0;
+}
+body,html,#container {
+	width: 100vw;
+	height: 100vh
+}
+
+#panel {
+  position: fixed;
+  background-color: white;
+  max-height: 90%;
+  overflow-y: auto;
+  top: 10px;
+  right: 10px;
+  width: 280px;
+}
+#panel .amap-call {
+  background-color: #009cf9;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+#panel .amap-lib-driving {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  overflow: hidden;
+}
+        
+</style>
+</html>

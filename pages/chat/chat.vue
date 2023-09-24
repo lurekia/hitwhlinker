@@ -6,6 +6,7 @@
 			</view>
 			<uni-icons type="back" size="30" color="#fff" class="go-back" @click="goBack"></uni-icons>
 		</view>
+		<!-- 666 -->
 	</view>
 	<view class="page" id="uni-im-chat">
 		<uni-im-msg-list v-if="conversation.id" :conversationId="conversation.id" 

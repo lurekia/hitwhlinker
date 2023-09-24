@@ -18,13 +18,8 @@
 			</view>
 		</view>
 		<view class="page-body">
-			<!-- <view class="img-like" @click="commentLike(item)">
-				<image src="../../static/aixin.png" v-if="item.isLike == 0 || item.isLike == null"></image>
-				<image src="../../static/aixin3.png" v-else></image>
-				<text class="comment-like-num">{{ item.likeNums == 0 || item.likeNums == null ? '' : item.likeNums }}</text>
-			</view> -->
-			<!-- <view class="fa" :class="{'fa-heart': liked, 'fa-heart-o': !liked}" @click="toggleLike"></view>-->
-			<!-- <view class="heart-icon" :class="liked ? 'liked' : ''" @tap="toggleLike"></view> -->
+			<!-- 不需要引入，可直接使用 -->
+			<mp-html :content="item.detail" />
 			
 			
 		</view>
@@ -80,7 +75,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'1',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -95,7 +90,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'2',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -110,7 +105,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'3',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -125,7 +120,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'4',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -140,7 +135,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'5',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -155,7 +150,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'6',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -170,7 +165,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'7',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
@@ -185,7 +180,7 @@
 			position:'G101',
 			tag:'学术讲座',//活动所属分类
 			id:'8',
-			detail:'56656556',//活动的详细信息
+			detail:'<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>',//活动的详细信息
 			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 			viewNum:0,//活动的浏览量
 			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像

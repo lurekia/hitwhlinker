@@ -124,8 +124,8 @@ const friendlyTime = (timestamp) => {
 .header {
 	display: flex;
 	justify-content: space-between;
-	height: 10vh;
-	line-height: 10vh;
+	height: 100rpx;
+	line-height: 100rpx;
 	padding: 0 30rpx;
 	border-bottom: 1px solid rgb(244, 244, 244);
 	background-color: rgb(213,79,79);

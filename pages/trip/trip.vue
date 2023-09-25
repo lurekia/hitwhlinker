@@ -20,7 +20,7 @@
 			<view class="my-list-wrapper">
 				<uni-list class="my-list">
 					<uni-list-item  direction="column" v-for="item in selected" :key="item.id" 
-					 thumb-size="lg"  clickable @click="showDetail(item)"  >
+					 thumb-size="lg"  clickable @click="showDetail(item)">
 					<!-- 通过header插槽定义列表的标题 -->
 						<template v-slot:header>
 							<view class="uni-header">
@@ -34,6 +34,7 @@
 								<text class="uni-footer-time">{{item.time}}</text>
 							</view>
 						</template>
+			
 					</uni-list-item>
 				</uni-list>
 			</view>

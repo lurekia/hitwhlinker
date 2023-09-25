@@ -4,8 +4,9 @@
 			<view class="title">
 				需求市场
 			</view>
-			<uni-icons type="compose" size="30" color="#fff" @click = "goToPostForm"></uni-icons>
-			
+			<view @click = "goToPostForm">
+				<uni-icons type="compose" size="30" color="#fff" ></uni-icons>
+			</view>
 		</view>
 	</view>
 </template>

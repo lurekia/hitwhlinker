@@ -1,4 +1,6 @@
 <template>
+	<view class="status">
+	</view>
 	<view class="page">
 		<view class="page-header">
 			<view class="calendar-header"  >

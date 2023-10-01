@@ -1,4 +1,6 @@
 <template>
+	<view class="status">
+	</view>
 	<view >
       	
       6546

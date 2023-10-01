@@ -1,9 +1,12 @@
 <template>
 	<view class="container">
-		<image :src="props.head_img_url" class="left" mode="aspectFill"></image>
-		<view class="right">
-			<view class="text-container">
+		<image :src="props.head_img_url" class="right" mode="aspectFill"></image>
+		<view class="left">
+			<view v-if="props.msg.tag === 'text'" class="text-container">
 				<text>{{ props.msg.content}}</text>
+			</view>
+			<view v-if="props.msg.tag === 'img'" class="img-container">
+				<image :src="props.msg.content" mode="aspectFit"></image>
 			</view>
 		</view>
 	</view>
@@ -15,10 +18,10 @@ const props = defineProps(["head_img_url","msg"])
 </script>
 <style lang="scss" scoped>
 .container {
-	margin: 10px 0;
+	width: 100%;
 	display: flex;
 	flex-direction: row-reverse;
-	.left {
+	.right {
 		height: 10vw;
 		width: 10vw;
 		border-radius: 5px;
@@ -51,4 +54,13 @@ const props = defineProps(["head_img_url","msg"])
 		border-left: 6px solid rgb(150,236,102);
 		border-top: 6px solid transparent;
 	}
+
+.img-container {
+	margin-right: 10px;
+	
+	image {
+		max-width: calc(80vw - 30px);
+		max-height: calc(80vw - 30px);
+	}
+}
 </style>

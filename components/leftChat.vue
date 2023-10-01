@@ -3,32 +3,21 @@
 		<image :src="props.head_img_url" class="left" mode="aspectFill"></image>
 		<view class="right">
 			<view class="text-container">
-				<rich-text :nodes="content"></rich-text>
+				<mp-html :content="content" />
 			</view>
 		</view>
 	</view>
 </template>
 <script setup>
 	import {ref, reactive} from 'vue'
-	import MarkdownIt from 'markdown-it';
 	import {
 		onLoad
 	} from '@dcloudio/uni-app'
 	const props = defineProps(["head_img_url", "msg"])
 	const content = ref("")
 	// 解析mardown 为 html字符串
-	const mdToHtml = (mdText) => {
-		console.log(mdText);
-		const md = new MarkdownIt();
-		const htmlText = md.render(mdText);
-		return htmlText;
-	}
 	onLoad((obj) => {
-		if(props.msg.tag === "markdown") {
-			content.value = mdToHtml(props.msg.content);
-		} else {
-			content.value = props.msg.content;
-		}
+		content.value = props.msg.content;
 	})
 </script>
 <style lang="scss" scoped>

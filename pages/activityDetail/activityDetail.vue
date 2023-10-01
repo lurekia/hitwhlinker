@@ -1,4 +1,6 @@
 <template>
+	<view class="status">
+	</view>
 	<view>
 		<view class="page-header"  :style = "'backgroundImage:url('+item.src +')'">
 			<view class="back">

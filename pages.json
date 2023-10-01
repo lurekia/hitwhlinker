@@ -84,16 +84,6 @@
             "path" : "pages/productDetail/productDetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "需求详情",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": "false"
-            }
-            
-        }
-        ,{
-            "path" : "pages/productDetail/productDetail",
-            "style" :                                                                                    
-            {
                 "navigationBarTitleText": "发布需求",
                 "navigationStyle": "custom",
                 "enablePullDownRefresh": "false"

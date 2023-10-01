@@ -1,4 +1,6 @@
 <template>
+	<view class="status">
+	</view>
 	<view>
 		<view class="topbar">
 			<view class="topbar-content">

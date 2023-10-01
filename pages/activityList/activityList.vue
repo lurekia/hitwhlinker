@@ -1,4 +1,6 @@
 <template>
+	<view class="status">
+	</view>
 	<view>
 		<view class="topbar">
 			<view class="topbar-content">
@@ -25,7 +27,8 @@
 					<view class="schedule-list-date-body">
 						<view class="schedule-list-date-item" v-for="(item_time, index_time) in item_date.content" :key="index_time">
 							<view class="item-time">{{item_time.time}}</view>
-							<view class="item-tag iconfont icon-yuan" :style="{color:tagToColor(item_time.tag)}">
+							<view class="item-tag iconfont" :style="{color:tagToColor(item_time.tag)}">
+								&#xe606;
 							</view>
 							<view class="item-title">{{item_time.title}}</view>
 							<view class="item-position">{{item_time.position}}</view>
@@ -87,51 +90,51 @@
 	const tag_content = reactive([{
 			text: '全部',
 			active: true,
-			iconPath: '/static/images/tag1.svg',
-			selectedIconPath: '/static/images/tag1.svg',
+			iconPath: '/static/images/tag1.png',
+			selectedIconPath: '/static/images/tag1.png',
 		},
 		{
 			text: '讲座报告',
 			active: false,
-			iconPath: '/static/images/tag2.svg',
-			selectedIconPath: '/static/images/tag2.svg',
+			iconPath: '/static/images/tag2.png',
+			selectedIconPath: '/static/images/tag2.png',
 		},
 		{
 			text: '会议',
 			active: false,
-			iconPath: '/static/images/tag3.svg',
-			selectedIconPath: '/static/images/tag3.svg',
+			iconPath: '/static/images/tag3.png',
+			selectedIconPath: '/static/images/tag3.png',
 		},
 		{
 			text: '考试答辩',
 			active: false,
-			iconPath: '/static/images/tag4.svg',
-			selectedIconPath: '/static/images/tag4.svg',
+			iconPath: '/static/images/tag4.png',
+			selectedIconPath: '/static/images/tag4.png',
 		},
 		{
 			text: '主题活动',
 			active: false,
-			iconPath: '/static/images/tag5.svg',
-			selectedIconPath: '/static/images/tag5.svg',
+			iconPath: '/static/images/tag5.png',
+			selectedIconPath: '/static/images/tag5.png',
 		},
 		{
 			text: '电影演出',
 			active: false,
-			iconPath: '/static/images/tag6.svg',
-			selectedIconPath: '/static/images/tag6.svg',
+			iconPath: '/static/images/tag6.png',
+			selectedIconPath: '/static/images/tag6.png',
 		},
 
 		{
 			text: '竞赛',
 			active: false,
-			iconPath: '/static/images/tag7.svg',
-			selectedIconPath: '/static/images/tag7.svg',
+			iconPath: '/static/images/tag7.png',
+			selectedIconPath: '/static/images/tag7.png',
 		},
 		{
 			text: '其他',
 			active: false,
-			iconPath: '/static/images/tag1.svg',
-			selectedIconPath: '/static/images/tag1.svg',
+			iconPath: '/static/images/tag1.png',
+			selectedIconPath: '/static/images/tag1.png',
 		},
 	])
 	const selectedTag = ref('全部')

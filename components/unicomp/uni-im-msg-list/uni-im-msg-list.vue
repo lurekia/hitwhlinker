@@ -31,32 +31,18 @@
 		</uni-im-list>
 		<uni-load-more v-if="msgList.length == 0" :status="hasMore?'loading':'noMore'" class="mg-15"
 			:contentText='{"contentrefresh": "加载中","contentnomore": "- 没有聊天记录 -"}'></uni-load-more>
-		
-		<!-- <view class="slider-box">
-			val:{{val}} scrollTop:{{scrollTop}}
-			<slider value="1" @change="sliderChange" min="1" max="14" step="1" />
-		</view> -->
-		
-		<!-- <view style="position: fixed;top: 100px;width: 400rpx;">
-			paddingBottom：{{paddingBottom}}
-			scrollTop：{{scrollTop}}
-			msgList.length:{{msgList.length}}
-			this.loadMore.lock：{{loadMore.lock}}
-			scrollIntoView:{{scrollIntoView}}
-			<input type="text" v-model="nextScrollIntoView" placeholder="nextScrollIntoView">
-			<button @click="showLast">showLast</button>
-		</view> -->
+	
 		<view v-if="call_list.length" class="showCallMe" @click="showCallMe">@回复我({{call_list.length}})</view>
 			<!-- <button @click="showLast">showLast</button> -->
 	</view>
 </template>
 
 <script>
-	import uniIm from '@/uni_modules/uni-im/lib/main.js';
-	import utils from '@/uni_modules/uni-im/common/utils.js';
-	import {
-		store as uniIdStore
-	} from '@/uni_modules/uni-id-pages/common/store';
+	// import uniIm from '@/uni_modules/uni-im/lib/main.js';
+	// import utils from '@/uni_modules/uni-im/common/utils.js';
+	// import {
+	// 	store as uniIdStore
+	// } from '@/uni_modules/uni-id-pages/common/store';
 
 	import uniImList from './components/uni-im-list/uni-im-list';
 	import uniImListItem from './components/uni-im-list-item/uni-im-list-item';
@@ -71,13 +57,14 @@
 	// #ifdef APP-NVUE
 	const nativePluginDom = uni.requireNativePlugin('dom')
 	// #endif
+	
 	export default {
 		components: {
 			uniImList,
 			uniImListItem
 		},
 		computed: {
-			...uniIm.mapState(['systemInfo', 'isWidescreen', 'heartbeat']),
+			// ...uniIm.mapState(['systemInfo', 'isWidescreen', 'heartbeat']),
 			loadState() {
 				return this.hasMore ? '正在加载历史消息' : '没有更多历史消息'
 			},

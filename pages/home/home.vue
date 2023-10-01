@@ -1,7 +1,9 @@
 <template>
+	<view class="status">
+	</view>
 	<view class="page">
 		<view class="homeHeader">
-			<img src="../../static/images/homeHeader.png" style="width: 100%;">
+			<image src="../../static/images/homeheader.png" style="width: 100%;" mode="aspectFit"></image> 
 		</view>
 		<view class="homeBody">
 			<view class="today">

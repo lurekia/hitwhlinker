@@ -74,9 +74,19 @@
             "path" : "pages/postShopForm/postShopForm",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "发布需求",
+               "navigationBarTitleText": "发布需求",
+			   "navigationStyle": "custom",
+			   "enablePullDownRefresh": "false"
+            }
+            
+        }
+        ,{
+            "path" : "pages/productDetail/productDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "需求详情",
 				"navigationStyle": "custom",
-                "enablePullDownRefresh": "false"
+				"enablePullDownRefresh": "false"
             }
             
         }
@@ -96,30 +106,35 @@
 				"pagePath": "pages/home/home",
 				"iconPath": "./static/images/home.png",
 				"text": "首页",
+				"selectedColor": "#e85353",
 				"selectedIconPath": "./static/images/home_active.png"
 			},
 			{
 				"pagePath": "pages/trip/trip",
 				"iconPath": "static/images/trip.png",
 				"text": "日历",
+				"selectedColor": "#e85353",
 				"selectedIconPath": "static/images/trip_active.png"
 			},
 			{
 				"pagePath": "pages/chatIndex/chatIndex",
 				"iconPath": "static/images/chatList.png",
 				"text": "聊天",
+				"selectedColor": "#e85353",
 				"selectedIconPath": "static/images/chatList_active.png"
 			},
 			{
 				"pagePath": "pages/shop/shop",
 				"iconPath": "static/images/shop.png",
-				"text": "二手",
+				"text": "市场",
+				"selectedColor": "#e85353",
 				"selectedIconPath": "static/images/shop_active.png"
 			},
 			{
 				"pagePath": "pages/me/me",
 				"iconPath": "static/images/me.png",
 				"text": "我",
+				"selectedColor": "#e85353",
 				"selectedIconPath": "static/images/me_active.png"
 			}
 		]

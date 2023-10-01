@@ -90,6 +90,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/productDetail/productDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "发布需求",
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": "false"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

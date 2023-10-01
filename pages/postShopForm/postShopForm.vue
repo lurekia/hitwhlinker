@@ -57,7 +57,11 @@
 		})
 	}
 	const baseFormData = reactive({
+<<<<<<< HEAD
 		id:'',
+=======
+					id:'',
+>>>>>>> 30065b7bc1395f8d929e12a6c5b5e8f72826d231
 					title: '',
 					tag: '',
 					detail: '',
@@ -65,6 +69,7 @@
 					datetimerange: [],
 					postTime:null,
 				})
+<<<<<<< HEAD
 				const type= [{
 									text: '需自取',
 									value: 0
@@ -72,6 +77,15 @@
 									text: '可配送',
 									value: 1
 								}]
+=======
+	const type= [{
+					text: '需自取',
+					value: 0
+				}, {
+					text: '可配送',
+					value: 1
+				}]
+>>>>>>> 30065b7bc1395f8d929e12a6c5b5e8f72826d231
 	const range = [
 				  { value: 0, text: "教辅教材" },
 				  { value: 1, text: "电子产品" },

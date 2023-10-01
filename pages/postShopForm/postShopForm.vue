@@ -19,6 +19,9 @@
 					        @change="change"
 					      ></uni-data-select>
 				</uni-forms-item>
+				<uni-forms-item label="途径" >
+					<uni-data-checkbox v-model="typeValue" :localdata="type"></uni-data-checkbox>
+				</uni-forms-item>
 				<uni-forms-item label="价格" >
 					<uni-easyinput v-model="baseFormData.money" placeholder="请输入初步价格" />
 				</uni-forms-item>
@@ -29,7 +32,7 @@
 					<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
 				</uni-forms-item>
 			</uni-forms>
-			<button type="default" @click="submitForm" class="submit" >提交</button>
+			<button type="default" @click="submitForm" class="submit" >发布</button>
 		</view>
 		
 	</view>
@@ -52,12 +55,21 @@
 		})
 	}
 	const baseFormData = reactive({
+					id:'',
 					title: '',
 					tag: '',
 					detail: '',
 					money:null,
 					datetimerange: [],
+					postTime:null,
 				})
+	const type= [{
+					text: '需自取',
+					value: 0
+				}, {
+					text: '可配送',
+					value: 1
+				}]
 	const range = [
 				  { value: 0, text: "教辅教材" },
 				  { value: 1, text: "电子产品" },

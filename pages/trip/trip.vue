@@ -212,7 +212,7 @@
 	.list-icon {
 		z-index: 10000;
 		position: fixed;
-		top: 30rpx;
+		top: calc(30rpx + var(--status-bar-height));
 		right: 120rpx;
 		// 奇怪  莫名其妙要加一个z-index  否则就会被覆盖
 		z-index: 99 
@@ -236,6 +236,7 @@
 		font-size: 35rpx;
 	}
 	.page {
+	  position: relative;
 	  display: flex;
 	  flex-direction: column;
 	}
@@ -288,7 +289,7 @@
 		
 	.calendar-header {
 		position: fixed;
-		top: 25rpx;
+		top: calc(25rpx + var(--status-bar-height))  ;
 		left: 20rpx;
 		color: #fff;
 		font-size: 40rpx;

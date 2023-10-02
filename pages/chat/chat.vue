@@ -16,7 +16,8 @@
 					<textarea auto-height :fixed="true" confirm-type="send" v-model="input" @confirm="submit" 
 						:adjust-position="false" :cursor-spacing="20" @focus="scrollToBottom()"/>
 				</view>
-				<text class="iconfont icon" @click="toolShow = !toolShow, scrollToBottom()">&#xe603;</text>
+				<button v-if="input!==''" type="primary" @click="submit()" size="mini" >发送</button>
+				<text v-else class="iconfont icon" @click="toolShow = !toolShow, scrollToBottom()">&#xe603;</text>
 			</view>
 			<tool-box v-if="toolShow" :height="toolHeight + 'px'"></tool-box>
 		</view>
@@ -108,6 +109,18 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			tag:'img',
 			time: "2023/7/29 12:00:00"
 		},
+		{
+			left: true,
+			content: "",
+			tag:'product',
+			time: "2023/7/29 12:00:00"
+		},
+		{
+			left: true,
+			content: "../.././static/images/img3.jpg",
+			tag:'img',
+			time: "2023/7/29 12:00:00"
+		}
 	]);
 	// 对方用户名
 	let title = "";
@@ -221,15 +234,40 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			scrollToBottom()
 		})
 	}
+	const putProduct = () => {
+		const data = {
+			left: false,
+			content: "",
+			tag:'product',
+			time: "2023/7/29 12:00:00"
+		}
+		msgs.value.push(data)
+		scrollToBottom()
+	}
 	
 	// #ifdef APP
 		uni.onKeyboardHeightChange(listenKeyboard)
 	// #endif
+	const submit = () => {
+		if(input.value === '') {
+			return 
+		}
+		const msg = {
+			left: false,
+			content: input.value,
+			tag:'text',
+			time: "2023/7/29 12:00:00"
+		}
+		msgs.value.push(msg)
+		input.value = ""
+		scrollToBottom()
+	}
 	
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
 		uni.$on("chooseImage",handleChooseImage)
+		uni.$on("putProduct",putProduct)
 	})
 	onLoad((obj) => {
 		title = obj.server_name
@@ -249,6 +287,7 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			uni.offKeyboardHeightChange(listenKeyboard)
 		// #endif
 		uni.$off("chooseImage",handleChooseImage)
+		uni.$off("putProduct",putProduct)
 	})
 	
 </script>
@@ -295,7 +334,7 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 	}
 	.bottom-input {
 		flex-direction: row;
-		align-items: flex-end;
+		align-items: center;
 		
 		width: 100vw;
 		
@@ -308,7 +347,7 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			background-color: #ffffff;
 			border-radius: 10px;
 			textarea {
-				width: calc(100vw - 146px);
+				width: calc(100vw - 196px);
 				background-color: #ffffff;
 			}
 		}

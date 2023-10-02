@@ -2,8 +2,15 @@
 	<view class="container">
 		<image :src="props.head_img_url" class="left" mode="aspectFill"></image>
 		<view class="right">
-			<view class="text-container">
+			<view v-if="props.msg.tag === 'text'" class="text-container">
 				<mp-html :content="content" />
+			</view>
+			<view v-if="props.msg.tag === 'img'" class="img-container">
+				<image :src="props.msg.content" mode="aspectFit"></image>
+			</view>
+			<view v-if="props.msg.tag === 'product'" class="pro-container">
+				<product-item>
+				</product-item>
 			</view>
 		</view>
 	</view>
@@ -13,6 +20,7 @@
 	import {
 		onLoad
 	} from '@dcloudio/uni-app'
+	import productItem from '@/components/post/productItem.vue'
 	const props = defineProps(["head_img_url", "msg"])
 	const content = ref("")
 	// 解析mardown 为 html字符串
@@ -59,5 +67,18 @@
 		border-bottom: 6px solid transparent;
 		border-left: 6px solid transparent;
 		border-top: 6px solid transparent;
+	}
+	.img-container {
+		margin-left: 10px;
+		
+		image {
+			max-width: calc(80vw - 30px);
+			max-height: calc(80vw - 30px);
+		}
+	}
+	.pro-container {
+		margin-left: 10px;
+		
+		width: calc(90vw - 15px);
 	}
 </style>

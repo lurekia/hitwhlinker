@@ -8,11 +8,16 @@
 			<view v-if="props.msg.tag === 'img'" class="img-container">
 				<image :src="props.msg.content" mode="aspectFit"></image>
 			</view>
+			<view v-if="props.msg.tag === 'product'" class="pro-container">
+				<product-item>
+				</product-item>
+			</view>
 		</view>
 	</view>
 </template>
 <script setup>
-
+	
+import productItem from '@/components/post/productItem.vue'
 const props = defineProps(["head_img_url","msg"])
 
 </script>
@@ -62,5 +67,11 @@ const props = defineProps(["head_img_url","msg"])
 		max-width: calc(80vw - 30px);
 		max-height: calc(80vw - 30px);
 	}
+}
+
+.pro-container {
+	margin-right: 10px;
+	
+	width: calc(90vw - 15px);
 }
 </style>

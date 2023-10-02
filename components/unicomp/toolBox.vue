@@ -49,6 +49,9 @@
 	const uploadFile = () => {
 		
 	}
+	const putProduct = () => {
+		uni.$emit("putProduct")
+	}
 	const funcs = [
 		{
 			title: "相册",
@@ -59,6 +62,11 @@
 			title: "文件",
 			type:"folder-add-filled",
 			action:uploadFile
+		},
+		{
+			title: "需求",
+			type:"cart-filled",
+			action:putProduct
 		},
 	]
 	

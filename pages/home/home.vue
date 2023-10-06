@@ -3,7 +3,7 @@
 	</view>
 	<view class="page">
 		<view class="homeHeader">
-			<image src="../../static/images/homeheader.png" style="width: 100%;" mode="aspectFit"></image> 
+			<image src="../../static/images/homeheader.png" style="width: 100%;margin-top: -20px;" mode="aspectFit"></image> 
 		</view>
 		<view class="homeBody">
 			<view class="today">
@@ -192,6 +192,7 @@
 </script>
 
 <style lang="scss" scoped>
+		
 	.homeBody {
 		padding: 10rpx  40rpx  0 40rpx;
 		.today {

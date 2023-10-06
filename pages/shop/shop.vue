@@ -14,26 +14,25 @@
 			<!-- 需求搜索 -->
 			<view class="want-query">
 				<view class="want-header">
-					<view style="align-items: center;">
-						<text style="color: #333;margin-right: 10px;">添加标签</text>
-						<switch :checked="tagChooseVisible" @change="tagChooseVisible = !tagChooseVisible" />
-					</view>
-					<view>
+					<text style="color: #333;margin-bottom: 10px;font-size: 16px;">标</text>
+					<text style="color: #333;margin-top: 10px;font-size: 16px;">签</text>
+						<!-- <switch :checked="tagChooseVisible" @change="tagChooseVisible = !tagChooseVisible" /> -->
+					<!-- <view>
 						<button type="primary" size="mini">查询</button>
-					</view>
-
+					</view> -->
+					
 				</view>
 				<!-- 标签选择 -->
-				<view v-if="tagChooseVisible" class="want-pool">
-					<uni-tag v-for="(item,index) in tag_content" :text="item.text"
-						:type="item.active?'primary':'default'" class="tag" :inverted="true"
+				<view class="want-pool">
+					<uni-tag v-for="(item,index) in show_tag_content" :text="item.text"
+						:type="item.active?'primary':'default'" class="tag" :inverted="item.active?false:true" :circle="item.active"
 						@click="tag_trigger(index)"></uni-tag>
 				</view>
 				<!-- 标签展示 -->
-				<view v-else class="want-selected">
+				<!-- <view v-else class="want-selected">
 					<uni-tag v-for="(item,index) in tag_selected" :text="item" type="primary" class="tag"
-						 :circle="true"></uni-tag>
-				</view>
+						 :circle="true"></uni-tag> -->
+				<!-- </view> -->
 			</view>
 			<scroll-view class="product-list" scroll-y="true" :scroll-with-animation="true">
 				<product-item v-for="item in products_data"  class="product-item" :key="item.id">
@@ -82,8 +81,8 @@
 	}
 	.want-query {
 		width: calc(100vw - 20px);
-		height: 20vh;
-		flex-direction: column;
+		height: 15vh;
+		flex-direction: row;
 
 		margin: 10px;
 		border-radius: 10px;
@@ -92,13 +91,13 @@
 	}
 
 	.want-header {
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		height: 100rpx;
-		padding: 0 20px;
-		border-bottom: 1px solid rgb(216, 216, 216);
+		justify-content: center;
+		// width: 100%;
+		height: 100%;
+		padding: 0 10px;
+		border-right: 1px solid rgb(216, 216, 216);
 	}
 
 	.want-pool {
@@ -106,13 +105,11 @@
 		flex-wrap: wrap;
 	}
 
-	.want-selected {
-		padding: 10px;
-		flex-wrap: wrap;
-	}
-
 	.tag {
+		display: flex;
+		justify-content: center;
 		width: 50px;
+		height: 13px;
 		margin: 5px;
 	}
 
@@ -154,68 +151,80 @@
 		})
 	}
 
-	// 选择标签模式
-	const tagChooseVisible = ref(false)
-
-	const tag_content = ref([{
-			text: '全部',
-			active: true,
-		},
+	// // 选择标签模式
+	// const tagChooseVisible = ref(false)
+	
+	const tag_content = ref([
 		{
 			text: '人物匹配',
-			active: true,
+			active: false,
 		},
 		{
 			text: '电子产品',
-			active: true,
+			active: false,
 		},
 		{
 			text: '生活用品',
-			active: true,
+			active: false,
 		},
 		{
 			text: '学习资料',
-			active: true,
+			active: false,
 		},
 		{
 			text: '零食饮料',
-			active: true,
+			active: false,
+		},
+		{
+			text: '其他',
+			active: false,
 		}
 	])
-	const tag_selected = computed(() => {
-		let arr = []
-		tag_content.value.forEach((item) => {
-			if (item.active == true) {
-				arr.push(item.text)
-			}
+	
+	const show_tag_content = computed(() => {
+		return tag_content.value.sort((a,b) => {
+			if(a.active == true && b.active == false) {
+				return -1;
+			} 
+			return 1
 		})
-		if (arr.length == tag_content.value.length) {
-			arr = ['全部']
-		}
-		return arr
 	})
+	// const tag_selected = computed(() => {
+	// 	let arr = []
+	// 	tag_content.value.forEach((item) => {
+	// 		if (item.active == true) {
+	// 			arr.push(item.text)
+	// 		}
+	// 	})
+	// 	if (arr.length == tag_content.value.length) {
+	// 		arr = ['全部']
+	// 	}
+	// 	return arr
+	// })
 	const tag_trigger = (id) => {
 		// console.log(e);
-		if (id == 0) { // 处理全部
-			if (tag_content.value[0].active) {
-				for (let i = 0; i < tag_content.value.length; i++) {
-					tag_content.value[i].active = false
-				}
-			} else {
-				for (let i = 0; i < tag_content.value.length; i++) {
-					tag_content.value[i].active = true
-				}
-			}
-		} else {
-			tag_content.value[id].active = !tag_content.value[id].active
-			for (let i = 1; i < tag_content.value.length; i++) {
-				if (tag_content.value[i].active == false) {
-					tag_content.value[0].active = false
-					return
-				}
-			}
-			tag_content.value[0].active = true
-		}
+		// if (id == 0) { // 处理全部
+		// 	if (tag_content.value[0].active) {
+		// 		for (let i = 0; i < tag_content.value.length; i++) {
+		// 			tag_content.value[i].active = false
+		// 		}
+		// 	} else {
+		// 		for (let i = 0; i < tag_content.value.length; i++) {
+		// 			tag_content.value[i].active = true
+		// 		}
+		// 	}
+		// } else {
+		// 	tag_content.value[id].active = !tag_content.value[id].active
+		// 	for (let i = 1; i < tag_content.value.length; i++) {
+		// 		if (tag_content.value[i].active == false) {
+		// 			tag_content.value[0].active = false
+		// 			return
+		// 		}
+		// 	}
+		// 	tag_content.value[0].active = true
+		// }
+		console.log(show_tag_content);
+		tag_content.value[id].active = !tag_content.value[id].active
 	}
 
 	const products_data = ref([{

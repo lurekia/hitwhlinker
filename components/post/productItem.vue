@@ -10,13 +10,13 @@
 					</view>
 					
 				</view>
-				<uni-tag :text="'建议价格:'+money" type="primary" class="money" :inverted="true"></uni-tag>
+				<uni-tag :text="'￥'+money+'元'" type="primary" class="money" :inverted="true"></uni-tag>
 			</view>
 			
 			<rich-text :nodes="detail" class="detail"></rich-text>
 		</view>
 		<view class="img">
-			<image :src="src" mode="aspectFill" style="width: 100%;height: 100%;"></image>
+			<image :src="src" mode="aspectFill" style="width: 100%;height: 100%;border-radius: 5px;"></image>
 		</view>
 	</view>
 </template>
@@ -29,7 +29,7 @@
 	.card {
 		flex-direction: row;
 		width: 100%;
-		height: 20vh;
+		height: 15vh;
 		background-color: #fff;
 		border-radius: 10px;
 		border: 1px solid rgb(216, 216, 216);
@@ -43,10 +43,11 @@
 		flex-direction: column;
 		.info-head {
 			width: 100%;
-			height: 30%;
+			height: 40%;
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
+			padding: 10px;
 			border-bottom: 1px solid rgb(216, 216, 216);
 		}
 		.user {
@@ -74,7 +75,8 @@
 	}
 	
 	.img {
-		width: 30%;
+		// border-radius: 10px;
+		width: 25%;
 		height: 100%;
 	}
 </style>

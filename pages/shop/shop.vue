@@ -42,7 +42,7 @@
 
 	</view>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 	page {
 		overflow-anchor: auto;
 		background-color: #efefef;
@@ -123,7 +123,7 @@
 
 		.product-item {
 			width: 100%;
-			margin-top: 5px;
+			margin-top: 10px;
 			// background-color: #fff;
 		}
 
@@ -156,6 +156,7 @@
 	
 	const tag_content = ref([
 		{
+			
 			text: '人物匹配',
 			active: false,
 		},

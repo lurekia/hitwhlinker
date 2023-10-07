@@ -99,6 +99,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/promptList/promptList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择提示词",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

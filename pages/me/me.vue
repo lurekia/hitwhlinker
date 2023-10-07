@@ -8,7 +8,9 @@
 				<image :src="avatarSrc" mode="aspectFill" class="avatar"></image>
 				<view class="more">
 					<text style="font-size: 18px;margin-top: 4px;font-weight: 700;">姜饼麻子</text>
-					<text style="color: rgba(214, 88, 88, 1);font-size: 14px;margin-top: 12px;margin-left: 4px;font-weight: 700;">规划大师</text>
+					<text style="color: rgba(214, 88, 88, 1);font-size: 14px;margin-top: 12px;margin-left: 4px;font-weight: 700;">
+						计算机科学与技术学院-大二-计算机系
+					</text>
 				</view>
 			</view>
 			<view class="info">

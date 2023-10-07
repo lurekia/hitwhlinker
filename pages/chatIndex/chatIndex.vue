@@ -33,7 +33,7 @@
 				<uni-list-chat v-for="(chat,index) in chat_views" :key="chat.id" :showBadge="chat.unread_count>0"
 					:badgeText="chat.unread_count" badge-positon="left" :title="chat.name" :avatar="chat.head_img_url"
 					:note="chat.last_word" :time="friendlyTime(chat.last_word_date)" :clickable="true"
-					@click="handleClick(chat.name,chat.head_img_url)">
+					@click="handleClick(chat.name,chat.type)">
 				</uni-list-chat>
 
 			</uni-list>
@@ -55,15 +55,17 @@
 			id: 1,
 			tag: "活动我先知",
 			name: "活动我先知",
+			type: "Club_activities",
 			head_img_url: "../.././static/images/img1.jpg",
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
-			unread_count: 10
+			unread_count: 0
 		},
 		{
 			id: 2,
 			tag: "新生引导员",
 			name: "新生引导员",
+			type: "StuDoc",
 			head_img_url: "../.././static/images/img2.jpg",
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -73,78 +75,60 @@
 			id: 3,
 			tag: "餐厅探店侠",
 			name: "餐厅探店侠",
+			type:"Canteen",
 			head_img_url: "../.././static/images/img3.jpg",
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
-			unread_count: 10
+			unread_count: 0
 		},
 		{
 			id: 4,
 			tag: "预约助手",
 			name: "预约助手",
+			type:"library",
 			head_img_url: "../.././static/images/img4.jpg",
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
-			unread_count: 2
+			unread_count: 0
 		},
 		{
 			id: 5,
 			tag: "学习助手",
 			name: "学习助手",
+			type:"Learning_buddy",
 			head_img_url: "../.././static/images/img5.jpg",
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
-			unread_count: 10
+			unread_count: 0
 		},
 	]);
 
-
+ 
 	// 点击跳转聊天界面
-	const handleClick = (server,url) => {
-		console.log(server,url);
+	const handleClick = (server,type) => {
+		console.log(server,type);
 		
 		uni.navigateTo({
-			url: '/pages/chat/chat?server_name=' + server,
+			url: '/pages/chat/chat?server_name=' + server+'&server_type='+type,
 			animationDuration: 300
 		})
-		// uni.request({
-		// 	url:'http://119.8.190.49:5000/query',
-		// 	method:"POST",
-		// 	data:{
-		// 		query: "oi?"
-		// 	},
-		// 	header: {
-		// 		"Content-Type": "application/json;charset=UTF-8"
-		// 	},
-		// 	success: (res) => {
-		// 		console.log(res);
-		// 	},
-		// 	fail: (err) => {
-		// 		console.log(err);
-		// 	}
-		// })
-		// uni.request({
-		// 	url: 'https://u232543-ba75-9c7c3195.westb.seetacloud.com:8443/customer-service',
-		// 	method: "POST",
-		// 	data: {
-		// 		question: "How much does it cost?"
-				
-		// 	},
-		// 	header: {
-		// 		"Content-Type": "application/json;charset=UTF-8"
-		// 	},
-		// 	success: (res) => {
-		// 		console.log(res);
-		// 	},
-		// 	fail: (err) => {
-		// 		console.log(err);
-		// 	}
-		// })
+		
 	}
 	// 时间转换
 	const friendlyTime = (timestamp) => {
 		return toFriendlyTime(timestamp)
 	}
+	
+	onLoad(() => {
+		uni.getLocation({
+			type: 'wgs84',
+			success: function (res) {
+				console.log('当前位置的经度：' + res.longitude);
+				console.log('当前位置的纬度：' + res.latitude);
+			}
+		});
+		    
+	})
 </script>
 
 <style lang="scss" scoped>

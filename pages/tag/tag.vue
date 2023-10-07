@@ -7,7 +7,7 @@
 			</view>
 			<scroll-view class="tag-body" scroll-x="true" :show-scrollbar="false">
 				<view class="tag" v-for="(tag,index2) in item.content" :key="index2">
-					<uni-tag   :text="tag.text" :type="tag.active?'primary':'default'" :inverted="true" :circle="true" @click="tag_trigger(index,index2)"></uni-tag>
+					<uni-tag   :text="tag.text" :type="tag.active?'primary':'default'" :inverted="tag.active?false:true" :circle="true" @click="tag_trigger(index,index2)"></uni-tag>
 				</view>
 				
 			</scroll-view>
@@ -15,7 +15,7 @@
 		</view>
 		
 		<view class="footer">
-			<button style="width: 70%;height: 40px;" type="primary" size="default">我选好了</button>
+			<button style="width: 70%;" type="primary" size="default">我选好了</button>
 		</view>
 	</view>
 </template>

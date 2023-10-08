@@ -58,30 +58,35 @@
 <script setup>
 	import {
 		reactive,
-		ref
+		ref,
+		onMounted
 	} from 'vue'
-	// const props = defineProps(["head_img_url","msg"])
+	import {
+		onLoad,
+		onInit
+	} from '@dcloudio/uni-app'
+	const props = defineProps(["raw_prompt"])
 	const rec_send_to = ref("预约助手");
 	const send_to = ref("预约助手");
-	const raw_prompt = ref("帮我预约[10月1号下午][3点到5点]的[4楼a区24号]座位");
+	// const raw_prompt = ref("帮我预约[10月1号下午][3点到5点]的[4楼a区24号]座位");
 	const process_prompt = ref([
-		{
-			pre:"帮我预约",
-			exp:"10月1号下午",
-			var:"",
-		},
-		{
-			pre:"",
-			exp:"3点到5点",
-			var:"",
-		},
-		{
-			pre:"的",
-			exp:"4楼a区24号",
-			var:"",
-		}
+		// {
+		// 	pre:"帮我预约",
+		// 	exp:"10月1号下午",
+		// 	var:"",
+		// },
+		// {
+		// 	pre:"",
+		// 	exp:"3点到5点",
+		// 	var:"",
+		// },
+		// {
+		// 	pre:"的",
+		// 	exp:"4楼a区24号",
+		// 	var:"",
+		// }
 	])
-	const last_word = "座位"; 
+	const last_word = ref("座位"); 
 	const handleSend = () => {
 		let str = "";
 		let arr = process_prompt.value;
@@ -93,9 +98,37 @@
 				str = str + arr[i].var;
 			}
 		}
-		str = str + last_word;
+		str = str + last_word.value;
+		console.log(str);
 		uni.$emit("getPrompt",str)
 		uni.navigateBack({})
 	}
+	const process_raw_prompt = (str) => {
+		let last_left = -1; // 上个左括号
+		let last_right = -1; // 上个右括号
+		let arr = [];
+		for(let i=0;i<str.length;i++) {
+			if(str[i] == '{') {
+				last_left = i;
+			} else {
+				if(str[i] == '}') {
+					let obj = {
+						pre: str.substr(last_right+1,last_left-last_right-1),
+						var: "",
+						exp: str.substr(last_left+1,i-last_left-1),
+					}
+					last_right = i;
+					arr.push(obj);
+				}
+			}
+		}
+		console.log(arr);
+		process_prompt.value = arr;
+		last_word.value = str.substr(last_right+1,str.length-last_right)
+	}
+	onMounted(() => {
+		console.log(props);
+		process_raw_prompt(props.raw_prompt)
+	})
 </script>
 

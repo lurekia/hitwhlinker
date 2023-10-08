@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-	import { ref, nextTick,reactive } from 'vue'
+	import { ref, nextTick,reactive,onMounted } from 'vue'
 	const activities = reactive([
 		{
 			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
@@ -205,6 +205,20 @@
 			url:'/pages/activityList/activityList',
 		})
 	}
+	onMounted(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				console.log(res.data);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	})
 </script>
 
 

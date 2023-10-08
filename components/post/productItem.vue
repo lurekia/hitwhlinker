@@ -6,17 +6,21 @@
 					<image :src="avatarSrc" mode="aspectFill" class="avatar"></image>
 					<view class="more">
 						<text style="color: red;">{{name}}</text>
-						<text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text>
+		<!-- 				<text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text> -->
 					</view>
 					
 				</view>
-				<uni-tag :text="'￥'+money+'元'" type="primary" class="money" :inverted="true"></uni-tag>
+				<view class="star">
+					<text style="color: rgb(73,141,255);">123</text>
+					<uni-icons type="star-filled" style="color: rgb(73,141,255);font-size: 20px;"></uni-icons>
+				</view>
 			</view>
 			
 			<rich-text :nodes="detail" class="detail"></rich-text>
 		</view>
 		<view class="img">
 			<image :src="src" mode="aspectFill" style="width: 100%;height: 100%;border-radius: 5px;"></image>
+			<uni-tag :text="'￥'+money+'元'" type="primary" class="money" :inverted="true"></uni-tag>
 		</view>
 	</view>
 </template>
@@ -29,7 +33,7 @@
 	.card {
 		flex-direction: row;
 		width: 100%;
-		height: 15vh;
+		height: 20vh;
 		background-color: #fff;
 		border-radius: 10px;
 		border: 1px solid rgb(216, 216, 216);
@@ -64,7 +68,9 @@
 				margin-left: 5px;
 			}
 		}
-		
+		.star {
+			align-items: center;
+		}
 		.money {
 			font-size: 14px;
 			margin-right: 5px;
@@ -76,8 +82,17 @@
 	
 	.img {
 		// border-radius: 10px;
-		width: 25%;
+		width: 30%;
 		height: 100%;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		.money {
+			// height: 3vh;
+			font-size: 14px;
+			margin-right: 5px;
+			margin-top: 4px;
+		}
 	}
 </style>
 <script setup>

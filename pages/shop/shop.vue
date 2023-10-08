@@ -1,7 +1,8 @@
 <template>
-	<view class="status">
-	</view>
+	
 	<view class="shop">
+		<view class="status">
+		</view>
 		<view class="header">
 			<view class="title">
 				需求市场
@@ -10,36 +11,51 @@
 				<uni-icons type="compose" size="30" color="#fff"></uni-icons>
 			</view>
 		</view>
-		<view class="body">
+		<scroll-view class="body" scroll-y="true">
 			<!-- 需求搜索 -->
 			<view class="want-query">
-				<view class="want-header">
-					<text style="color: #333;margin-bottom: 10px;font-size: 16px;">标</text>
-					<text style="color: #333;margin-top: 10px;font-size: 16px;">签</text>
-						<!-- <switch :checked="tagChooseVisible" @change="tagChooseVisible = !tagChooseVisible" /> -->
-					<!-- <view>
-						<button type="primary" size="mini">查询</button>
-					</view> -->
-					
-				</view>
-				<!-- 标签选择 -->
-				<view class="want-pool">
-					<uni-tag v-for="(item,index) in show_tag_content" :text="item.text"
-						:type="item.active?'primary':'default'" class="tag" :inverted="item.active?false:true" :circle="item.active"
-						@click="tag_trigger(index)"></uni-tag>
-				</view>
-				<!-- 标签展示 -->
-				<!-- <view v-else class="want-selected">
-					<uni-tag v-for="(item,index) in tag_selected" :text="item" type="primary" class="tag"
-						 :circle="true"></uni-tag> -->
-				<!-- </view> -->
-			</view>
-			<scroll-view class="product-list" scroll-y="true" :scroll-with-animation="true">
-				<product-item v-for="item in products_data"  class="product-item" :key="item.id">
-				</product-item>
-			</scroll-view> 
-		</view>
+				<view class="row">
+					<uni-forms ref="baseForm" :modelValue="queryForm" style="width: 100%;">
+						<uni-forms-item label="关键词">
+							<uni-easyinput placeholder="请输入关键词" />
+						</uni-forms-item>
+						<uni-forms-item label="价格" >
+							<uni-easyinput placeholder="请输入预期价格" />
+						</uni-forms-item>
+						<uni-forms-item label="途径" >
+							<uni-data-checkbox :localdata="type"></uni-data-checkbox>
+						</uni-forms-item>
+						
 
+					</uni-forms>
+				</view>
+					
+				<view class="want-tag">
+					<view class="want-header">
+						<text style="color: #333;margin-bottom: 10px;font-size: 16px;">标</text>
+						<text style="color: #333;margin-top: 10px;font-size: 16px;">签</text>
+						<!-- <switch :checked="tagChooseVisible" @change="tagChooseVisible = !tagChooseVisible" /> -->
+						<!-- <view>
+							<button type="primary" size="mini">查询</button>
+						</view> -->
+
+					</view>
+					<!-- 标签选择 -->
+					<view class="want-pool">
+						<uni-tag v-for="(item,index) in show_tag_content" :text="item.text"
+							:type="item.active?'primary':'default'" class="tag" :inverted="item.active?false:true"
+							:circle="item.active" @click="tag_trigger(index)"></uni-tag>
+					</view>
+				</view>
+
+
+			</view>
+			<view class="product-list">
+				<product-item v-for="item in products_data" class="product-item" :key="item.id">
+				</product-item>
+			</view>
+		</scroll-view>
+		
 	</view>
 </template>
 <style lang="scss" scoped>
@@ -47,6 +63,7 @@
 		overflow-anchor: auto;
 		background-color: #efefef;
 	}
+
 	view {
 		display: flex;
 		box-sizing: border-box;
@@ -77,17 +94,36 @@
 
 	.body {
 		flex-direction: column;
+		height: 80vh;
 		flex-grow: 1;
+		padding-bottom: 10px;
 	}
+
 	.want-query {
-		width: calc(100vw - 20px);
+		flex-direction: column;
+		width: 100vw;
+		// border-radius: 10px;
+		padding: 0 10px;
+		background-color: #fff;
+
+		.row {
+			// height: 6vh;
+			// font-size: 14px;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			padding-top: 20px;
+			border-bottom: 1px solid rgb(216, 216, 216);
+		}
+		
+	}
+
+	.want-tag {
 		height: 15vh;
 		flex-direction: row;
+		// padding: 0 10px;
+		// margin: 10px;
 
-		margin: 10px;
-		border-radius: 10px;
-
-		background-color: #fff;
 	}
 
 	.want-header {
@@ -128,8 +164,6 @@
 		}
 
 	}
-
-	
 </style>
 <script setup>
 	import {
@@ -150,13 +184,28 @@
 			url: '/pages/postShopForm/postShopForm'
 		})
 	}
-
+	
+	const queryForm = reactive({
+					id:'',
+					title: '',
+					tag: '',
+					detail: '',
+					money:null,
+					datetimerange: [],
+					postTime:null,
+				})
+	const type = [{
+		text: '需自取',
+		value: 0
+	}, {
+		text: '可配送',
+		value: 1
+	}];
 	// // 选择标签模式
 	// const tagChooseVisible = ref(false)
-	
-	const tag_content = ref([
-		{
-			
+
+	const tag_content = ref([{
+
 			text: '人物匹配',
 			active: false,
 		},
@@ -181,12 +230,12 @@
 			active: false,
 		}
 	])
-	
+
 	const show_tag_content = computed(() => {
-		return tag_content.value.sort((a,b) => {
-			if(a.active == true && b.active == false) {
+		return tag_content.value.sort((a, b) => {
+			if (a.active == true && b.active == false) {
 				return -1;
-			} 
+			}
 			return 1
 		})
 	})
@@ -274,4 +323,18 @@
 			postTime: "2023/10/2",
 		},
 	])
+	onMounted(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				console.log(res.data);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	})
 </script>

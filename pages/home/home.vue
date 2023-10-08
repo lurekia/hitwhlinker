@@ -216,6 +216,20 @@
 		// });
 
 	})
+	onMounted(()=>{
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				console.log(res.data);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	})
 </script>
 
 <style lang="scss" scoped>

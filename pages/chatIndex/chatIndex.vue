@@ -45,7 +45,8 @@
 	import toFriendlyTime from "../../utils/toFriendlyTime.js"
 	import {
 		reactive,
-		ref
+		ref,
+		onMounted
 	} from 'vue'
 	import {
 		onLoad
@@ -119,15 +120,19 @@
 		return toFriendlyTime(timestamp)
 	}
 	
-	onLoad(() => {
-		uni.getLocation({
-			type: 'wgs84',
-			success: function (res) {
-				console.log('当前位置的经度：' + res.longitude);
-				console.log('当前位置的纬度：' + res.latitude);
+	onMounted(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				console.log(res.data);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
 			}
 		});
-		    
 	})
 </script>
 

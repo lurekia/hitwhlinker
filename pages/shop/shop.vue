@@ -123,7 +123,6 @@
 		flex-direction: column;
 		background-color: transparent;
 		margin: 0 10px;
-
 		.product-item {
 			width: 100%;
 			margin-top: 5px;

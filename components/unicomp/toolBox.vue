@@ -52,6 +52,11 @@
 	const putProduct = () => {
 		uni.$emit("putProduct")
 	}
+	const getPrompt = () => {
+		uni.navigateTo({
+			url:"/pages/promptList/promptList"
+		})
+	}
 	const funcs = [
 		{
 			title: "相册",
@@ -68,6 +73,12 @@
 			type:"cart-filled",
 			action:putProduct
 		},
+		{
+			
+			title: "提示词",
+			type:"email",
+			action:getPrompt
+		}
 	]
 	
 	

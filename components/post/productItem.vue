@@ -1,26 +1,30 @@
 <template>
-	<view class="card" @click="goToDetail()">
+	<view class="card">
 		<view class="info">
 			<view class="info-head">
-				<view class="user">
-					<image :src="avatarSrc" mode="aspectFill" class="avatar"></image>
+				<view v-if="isMine" style="margin-bottom: 4px;">
+					<button type="warn" size="mini" @click="handleDelete(data.id)">撤销</button>
+				</view>
+				<view v-else class="user">
+					<image :src="data.avatar?data.avatar:'../.././static/images/img5.jpg'" mode="aspectFill" class="avatar"></image>
 					<view class="more">
-						<text style="color: red;">{{name}}</text>
-		<!-- 				<text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text> -->
+						<text style="color: red;">{{data.nickName}}</text>
+						<text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text>
 					</view>
 					
 				</view>
 				<view class="star">
-					<text style="color: rgb(73,141,255);">123</text>
+					<text style="color: rgb(73,141,255);">{{data.starCounts}}</text>
 					<uni-icons type="star-filled" style="color: rgb(73,141,255);font-size: 20px;"></uni-icons>
 				</view>
 			</view>
 			
-			<rich-text :nodes="detail" class="detail"></rich-text>
+			<rich-text :nodes="data.title" class="detail"></rich-text>
 		</view>
 		<view class="img">
-			<image :src="src" mode="aspectFill" style="width: 100%;height: 100%;border-radius: 5px;"></image>
-			<uni-tag :text="'￥'+money+'元'" type="primary" class="money" :inverted="true"></uni-tag>
+			
+			<image :src="data.pictrue?data.pictrue:'../.././static/images/product.webp'" mode="aspectFill" style="width: 100%;height: 100%;border-radius: 5px;"  @click="goToDetail()"></image>
+			<uni-tag :text="'￥'+data.price+'元'" type="primary" class="money" :inverted="true"></uni-tag>
 		</view>
 	</view>
 </template>
@@ -100,17 +104,20 @@
 		reactive,
 		ref
 	} from 'vue'
-	// const props = defineProps(["head_img_url","msg"])
-	const avatarSrc = ref("../.././static/images/img5.jpg")
-	const src = ref("../.././static/images/product.webp")
-	const name = ref("123鼠鼠")
-	const money = ref(100)
-	const detail = ref("这是一个手表这是一个手表")
-	const date = ref("8分钟前")
+	const props = defineProps(["data","isMine"])
+	// const avatarSrc = ref("../.././static/images/img5.jpg")
+	// const src = ref("../.././static/images/product.webp")
+	// const name = ref("123鼠鼠")
+	// const money = ref(100)
+	// const detail = ref("这是一个手表这是一个手表")
+	// const date = ref("8分钟前")
 	const goToDetail = () => {
 		uni.navigateTo({
 			url: '/pages/productDetail/productDetail'
 		})
+	}
+	const handleDelete = (id) => {
+		uni.$emit("handleDelete",id);
 	}
 </script>
 

@@ -28,295 +28,152 @@
 
 	const tag_content = ref([
 		{
-			title: "游戏",
+			title: "专业",
 			content: [{
-					text: "王者荣耀",
+					text: "计算机科学与技术",
 					active: false,
 				},
 				{
-					text: "英雄联盟",
+					text: "人工智能",
 					active: false,
 				},
 				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
+					text: "软件工程",
 					active: false,
 				},
 			]
 		},
 		{
-			title: "音乐",
+			title: "社团与组织",
 			content: [{
-					text: "林俊杰",
+					text: "文学",
 					active: false,
 				},
 				{
-					text: "周杰伦",
+					text: "体育",
 					active: false,
 				},
 				{
-					text: "邓紫棋",
+					text: "科创",
+					active: false,
+				},
+				{
+					text: "音乐与舞蹈",
+					active: false,
+				},
+				{
+					text: "摄影与影视",
+					active: false,
+				},
+				{
+					text: "环保与公益",
+					active: false,
+				},
+				{
+					text: "演讲与辩论",
+					active: false,
+				},
+				{
+					text: "国际交流与语言",
 					active: false,
 				},
 			],
 		},
 		{
-			title: "活动",
-			content: [{
-					text: "学科竞赛",
+			title: "讲座",
+			content: [
+				{
+					text: "学术研究与前沿",
 					active: false,
 				},
 				{
-					text: "社团活动",
+					text: "职业与择业指导",
 					active: false,
 				},
 				{
-					text: "体育活动",
+					text: "个人成长与心理健康",
+					active: false,
+				},
+				{
+					text: "技能培训与认证",
+					active: false,
+				},
+				{
+					text: "文化与历史",
+					active: false,
+				},
+				{
+					text: "科技与创新",
+					active: false,
+				},
+				{
+					text: "艺术与设计鉴赏",
+					active: false,
+				},
+				{
+					text: "国际视野与交流",
+					active: false,
+				},
+				{
+					text: "金融与投资策略",
 					active: false,
 				},
 			],
 		},
 		{
-			title: "游戏",
-			content: [{
-					text: "王者荣耀",
+			title: "菜品",
+			content: [
+				{
+					text: "川菜",
 					active: false,
 				},
 				{
-					text: "英雄联盟",
+					text: "粤菜",
 					active: false,
 				},
 				{
-					text: "云顶之奕",
+					text: "西餐",
 					active: false,
 				},
 				{
-					text: "王者荣耀",
+					text: "饺子",
 					active: false,
 				},
 				{
-					text: "英雄联盟",
+					text: "韩国料理",
 					active: false,
 				},
 				{
-					text: "云顶之奕",
+					text: "快餐与汉堡",
 					active: false,
 				},
 				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
+					text: "地方小吃",
 					active: false,
 				},
 			]
 		},
 		{
-			title: "音乐",
-			content: [{
-					text: "林俊杰",
+			title: "未来规划与职业目标",
+			content: [
+				{
+					text: "国内读研",
 					active: false,
 				},
 				{
-					text: "周杰伦",
+					text: "出国留学",
 					active: false,
 				},
 				{
-					text: "邓紫棋",
-					active: false,
-				},
-			],
-		},
-		{
-			title: "活动",
-			content: [{
-					text: "学科竞赛",
+					text: "就业",
 					active: false,
 				},
 				{
-					text: "社团活动",
-					active: false,
-				},
-				{
-					text: "体育活动",
-					active: false,
-				},
-			],
-		},
-		{
-			title: "游戏",
-			content: [{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
+					text: "创业",
 					active: false,
 				},
 			]
 		},
-		{
-			title: "音乐",
-			content: [{
-					text: "林俊杰",
-					active: false,
-				},
-				{
-					text: "周杰伦",
-					active: false,
-				},
-				{
-					text: "邓紫棋",
-					active: false,
-				},
-			],
-		},
-		{
-			title: "活动",
-			content: [{
-					text: "学科竞赛",
-					active: false,
-				},
-				{
-					text: "社团活动",
-					active: false,
-				},
-				{
-					text: "体育活动",
-					active: false,
-				},
-			],
-		},
-		{
-			title: "游戏",
-			content: [{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-				{
-					text: "王者荣耀",
-					active: false,
-				},
-				{
-					text: "英雄联盟",
-					active: false,
-				},
-				{
-					text: "云顶之奕",
-					active: false,
-				},
-			]
-		},
-		{
-			title: "音乐",
-			content: [{
-					text: "林俊杰",
-					active: false,
-				},
-				{
-					text: "周杰伦",
-					active: false,
-				},
-				{
-					text: "邓紫棋",
-					active: false,
-				},
-			],
-		},
-		{
-			title: "活动",
-			content: [{
-					text: "学科竞赛",
-					active: false,
-				},
-				{
-					text: "社团活动",
-					active: false,
-				},
-				{
-					text: "体育活动",
-					active: false,
-				},
-			],
-		}
-		
-		
 	])
 	const tag_trigger = (index, index2) => {
 		// console.log(tag_content.value[index].content[index2].active);

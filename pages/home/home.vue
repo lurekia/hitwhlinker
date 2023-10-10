@@ -10,7 +10,7 @@
 			<view class="today">
 				<text class="today-text">TODAY</text>
 				<view class="custom-sentence">
-					今日威海下雨，记得带伞哦~
+					{{city}}{{weather_info}}
 				</view>
 			</view>
 			<view class="part-in">
@@ -173,6 +173,8 @@
 		like: false, // 默认没点赞
 		likeCount: 26, // 点赞数量
 	}, ])
+	let weather_info = ref("");
+	let city = ref("");
 	const achieve = (open) => {
 		console.log(open);
 		console.log('666');
@@ -217,10 +219,11 @@
 
 	})
 	onMounted(()=>{
+		// 手写拦截器
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
-				console.log(res.data);
+				// console.log(res.data);
 			},
 			fail: (err) => {
 				uni.navigateTo({
@@ -229,6 +232,56 @@
 				})
 			}
 		});
+		// 查询天气
+		uni.getLocation({
+			type: 'wgs84',
+			// geocode:true,
+			success: function (res) {
+				console.log('当前位置的经度：' + res.longitude);
+				console.log('当前位置的纬度：' + res.latitude);
+				const location = res.longitude + ',' + res.latitude;
+				console.log(location);
+				uni.request({
+					url:"https://devapi.qweather.com/v7/weather/3d",
+					method:"GET",
+					data:{
+						key:"10bb4b9742324acb910eadb1d9f8d6ae",
+						location:location
+					},
+					success:(res)=>{
+						// console.log(res);
+						const data = res.data.daily[0]
+						// weather_info.value = "今日威海白天"+data.textDay+"，夜晚"+data.textNight+",温度"+data.tempMin+"-"+data.tempMax+"℃"+"，祝您心情愉悦";
+						weather_info.value = "今天"+data.textDay+"，祝您心情愉悦！";
+					},
+					fail:(err)=> {
+						console.log(err);
+					}
+					
+				});
+				uni.request({
+					url:"https://geoapi.qweather.com/v2/city/lookup",
+					method:"GET",
+					data:{
+						key:"10bb4b9742324acb910eadb1d9f8d6ae",
+						location:location
+					},
+					success:(res)=>{
+						// console.log("城市",res);
+						city.value = res.data.location[0].adm2;
+						// console.log(res);
+						// const data = res.data.daily[0]
+						// weather_info.value = "今日威海白天"+data.textDay+"，夜晚"+data.textNight+",温度"+data.tempMin+"-"+data.tempMax+"℃"+"，祝您心情愉悦";
+						// weather_info.value = "今天威海"+data.textDay+"，祝您心情愉悦！";
+					},
+					fail:(err)=> {
+						console.log(err);
+					}
+					
+				});
+			}
+		});
+		
 	})
 </script>
 

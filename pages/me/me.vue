@@ -54,6 +54,9 @@
 					</view>
 				</view>
 			</view>
+			<view class="logOut">
+				<button type="warn" style="width: 80vw;" @click="logout()">登出</button>
+			</view>
 		</view>
 	</view>
 
@@ -131,8 +134,9 @@
 			}
 
 			.tag-item {
-				width: 100%;
+				// width: 100%;
 				// height: 30px;
+				padding: 0 30px;
 			}
 
 			.tag {
@@ -142,6 +146,17 @@
 				height: 13px;
 				margin: 5px;
 			}
+		}
+		.logOut {
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			width: 100vw;
+			height: 100px;
+			padding: 30px;
+			margin-bottom: 30px;
+			background-color: #fff;
+			
 		}
 	}
 </style>
@@ -155,23 +170,20 @@
 	const avatarSrc = ref("../.././static/images/img5.jpg")
 
 	const tags = ref([{
-			text: '人物匹配',
+			text: '川菜',
 		},
 		{
-			text: '电子产品',
+			text: '文化与历史',
 		},
 		{
-			text: '生活用品',
+			text: '文学',
 		},
 		{
-			text: '学习资料',
+			text: '学术研究与前沿',
 		},
 		{
-			text: '零食饮料',
+			text: '读研',
 		},
-		{
-			text: '其他',
-		}
 	])
 
 	const toTag = () => {
@@ -191,6 +203,18 @@
 			url: '/pages/mywantList/mywantList',
 			animationDuration: 300
 		})
+	}
+	const logout = () => {
+		uni.removeStorage({
+			key: 'token',
+			success: function (res) {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+		
 	}
 	onMounted(() => {
 		uni.getStorage({

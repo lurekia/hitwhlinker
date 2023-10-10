@@ -1,9 +1,14 @@
 <template>
 	<view class="page">
-		<scroll-view class="product-list" scroll-y="true" :scroll-with-animation="true">
-			<product-item v-for="item in products_data"  class="product-item" :key="item.id">
+		<scroll-view class="product-list" scroll-y="true" :scroll-with-animation="true" @scrolltolower="handleMore()">
+			<product-item v-for="item in products_data"  class="product-item" :key="item.id" :data="item" :isMine="true">
 			</product-item>
+			<view class="more">
+				
+			</view>
+			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType" :content-text="contentText"></uni-load-more>
 		</scroll-view> 
+		
 	</view>
 	
 </template>
@@ -14,7 +19,8 @@
 		reactive,
 		onMounted,
 		computed,
-		watch
+		watch,
+		onUnmounted
 	} from 'vue'
 	import {
 		onLoad,
@@ -22,53 +28,114 @@
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
 	
+	let isLoading = ref(false);
+	let loadingType = ref("loading");
+	const contentText = {contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "没有更多数据了"}
+	let pageNum = 1;
+	let pageSize = 8;
+	let token = null;
+	const products_data = ref([])
 	
-	const products_data = ref([{
-			id: 0,
-			title: '无',
-			tag: '电子产品',
-			detail: '无',
-			money: 100,
-			datetimerange: [0, 2],
-			postTime: "2023/10/2",
-		},
-		{
-			id: 1,
-			title: '无',
-			tag: '电子产品',
-			detail: '无',
-			money: 100,
-			datetimerange: [0, 2],
-			postTime: "2023/10/2",
-		},
-		{
-			id: 2,
-			title: '无',
-			tag: '电子产品',
-			detail: '无',
-			money: 100,
-			datetimerange: [0, 2],
-			postTime: "2023/10/2",
-		},
-		{
-			id: 3,
-			title: '无',
-			tag: '电子产品',
-			detail: '无',
-			money: 100,
-			datetimerange: [0, 2],
-			postTime: "2023/10/2",
-		},
-		{
-			id: 4,
-			title: '无',
-			tag: '电子产品',
-			detail: '无',
-			money: 100,
-			datetimerange: [0, 2],
-			postTime: "2023/10/2",
-		},
-	])
+	const loadData = () => {
+		isLoading.value = true;
+		uni.request({
+			url: "http://94.74.87.251:8080/school/goods/mySaleList?pageNum="+pageNum+"&pageSize="+pageSize,
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				// console.log(res);
+				if (res.data.code == 200) {
+					console.log(res);
+					products_data.value = [...products_data.value,...res.data.rows];
+					if(res.data.rows.length < pageSize) {
+						loadingType.value = "noMore"
+					}
+					console.log(products_data.value);
+				} else {
+					uni.showToast({
+						title: '加载失败，请检查网络',
+						icon: 'none'
+					})
+	
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			},
+			complete: () => {
+				isLoading.value = false;
+			}
+		})
+	}
+	const handleMore = () => {
+		console.log("划到底部了");
+		if(loadingType.value == "noMore" || isLoading.value== true) {
+			return ;
+		}
+		pageNum = pageNum + 1;
+		isLoading.value = true;
+		setTimeout(()=>{loadData();},2000)
+		
+	}
+	const handleDelete = (id) => {
+		uni.request({
+			url: "http://94.74.87.251:8080/school/goods/"+id,
+			method: "DELETE",
+			header: {
+				"Authorization": token
+			},
+			// data:{
+			// 	ids: id
+			// },
+			success: (res) => {
+				// console.log(res);
+				if (res.data.code == 200) {
+					console.log(res);
+					// products_data.value = res.data.rows;
+					// console.log(products_data.value);
+					loadData()
+					
+				} else {
+					uni.showToast({
+						title: '操作失败:'+res.data.msg,
+						icon: 'none'
+					})
+			
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}
+	onMounted(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				// console.log(res.data);
+				token = res.data;
+				loadData()
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+		uni.$on("handleDelete",handleDelete);
+	})
+	onUnmounted(()=>{
+		uni.$off("handleDelete",handleDelete);
+	})
 </script>
 
 <style lang="scss" scoped>
@@ -76,7 +143,7 @@
 		overflow-anchor: auto;
 		background-color: #efefef;
 	}
-	.shop {
+	.page {
 		height: calc(100vh - var(--window-bottom));
 		flex-direction: column;
 		background-color: rgb(239, 239, 239);
@@ -88,7 +155,7 @@
 	.product-list {
 		width: calc(100vw - 20px);
 		height: 100%;
-		flex-grow: 1;
+		// flex-grow: 1;
 		flex-direction: column;
 		background-color: transparent;
 		margin: 0 10px;
@@ -99,5 +166,10 @@
 			// background-color: #fff;
 		}
 	
+	}
+	.more {
+		width: 100%;
+		height: 20px;
+		// background-color: pink;
 	}
 </style>

@@ -4,7 +4,7 @@
 			登录
 		</view>
 		<view class="iphone">
-			<input type="number" placeholder="输入账号" :value="iphoneValue" @input="clearInput" />
+			<input type="text" placeholder="输入用户名" v-model="username" @input="clearInput" />
 			<uni-icons type="closeempty" color="#808080" size="25" v-if="showClearIcon" @click="clearIcon"></uni-icons>
 		</view>
 
@@ -22,6 +22,7 @@
 		data() {
 			return {
 				iphoneValue: '', //手机号码
+				username:"", // 用户名
 				passwordValue: '', //密码
 				testValue: '', //验证码
 				showPassword: true, //是否显示密码
@@ -49,12 +50,8 @@
 			},
 			// 清除内容/隐藏按钮
 			clearIcon: function() {
-				this.iphoneValue = '';
+				this.username = '';
 				this.showClearIcon = false;
-			},
-			// 切换登录的方式
-			setLoginType(type) {
-				this.type = type
 			},
 			// 密码登录
 			Login() {
@@ -67,47 +64,44 @@
 					return false
 				}
 
-				// uni.request({
-				// 	url: 'http://app/login', // 路径
-				// 	method: 'POST', // 请求方法
-				// 	data: {
-				// 		phone: that.iphoneValue,
-				// 		type: that.type,
-				// 		code: that.testValue,
-				// 		password: that.passwordValue
-				// 	}, //发送的数据
-				// 	success: (res) => {
-				// 		if (res.data.code == 200) {
-				// 			//存储token
-				// 			that.token = res.data.token;
-				// 			uni.setStorageSync('token', that.token); // 将登录信息以token的方式存在硬盘中
-				// 			uni.setStorageSync('userInfo', JSON.stringify(res.data)); // 将用户信息存储在硬盘中
-				// 			uni.switchTab({ // 跳转到新闻页面
-				// 				url: "../index/index",
-				// 			})
-				// 			uni.showToast({
-				// 				title: '登录成功',
-				// 				icon: 'none'
-				// 			})
-				// 		} else {
-				// 			uni.showToast({
-				// 				title: '登录失败',
-				// 				icon: 'none'
-				// 			})
-				// 		}
-				// 	}
-				// })
-				const token = "sdawdwfafsfawfa";
-				const data = {
-					username: "姜饼麻子",
-					password:"10086"
-				}
-				uni.setStorageSync('token', token);
-				uni.setStorageSync('userInfo', JSON.stringify(data));
-				uni.navigateBack({
-					// url: '/pages/home/home',
-					animationDuration: 300
+				uni.request({
+					url: 'http://94.74.87.251:8080/login', // 路径
+					method: 'POST', // 请求方法
+					data: {
+						username:that.username,
+						password:that.passwordValue
+					}, //发送的数据
+					success: (res) => {
+						if (res.data.code == 200) {
+							//存储token
+							that.token = res.data.token;
+							uni.setStorageSync('token', that.token); // 将登录信息以token的方式存在硬盘中
+							uni.switchTab({ // 跳转到新闻页面
+								url: "../home/home",
+							})
+							uni.showToast({
+								title: '登录成功',
+								icon: 'none'
+							})
+						} else {
+							uni.showToast({
+								title: '登录失败',
+								icon: 'none'
+							})
+						}
+					}
 				})
+				// const token = "sdawdwfafsfawfa";
+				// const data = {
+				// 	username: "姜饼麻子",
+				// 	password:"10086"
+				// }
+				// uni.setStorageSync('token', token);
+				// uni.setStorageSync('userInfo', JSON.stringify(data));
+				// uni.navigateBack({
+				// 	// url: '/pages/home/home',
+				// 	animationDuration: 300
+				// })
 			}
 		}
 	}

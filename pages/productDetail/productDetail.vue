@@ -32,6 +32,16 @@
 				图片展示区
 			</view>
 			666  66666666666666666666666666666666666666666666666666666
+			
+    <u-button type="primary" shape="circle" text="按钮形状"></u-button>
+	<u-upload
+			:fileList="fileList1"
+			@afterRead="afterRead"
+			@delete="deletePic"
+			name="1"
+			multiple
+			:maxCount="10"
+		></u-upload>
 		</scroll-view> 
 		<view class="bottom-bar">
 			<uni-fav :checked="is_fav" class="favBtn" :circle="true" bg-color="#dd524d"
@@ -51,6 +61,24 @@
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
 	}
+	
+	
+	
+	const list = ref([
+	  {
+	    text: '点赞',
+	    color: 'blue',
+	    fontSize: 28
+	  },
+	  {
+	    text: '分享'
+	  },
+	  {
+	    text: '评论'
+	  }
+	]);
+	
+	const show = ref(true);
 	const avatarSrc = ref("../.././static/images/img5.jpg")
 	const src = ref("../.././static/images/product.webp")
 	const name = ref("123鼠鼠")

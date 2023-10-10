@@ -33,10 +33,20 @@
 				<uni-forms-item label="需求时间">
 					<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
 				</uni-forms-item>
+				<uni-forms-item label="上传图片">
+					<u-upload
+							:fileList="fileList1"
+							@afterRead="afterRead"
+							@delete="deletePic"
+							name="1"
+							multiple
+							:maxCount="10"
+						></u-upload>
+					
+				</uni-forms-item>
 			</uni-forms>
 			<button type="default" @click="submitForm" class="submit" >发布</button>
 		</view>
-		
 	</view>
 </template>
 
@@ -80,6 +90,57 @@
 				  { value: 4, text: "零食饮料" },
 				  { value: 5, text: "人物匹配" },
 				]
+				
+				
+	const fileList1 = ref([]);
+
+	// 删除图片
+	const deletePic = (event) => {
+	  fileList1.value.splice(event.index, 1);
+	};
+
+	// 新增图片
+	const afterRead = async (event) => {
+	  // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+	  let lists = [].concat(event.file);
+	  let fileListLen = fileList1.value.length;
+	  lists.map((item) => {
+		fileList1.value.push({
+		  ...item,
+		  status: 'uploading',
+		  message: '上传中',
+		});
+	  });
+	  for (let i = 0; i < lists.length; i++) {
+		const result = await uploadFilePromise(lists[i].url);
+		let item = fileList1.value[fileListLen];
+		fileList1.value.splice(fileListLen, 1, {
+		  ...item,
+		  status: 'success',
+		  message: '',
+		  url: result,
+		});
+		fileListLen++;
+	  }
+	};
+
+	const uploadFilePromise = (url) => {
+	  return new Promise((resolve, reject) => {
+		let a = uni.uploadFile({
+		  url: 'http://94.74.87.251:8080/upload', // 仅为示例，非真实的接口地址
+		  filePath: url,
+		  name: 'file',
+		  formData: {
+			user: 'test',
+		  },
+		  success: (res) => {
+			setTimeout(() => {
+			  resolve(res.data.data);
+			}, 1000);
+		  },
+		});
+	  });
+	};
 </script>
 
 <style lang="scss">

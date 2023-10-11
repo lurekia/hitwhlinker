@@ -61,7 +61,12 @@
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
 	}
-	
+		
+	const goBack = ()=>{
+		uni.navigateBack({
+			delta:1
+		})
+	}
 	
 	
 	const list = ref([

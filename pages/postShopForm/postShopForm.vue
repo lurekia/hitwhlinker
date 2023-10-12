@@ -1,6 +1,4 @@
 <template>
-	<view class="status">
-	</view>
 	<view>
 		<view class="topbar">
 			<view class="topbar-content">
@@ -8,33 +6,41 @@
 			</view>
 			<uni-icons type="back" size="30" color="#fff" class="go-back" @click="goBack"></uni-icons>
 		</view>
-		<view class="body">
-			<!-- 基础用法，不包含校验规则 -->
-			<uni-forms ref="baseForm" :modelValue="baseFormData">
-				<uni-forms-item label="标题" required>
-					<uni-easyinput v-model="baseFormData.title" placeholder="请输入标题" />
-				</uni-forms-item>
-				<uni-forms-item label="标签" required>
-					<uni-data-select
-					        v-model="baseFormData.tag"
-					        :localdata="range"
-					        @change="change"
-					      ></uni-data-select>
-				</uni-forms-item>
-				<uni-forms-item label="途径" >
-					<uni-data-checkbox v-model="typeValue" :localdata="type"></uni-data-checkbox>
-				</uni-forms-item>
-				<uni-forms-item label="价格" >
-					<uni-easyinput v-model="baseFormData.money" placeholder="请输入初步价格" />
-				</uni-forms-item>
-				<uni-forms-item label="详情">
-					<uni-easyinput type="textarea" v-model="baseFormData.detail" placeholder="请输入详情介绍" />
-				</uni-forms-item>
-				<uni-forms-item label="需求时间">
-					<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
-				</uni-forms-item>
-				<uni-forms-item label="上传图片">
-					<u-upload
+		<view class="page-body">
+			<view class="body">
+				<!-- 基础用法，不包含校验规则 -->
+				<uni-forms ref="baseForm" :modelValue="baseFormData" label-position="top">
+					<uni-forms-item label="标题" required>
+						<uni-easyinput v-model="baseFormData.title" placeholder="请输入标题" maxlength="25" />
+					</uni-forms-item>
+					<uni-forms-item label="标签" required>
+						<uni-data-select
+						        v-model="baseFormData.tag"
+						        :localdata="range"
+						        @change="change"
+						      ></uni-data-select>
+					</uni-forms-item>
+					<uni-forms-item label="途径" >
+						<uni-data-checkbox v-model="typeValue" :localdata="type"></uni-data-checkbox>
+					</uni-forms-item>
+					<uni-forms-item label="价格" >
+						<uni-easyinput type="number" class="uni-mt-5" v-model="baseFormData.money" placeholder="请输入初步价格(只能输入数字)" ></uni-easyinput>
+					</uni-forms-item>
+					<uni-forms-item label="库存" >
+						<uni-number-box :value="countValue" @change="changeCountValue" />
+					</uni-forms-item>
+					
+					<!-- <uni-forms-item label="详情" required>
+						<uni-easyinput type="textarea" v-model="baseFormData.detail"   autoHeight  placeholder="请输入详情介绍" />
+					</uni-forms-item> -->
+					<uni-forms-item label="详情" required>
+					      <uni-easyinput type="textarea" v-model="baseFormData.detail" @input="handleInputChange" autoHeight placeholder="请输入详情介绍" />
+					    </uni-forms-item>
+					<uni-forms-item label="需求时间" >
+						<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
+					</uni-forms-item>
+					<uni-forms-item label="上传图片">
+						<u-upload
 							:fileList="fileList1"
 							@afterRead="afterRead"
 							@delete="deletePic"
@@ -42,10 +48,17 @@
 							multiple
 							:maxCount="10"
 						></u-upload>
-					
-				</uni-forms-item>
-			</uni-forms>
-			<button type="default" @click="submitForm" class="submit" >发布</button>
+							
+					</uni-forms-item>
+					<uni-forms-item label="联系方式" required>
+						<uni-easyinput v-model="baseFormData.contactInfo" placeholder="请输入您的联系方式" />
+					</uni-forms-item>
+				</uni-forms>
+				<view class="detail-content">
+				      <p class="detail-text">{{ baseFormData.detail }}</p>
+				    </view>
+				<button type="default" @click="submitForm" class="submit" >发布</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -66,6 +79,7 @@
 			delta: 1
 		})
 	}
+	
 	const baseFormData = reactive({
 					id:'',
 					title: '',
@@ -74,7 +88,12 @@
 					money:null,
 					datetimerange: [],
 					postTime:null,
+					contactInfo:'',//联系方式
+					countValue:2,//库存
 				})
+	const handleInputChange=(event)=> {
+	  baseFormData.detail = event.target.value;
+	}
 	const type= [{
 					text: '需自取',
 					value: 0
@@ -91,7 +110,12 @@
 				  { value: 5, text: "人物匹配" },
 				]
 				
-				
+	const changeCountValue = (value)=>{
+		baseFormData.countValue = value
+		console.log(baseFormData.countValue);
+	}				
+	
+	//图片的数组
 	const fileList1 = ref([]);
 
 	// 删除图片
@@ -144,64 +168,48 @@
 </script>
 
 <style lang="scss">
-	
-	
-	.topbar {
-		width: 100%;
-		height: 80rpx;
-		line-height: 80rpx;
-		color: #fff;
-		background-color: #e85353;
-		display: flex;
-		position: relative;
-		top: 0;
-		left: 0;
-		justify-content: center;
-	
-		.go-back {
-			position: absolute;
-			top: 0rpx;
-			left: 20rpx;
-			z-index: 99;
-		}
+	.detail-content {
+	  margin-top: 10px;
 	}
-.body{
-	width: 90%;
-	margin: 50rpx auto;
 	
-	
-	.submit {
-		color: #fff;
-		width: 30%;
+	.detail-text {
+	  white-space: pre-wrap;
+	}
+.topbar {
+	width: 100%;
+	height: 80rpx;
+	line-height: 80rpx;
+	color: #fff;
+	background-color: #e85353;
+	display: flex;
+	position: relative;
+	top: 0rpx;
+	left: 0rpx;
+	justify-content: center;
+	.go-back {
+		position: absolute;
+		top: 0rpx;
+		left: 20rpx;
+		z-index: 99;
+	}
+}
+.page-body {
+	width: 100%;
+	background-color: #f5f5f5;
+	padding-top: 50rpx;
+	.body{
+		width: 94%;
+		background-color: #fff;
 		margin: 50rpx auto;
-		background-color: #e85353;
+		margin-top: 0;
+		padding: 0 10rpx;
+		.submit {
+			color: #fff;
+			width: 30%;
+			margin: 50rpx auto;
+			background-color: #e85353;
+		}
 	}
 }
 
-.example {
-		padding: 15px;
-		background-color: #fff;
-	}
-
-	.segmented-control {
-		margin-bottom: 15px;
-	}
-
-	.button-group {
-		margin-top: 15px;
-		display: flex;
-		justify-content: space-around;
-	}
-
-	.form-item {
-		display: flex;
-		align-items: center;
-	}
-
-	.button {
-		display: flex;
-		align-items: center;
-		height: 35px;
-		margin-left: 10px;
-	}
 </style>

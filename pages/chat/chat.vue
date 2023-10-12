@@ -213,82 +213,31 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		uni.onKeyboardHeightChange(listenKeyboard)
 	// #endif
 	const query_server = (str) => {
-		if(server_type == "library") {
-			// uni.request({
-			// 	url:'http://119.8.190.49:5000/query_library',
-			// 	method:"POST",
-			// 	data:{
-			// 		query: str,
-			// 	},
-			// 	header: {
-			// 		"Content-Type": "application/json;charset=UTF-8"
-			// 	},
-			// 	success: (res) => {
-			// 		console.log(res);
-			// 		const msg = {
-			// 			left: true,
-			// 			content: res.data.message,
-			// 			tag:'text',
-			// 			time: "2023/7/29 12:00:00"
-			// 		}
-			// 		msgs.value.push(msg)
-			// 		scrollToBottom()
-			// 	},
-			// 	fail: (err) => {
-			// 		console.log(err);
-			// 	}
-			// })
-			uni.request({
-				url:'http://119.8.190.49:5000/query_classroom',
-				method:"POST",
-				data:{
-					query: str,
-				},
-				header: {
-					"Content-Type": "application/json;charset=UTF-8"
-				},
-				success: (res) => {
-					console.log(res);
-					const msg = {
-						left: true,
-						content: res.data.results,
-						tag:'text',
-						time: "2023/7/29 12:00:00"
-					}
-					msgs.value.push(msg)
-					scrollToBottom()
-				},
-				fail: (err) => {
-					console.log(err);
+		uni.request({
+			url:'http://119.8.190.49:5000/query_local_information',
+			method:"POST",
+			data:{
+				query: str,
+				type: server_type
+			},
+			header: {
+				"Content-Type": "application/json;charset=UTF-8"
+			},
+			success: (res) => {
+				console.log(res);
+				const msg = {
+					left: true,
+					content: res.data.answer,
+					tag:'text',
+					time: "2023/7/29 12:00:00"
 				}
-			})
-		} else {
-			uni.request({
-				url:'http://119.8.190.49:5000/query_local_information',
-				method:"POST",
-				data:{
-					query: str,
-					type: server_type
-				},
-				header: {
-					"Content-Type": "application/json;charset=UTF-8"
-				},
-				success: (res) => {
-					console.log(res);
-					const msg = {
-						left: true,
-						content: res.data.answer,
-						tag:'text',
-						time: "2023/7/29 12:00:00"
-					}
-					msgs.value.push(msg)
-					scrollToBottom()
-				},
-				fail: (err) => {
-					console.log(err);
-				}
-			})
-		}
+				msgs.value.push(msg)
+				scrollToBottom()
+			},
+			fail: (err) => {
+				console.log(err);
+			}
+		})
 	}
 	const submit = () => {
 		if(input.value === '') {
@@ -318,12 +267,26 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		query_server(str)
 	}
 	
+	const initMsgs = (data) => {
+		console.log(data);
+		msgs.value = []
+		for(let i=0;i<data.length;i++) {
+			const msg = {
+				left: !data[i].is_from_user,
+				content: data[i].message,
+				time: data[i].timestamp,
+				tag: "text"
+			}
+			msgs.value.push(msg)
+		}
+	}
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
 		uni.$on("chooseImage",handleChooseImage)
 		uni.$on("putProduct",putProduct)
 		uni.$on("getPrompt",getPrompt)
+		uni.$on("initMsgs",initMsgs)
 	})
 	onLoad((obj) => {
 		title = obj.server_name
@@ -346,6 +309,7 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		uni.$off("chooseImage",handleChooseImage)
 		uni.$off("putProduct",putProduct)
 		uni.$off("getPrompt",getPrompt)
+		uni.$off("initMsgs",initMsgs)
 	})
 	
 </script>

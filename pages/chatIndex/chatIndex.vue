@@ -33,7 +33,7 @@
 				<uni-list-chat v-for="(chat,index) in chat_views" :key="chat.id" :showBadge="chat.unread_count>0"
 					:badgeText="chat.unread_count" badge-positon="left" :title="chat.name" :avatar="chat.head_img_url"
 					:note="chat.last_word" :time="friendlyTime(chat.last_word_date)" :clickable="true"
-					@click="handleClick(chat.name,chat.type)">
+					@click="handleClick(index)">
 				</uni-list-chat>
 
 			</uni-list>
@@ -52,52 +52,52 @@
 		onLoad
 	} from '@dcloudio/uni-app'
 
-	const chat_views = reactive([{
+	const chat_views = ref([{
 			id: 1,
-			tag: "活动我先知",
 			name: "活动我先知",
 			type: "Club_activities",
 			head_img_url: "../.././static/images/img1.jpg",
+			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
 		},
 		{
 			id: 2,
-			tag: "新生引导员",
 			name: "新生引导员",
 			type: "StuDoc",
 			head_img_url: "../.././static/images/img2.jpg",
+			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
 		},
 		{
 			id: 3,
-			tag: "餐厅探店侠",
 			name: "餐厅探店侠",
 			type:"Canteen",
 			head_img_url: "../.././static/images/img3.jpg",
+			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
 		},
 		{
 			id: 4,
-			tag: "预约助手",
 			name: "预约助手",
-			type:"library",
+			type:"classroom",
 			head_img_url: "../.././static/images/img4.jpg",
+			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
 		},
 		{
 			id: 5,
-			tag: "学习助手",
 			name: "学习助手",
 			type:"Learning_buddy",
 			head_img_url: "../.././static/images/img5.jpg",
+			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
@@ -106,12 +106,17 @@
 
  
 	// 点击跳转聊天界面
-	const handleClick = (server,type) => {
-		console.log(server,type);
+	const handleClick = (index) => {
+		console.log(index);
+		
+		
 		
 		uni.navigateTo({
-			url: '/pages/chat/chat?server_name=' + server+'&server_type='+type,
-			animationDuration: 300
+			url: '/pages/chat/chat?server_name=' + chat_views.value[index].name+'&server_type='+chat_views.value[index].type,
+			animationDuration: 300,
+			success: () => {
+				uni.$emit("initMsgs",chat_views.value[index].msgs)
+			}
 		})
 		
 	}
@@ -120,11 +125,48 @@
 		return toFriendlyTime(timestamp)
 	}
 	
+	const loadData = () => {
+		for(let i=0;i<chat_views.value.length;i++) {
+			uni.request({
+				url:'http://119.8.190.49:5000/get_chat_history',
+				method:"GET",
+				data:{
+					user_id: 103,
+					npc_name: chat_views.value[i].type
+				},
+				header: {
+					"Content-Type": "application/json;charset=UTF-8"
+				},
+				success: (res) => {
+					console.log(res);
+					if(res.statusCode == 200) {
+						chat_views.value[i].msgs = res.data
+						if(res.data.length == 0) {
+							chat_views.value[i].last_word = "无"
+							chat_views.value[i].last_word_date = 0
+						} else {
+							const len = res.data.length;
+							chat_views.value[i].last_word = res.data[len-1].message
+							chat_views.value[i].last_word_date = res.data[len-1].timestamp
+						}
+					} else {
+						console.log(res.msg);
+					}
+				},
+				fail: (err) => {
+					console.log(err);
+				}
+			})
+		}
+		
+	}
+	
 	onMounted(() => {
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
 				console.log(res.data);
+				loadData();
 			},
 			fail: (err) => {
 				uni.navigateTo({

@@ -59,7 +59,6 @@
 				
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType" :content-text="contentText"></uni-load-more>
-			
 		</scroll-view>
 
 	</view>

@@ -24,17 +24,23 @@
 						<uni-data-checkbox v-model="typeValue" :localdata="type"></uni-data-checkbox>
 					</uni-forms-item>
 					<uni-forms-item label="价格" >
-						<uni-easyinput type="number" class="uni-mt-5" v-model="baseFormData.money" placeholder="请输入初步价格(只能输入数字)" ></uni-easyinput>
+						<uni-easyinput type="number" class="uni-mt-5" v-model="baseFormData.price" placeholder="请输入初步价格(只能输入数字)" ></uni-easyinput>
 					</uni-forms-item>
 					<uni-forms-item label="库存" >
 						<uni-number-box :value="countValue" @change="changeCountValue" />
 					</uni-forms-item>
 					
 					<!-- <uni-forms-item label="详情" required>
-						<uni-easyinput type="textarea" v-model="baseFormData.detail"   autoHeight  placeholder="请输入详情介绍" />
+						<uni-easyinput type="textarea" v-model="baseFormData.content"   autoHeight  placeholder="请输入详情介绍" />
 					</uni-forms-item> -->
 					<uni-forms-item label="详情" required>
-					      <uni-easyinput type="textarea" v-model="baseFormData.detail" @input="handleInputChange" autoHeight placeholder="请输入详情介绍" />
+					      <uni-easyinput
+					          type="textarea"
+					          v-model="baseFormData.content"
+					          autoHeight
+					          placeholder="请输入详情介绍"
+					          @input="updateDetail"
+					        />
 					    </uni-forms-item>
 					<uni-forms-item label="需求时间" >
 						<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
@@ -54,9 +60,7 @@
 						<uni-easyinput v-model="baseFormData.contactInfo" placeholder="请输入您的联系方式" />
 					</uni-forms-item>
 				</uni-forms>
-				<view class="detail-content">
-				      <p class="detail-text">{{ baseFormData.detail }}</p>
-				    </view>
+				
 				<button type="default" @click="submitForm" class="submit" >发布</button>
 			</view>
 		</view>
@@ -84,16 +88,17 @@
 					id:'',
 					title: '',
 					tag: '',
-					detail: '',
-					money:null,
+					content: '',
+					price:null,
 					datetimerange: [],
-					postTime:null,
+					createTime:null,
 					contactInfo:'',//联系方式
 					countValue:2,//库存
 				})
-	const handleInputChange=(event)=> {
-	  baseFormData.detail = event.target.value;
-	}
+	const updateDetail=(event)=> {
+	    baseFormData.content = event.target.value;
+		// console.log(event.target);
+	  }
 	const type= [{
 					text: '需自取',
 					value: 0

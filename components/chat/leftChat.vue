@@ -12,6 +12,14 @@
 				<product-item>
 				</product-item>
 			</view>
+			<view v-if="props.msg.tag === 'libraryForm'" class="lib-container">
+				<view class="text-container">
+					<mp-html :content="content" />
+					<!-- <text>请您看看这样预约是否可以？</text> -->
+				</view>
+				<library-form style="margin-left: -46px; margin-top: 10px;">
+				</library-form>
+			</view>
 		</view>
 	</view>
 </template>
@@ -21,6 +29,7 @@
 		onLoad
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
+	import libraryForm from '@/components/chat/libraryForm.vue'
 	const props = defineProps(["head_img_url", "msg"])
 	const content = ref("")
 	// 解析mardown 为 html字符串
@@ -77,6 +86,13 @@
 		}
 	}
 	.pro-container {
+		margin-left: 10px;
+		
+		width: calc(90vw - 15px);
+	}
+	.lib-container {
+		display: flex;
+		flex-direction: column;
 		margin-left: 10px;
 		
 		width: calc(90vw - 15px);

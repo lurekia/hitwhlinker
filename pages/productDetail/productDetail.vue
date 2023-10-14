@@ -44,10 +44,9 @@
 					可以发到微信电子版 <br/>
 					材质：电子版<br/>
 					质量：高<br/>
-					
 					<view class="detail-content">
-					     <p class="detail-text"> baseFormData.detail </p>
-					   </view>
+					      <p class="detail-text">{{ baseFormData.content }}</p>
+					</view>
 					
 				</view>
 				<view class="info-images">

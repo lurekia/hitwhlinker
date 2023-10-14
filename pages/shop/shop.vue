@@ -43,6 +43,7 @@
 			</view>
 			<view class="more">
 
+
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType"
 				:content-text="contentText"></uni-load-more>
@@ -193,7 +194,7 @@
 		onInit
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
-import loginVue from '../login/login.vue';
+	import loginVue from '../login/login.vue';
 
 	let token = null;
 	let isLoading = ref(false);

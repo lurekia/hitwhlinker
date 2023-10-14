@@ -65,7 +65,7 @@
 					</uni-forms-item>
 				</uni-forms>
 			</scroll-view>
-			
+
 		</uni-drawer>
 	</view>
 </template>
@@ -187,16 +187,27 @@
 		reactive,
 		onMounted,
 		computed,
-		watch
+		watch,
+		getCurrentInstance,
+		onUnmounted
 	} from 'vue'
 	import {
 		onLoad,
-		onInit
+		onInit,
+		onShow
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
 	import loginVue from '../login/login.vue';
 
+	const {
+		proxy
+	} = getCurrentInstance()
 	let token = null;
+	let user_info = {
+		id: "001",
+		name: "姜饼麻子",
+		avatar: "../.././static/images/img5.jpg"
+	};
 	let isLoading = ref(false);
 	let loadingType = ref("loading");
 	const contentText = {
@@ -221,7 +232,7 @@
 	};
 	const filterForm = ref({
 		money: 100,
-		timeRange:[],
+		timeRange: [],
 		getMethod: "",
 	})
 	const type = [{
@@ -320,6 +331,26 @@
 			}
 		})
 	}
+	const connectGoEasy = () => {
+		// uni.showLoading();
+		proxy.goEasy.connect({
+			id: user_info.id,
+			data: {
+				name: user_info.name,
+				avatar: user_info.avatar
+			},
+			onSuccess: () => {
+				console.log('GoEasy connect successfully.')
+			},
+			onFailed: (error) => {
+				console.log('Failed to connect GoEasy, code:' + error.code + ',error:' + error.content);
+			},
+			onProgress: (attempts) => {
+				console.log('GoEasy is connecting', attempts);
+			}
+		});
+	}
+
 	const handleMore = () => {
 		console.log("划到底部了");
 		if (loadingType.value == "noMore" || isLoading.value == true) {
@@ -332,19 +363,55 @@
 		}, 2000)
 
 	}
-	onMounted(() => {
+	const initData = () => {
 		uni.getStorage({
-			key: 'token',
+			key: 'user_info',
 			success: (res) => {
 				// console.log(res.data);
-				token = res.data;
-				loadData()
+				user_info = JSON.parse(res.data);
+				if (proxy.goEasy.getConnectionStatus() === 'disconnected') {
+					connectGoEasy(); //连接goeasy
+				}
+				console.log("用户信息：",user_info);
 			},
 			fail: (err) => {
 				uni.navigateTo({
 					url: '/pages/login/login',
 					animationDuration: 300
 				})
+			}
+		});
+		products_data.value = [];
+		loadData()
+	}
+
+	onShow(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				// console.log(res.data);
+				token = res.data;
+				initData();
+
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+
+	})
+	onUnmounted(() => {
+		//断开连接
+		proxy.goEasy.disconnect({
+			onSuccess: function() {
+				console.log("GoEasy disconnect successfully.")
+			},
+			onFailed: function(error) {
+				console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error
+					.content);
 			}
 		});
 	})

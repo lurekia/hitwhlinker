@@ -27,8 +27,8 @@
 				<view class="nickname">
 					<text>{{data.nickName}}</text>
 				</view>
-				<view class="link">
-					<text>看看-&gt;</text>
+				<view class="link" @click="toPrivateChat()">
+					<text>聊聊-&gt;</text>
 				</view>
 			</view>
 		</view>
@@ -129,7 +129,27 @@
 	// const date = ref("8分钟前")
 	const goToDetail = () => {
 		uni.navigateTo({
-			url: '/pages/productDetail/productDetail'
+			url: '/pages/productDetail/productDetail',
+			animationDuration: 300,
+			success: (res) => {
+				console.log("看详情：",props.data);
+				uni.$emit("productListToDetail",props.data);
+			}
+		})
+	}
+	const toPrivateChat = () => {
+		uni.navigateTo({
+			url: '/pages/privateChat/privateChat',
+			animationDuration: 300,
+			success: (res) => {
+				const friend_info = {
+					id: props.data.userId,
+					name: props.data.nickName,
+					avatar: props.data.avatar
+				}
+				console.log("看看：",friend_info);
+				uni.$emit("initPrivateMsgs",friend_info)
+			}
 		})
 	}
 	const handleDelete = (id) => {

@@ -91,19 +91,6 @@
 			delta:1
 		})
 	}
-	const list = ref([
-	  {
-	    text: '点赞',
-	    color: 'blue',
-	    fontSize: 28
-	  },
-	  {
-	    text: '分享'
-	  },
-	  {
-	    text: '评论'
-	  }
-	]);
 	const show = ref(true);
 	const avatarSrc = ref("../.././static/images/img5.jpg")
 	const src = ref("../.././static/images/product.webp")
@@ -113,7 +100,7 @@
 	const date = ref("8分钟前")
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.detail-content {
 	  margin-top: 10px;
 	}

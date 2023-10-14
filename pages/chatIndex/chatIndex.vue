@@ -49,7 +49,8 @@
 		onMounted
 	} from 'vue'
 	import {
-		onLoad
+		onLoad,
+		onShow
 	} from '@dcloudio/uni-app'
 
 	const chat_views = ref([{
@@ -161,7 +162,7 @@
 		
 	}
 	
-	onMounted(() => {
+	onShow(() => {
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {

@@ -50,7 +50,8 @@
 	} from 'vue'
 	import {
 		onLoad,
-		onInit
+		onInit,
+		onShow
 	} from '@dcloudio/uni-app'
 	const data = reactive([{
 		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
@@ -218,7 +219,7 @@
 		// });
 
 	})
-	onMounted(()=>{
+	onShow(() => {
 		// 手写拦截器
 		uni.getStorage({
 			key: 'token',
@@ -232,6 +233,9 @@
 				})
 			}
 		});
+	})
+	onMounted(()=>{
+		
 		// 查询天气
 		uni.getLocation({
 			type: 'wgs84',

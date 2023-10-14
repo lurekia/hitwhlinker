@@ -39,6 +39,27 @@
 			changePassword: function() {
 				this.showPassword = !this.showPassword;
 			},
+			saveData(token) {
+				uni.setStorageSync('token', token); // 将登录信息以token的方式存在硬盘中
+				// console.log("token值是：",token);
+				uni.request({
+					url: 'http://94.74.87.251:8080/getInfo', // 路径
+					method: 'GET', // 请求方法
+					header: {
+						"Authorization": token
+					}, 
+					success: (res) => {
+						console.log(res);
+						const user = res.data.user
+						const user_info = {
+							id: user.userId,
+							name: user.nickName,
+							avatar: user.avatar,
+						}
+						uni.setStorageSync('user_info',JSON.stringify(user_info))
+					}
+				})
+			},
 			// 判断是否显示清除按钮
 			clearInput: function(event) {
 				this.iphoneValue = event.detail.value;
@@ -72,10 +93,12 @@
 						password:that.passwordValue
 					}, //发送的数据
 					success: (res) => {
-						if (res.data.code == 200) {
+						if (res.data.code === 200) {
 							//存储token
 							that.token = res.data.token;
-							uni.setStorageSync('token', that.token); // 将登录信息以token的方式存在硬盘中
+							
+							that.saveData(res.data.token);
+							
 							uni.switchTab({ // 跳转到新闻页面
 								url: "../home/home",
 							})
@@ -83,6 +106,7 @@
 								title: '登录成功',
 								icon: 'none'
 							})
+							
 						} else {
 							uni.showToast({
 								title: '登录失败',

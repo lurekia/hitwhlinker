@@ -1,7 +1,8 @@
 <template>
 	<view class="chat">
 		<!-- 主要聊天页面 -->
-		<scroll-view class="content" :style="{paddingBottom:paddingBottom+'px'}" scroll-y="true" :scroll-into-view="`msg${msgs.length-1}`" :scroll-with-animation="true">
+		<scroll-view class="content" :style="{paddingBottom:paddingBottom+'px'}" scroll-y="true"
+			:scroll-into-view="`msg${msgs.length-1}`" :scroll-with-animation="true">
 			<view class="msg-list">
 				<view class="msg-item" :id="`msg${index}`" v-for="(msg, index) in msgs" :key="msg.time">
 					<left-chat v-if="msg.left" :msg="msg" :head_img_url="left_avatar"></left-chat>
@@ -13,15 +14,15 @@
 			<view class="bottom-input" :style="{paddingBottom:keyBoardHeight+'px'}">
 				<text class="iconfont icon">&#xe605;</text>
 				<view class="textarea-container">
-					<textarea auto-height :fixed="true" confirm-type="send" v-model="input" @confirm="submit" 
-						:adjust-position="false" :cursor-spacing="20" @focus="scrollToBottom()"/>
+					<textarea auto-height :fixed="true" confirm-type="send" v-model="input" @confirm="submit"
+						:adjust-position="false" :cursor-spacing="20" @focus="scrollToBottom()" />
 				</view>
-				<button v-if="input!==''" type="primary" @click="submit()" size="mini" >发送</button>
+				<button v-if="input!==''" type="primary" @click="submit()" size="mini">发送</button>
 				<text v-else class="iconfont icon" @click="toolShow = !toolShow, scrollToBottom()">&#xe603;</text>
 			</view>
 			<tool-box v-if="toolShow" :height="toolHeight + 'px'"></tool-box>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -37,11 +38,11 @@
 		onLoad,
 		onUnload
 	} from '@dcloudio/uni-app'
-import leftChat from '@/components/chat/leftChat.vue'
-import rightChat from '@/components/chat/rightChat.vue'
-import toolBox from '@/components/unicomp/toolBox.vue'
-// 设备信息
-	let systemInfo = null 
+	import leftChat from '@/components/chat/leftChat.vue'
+	import rightChat from '@/components/chat/rightChat.vue'
+	import toolBox from '@/components/unicomp/toolBox.vue'
+	// 设备信息
+	let systemInfo = null
 	let msgs = ref([
 		// {
 		// 	left: true,
@@ -125,31 +126,31 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		{
 			left: true,
 			content: "请问有什么为您服务的吗？",
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		},
 		{
 			left: false,
 			content: "帮我预约个图书馆座位",
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		},
 		{
 			left: true,
 			content: "已根据您的需求，为您找好座位，请看是否需要修改，否则三秒内即将自动为您选座",
-			tag:'libraryForm',
+			tag: 'libraryForm',
 			time: "2023/7/29 12:00:00"
 		},
 		{
 			left: false,
 			content: "我觉得这个座位可以",
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		},
 		{
 			left: true,
 			content: "好的，已经为您预约好座位，请按时去图书馆自习",
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		},
 	]);
@@ -164,18 +165,17 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 	const keyBoardHeight = ref(10)
 	const toolHeight = ref(278)
 	const paddingBottom = computed(() => {
-		if(toolShow.value == true) {
+		if (toolShow.value == true) {
 			return toolHeight.value + 50
 		}
 		return keyBoardHeight.value + 50
 	})
-	
+
 
 	// 有用数据
 	const input = ref("");
 	// 头像
-	let left_avatar = ref("../.././static/images/img1.jpg")
-;
+	let left_avatar = ref("../.././static/images/img1.jpg");
 	const right_avatar = ref("../.././static/images/img5.jpg")
 
 	// 加载数据
@@ -186,14 +186,14 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 	// 滑动到最底部
 	const scrollToBottom = async () => {
 		await nextTick()
-		setTimeout(()=>{
-		    uni.createSelectorQuery().select('.content').boundingClientRect((res)=>{
-		        uni.pageScrollTo({
-		            scrollTop: res.height,
-		            duration: 200
-		        })
-		    }).exec()
-		},50)
+		setTimeout(() => {
+			uni.createSelectorQuery().select('.content').boundingClientRect((res) => {
+				uni.pageScrollTo({
+					scrollTop: res.height,
+					duration: 200
+				})
+			}).exec()
+		}, 50)
 	}
 	const getSystemInfo = () => {
 		uni.getSystemInfo({
@@ -205,49 +205,71 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			}
 		})
 	}
-	
+
 	const listenKeyboard = (res) => {
 		// console.log(res.height);
 		keyBoardHeight.value = res.height + 10
 		// console.log(keyBoardHeight);
-		if(res.height) {
+		if (res.height) {
 			toolShow.value = false
 			toolHeight.value = res.height
 		}
 	}
-	
+
 	const handleChooseImage = (filePaths) => {
-		console.log(filePaths);
+		// console.log(filePaths);
 		filePaths.forEach(item => {
-			let msg = {
-				left: false,
-				content: item,
-				tag:'img',
-				time: "2023/7/29 12:00:00"
-			}
-			msgs.value.push(msg)
-			scrollToBottom()
+			console.log(item);
+			uni.uploadFile({
+				url: 'http://94.74.87.251:8080/upload', //仅为示例，非真实的接口地址
+				filePath: item,
+				name: 'image',
+				formData: {
+					// 'user': 'test'
+				},
+				success: (res) => {
+					// console.log(uploadFileRes.data);
+					// 解析返回的数据为JSON对象
+					console.log(res);
+					const responseData = JSON.parse(res.data);
+					// 从JSON对象中获取图片URL
+					if (responseData.code === 200) {
+						const url = responseData.msg;
+						let msg = {
+							left: false,
+							content: url,
+							tag: 'img',
+							time: "2023/7/29 12:00:00"
+						}
+						msgs.value.push(msg)
+						scrollToBottom()
+					}
+
+				}
+			});
+
+
 		})
 	}
 	const putProduct = () => {
 		const data = {
 			left: false,
 			content: "",
-			tag:'product',
+			tag: 'product',
 			time: "2023/7/29 12:00:00"
 		}
 		msgs.value.push(data)
 		scrollToBottom()
 	}
-	
+
 	// #ifdef APP
-		uni.onKeyboardHeightChange(listenKeyboard)
+	uni.onKeyboardHeightChange(listenKeyboard)
 	// #endif
 	const query_server = (str) => {
 		uni.request({
-			url:'http://119.8.190.49:5000/query_local_information',
-			method:"POST",
-			data:{
+			url: 'http://119.8.190.49:5000/query_local_information',
+			method: "POST",
+			data: {
 				query: str,
 				type: server_type
 			},
@@ -259,7 +281,7 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 				const msg = {
 					left: true,
 					content: res.data.answer,
-					tag:'text',
+					tag: 'text',
 					time: "2023/7/29 12:00:00"
 				}
 				msgs.value.push(msg)
@@ -271,13 +293,13 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		})
 	}
 	const submit = () => {
-		if(input.value === '') {
-			return 
+		if (input.value === '') {
+			return
 		}
 		const msg = {
 			left: false,
 			content: input.value,
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		}
 		msgs.value.push(msg)
@@ -290,14 +312,14 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		const msg = {
 			left: false,
 			content: str,
-			tag:'text',
+			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		}
 		msgs.value.push(msg)
 		scrollToBottom()
 		query_server(str)
 	}
-	
+
 	const initMsgs = (data) => {
 		console.log(data);
 		// msgs.value = []
@@ -314,24 +336,24 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
-		
+
 	})
 	onLoad((obj) => {
 		// const eventChannel = this.getOpenerEventChannel();
-		const pages = getCurrentPages();  // 无需import
+		const pages = getCurrentPages(); // 无需import
 		const page = pages[pages.length - 1];
 		const eventChannel = page.getOpenerEventChannel();
 		eventChannel.on("initMsgs", initMsgs)
-		
+
 		title = obj.server_name
 		server_type = obj.server_type;
 		uni.setNavigationBarTitle({
 			title: title
 		})
-		uni.$on("chooseImage",handleChooseImage)
-		uni.$on("putProduct",putProduct)
-		uni.$on("getPrompt",getPrompt)
-		uni.$on("initMsgs",initMsgs)
+		uni.$on("chooseImage", handleChooseImage)
+		uni.$on("putProduct", putProduct)
+		uni.$on("getPrompt", getPrompt)
+		uni.$on("initMsgs", initMsgs)
 	})
 	onUnload(() => {
 		// uni.$off('listToChat');
@@ -340,14 +362,13 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		// 	list:msgs.value
 		// })
 		// #ifdef APP
-			uni.offKeyboardHeightChange(listenKeyboard)
+		uni.offKeyboardHeightChange(listenKeyboard)
 		// #endif
-		uni.$off("chooseImage",handleChooseImage)
-		uni.$off("putProduct",putProduct)
-		uni.$off("getPrompt",getPrompt)
-		uni.$off("initMsgs",initMsgs)
+		uni.$off("chooseImage", handleChooseImage)
+		uni.$off("putProduct", putProduct)
+		uni.$off("getPrompt", getPrompt)
+		uni.$off("initMsgs", initMsgs)
 	})
-	
 </script>
 
 <style lang="scss" scoped>
@@ -355,33 +376,33 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		display: flex;
 		box-sizing: border-box;
 	}
-	
+
 	page {
 		overflow-anchor: auto;
 		background-color: #efefef;
 	}
-	
+
 	.page {
 		flex: 1;
 		height: calc(100vh - 45px);
 		background-color: #efefef;
 	}
-	
+
 
 	.content {
 		flex-direction: column;
 		flex-grow: 1;
 		background-color: transparent;
 	}
-	
+
 	.msg-list {
 		flex-direction: column;
 	}
-	
+
 	.msg-item {
 		margin: 5px 0;
 	}
-	
+
 	.bottom-box {
 		flex-direction: column;
 		// border-top: 1px solid #BBBBBB ;
@@ -390,13 +411,15 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 		bottom: 0;
 		z-index: 99999;
 	}
+
 	.bottom-input {
 		flex-direction: row;
 		align-items: center;
-		
+
 		width: 100vw;
-		
+
 		padding: 10px;
+
 		.textarea-container {
 			flex-grow: 1;
 			min-height: 30px;
@@ -404,11 +427,13 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 			margin-left: 20rpx;
 			background-color: #ffffff;
 			border-radius: 10px;
+
 			textarea {
 				width: calc(100vw - 146px);
 				background-color: #ffffff;
 			}
 		}
+
 		.icon {
 			margin-left: 20rpx;
 			font-size: 24px;

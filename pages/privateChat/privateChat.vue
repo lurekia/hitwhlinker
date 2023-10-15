@@ -186,10 +186,24 @@
 		input.value = "";
 	}
 
+	// 标记已读
+	const markPrivateMessageAsRead = () => {
+		proxy.goEasy.im.markMessageAsRead({
+		  id: friend_info.id,
+		  type: proxy.GoEasy.IM_SCENE.PRIVATE,
+		  onSuccess: function () {
+		    console.log('标记私聊已读成功');
+		  },
+		  onFailed: function (error) {
+		    console.log("标记私聊已读失败", error);
+		  }
+		});
+	}
 	//  初始私聊信息
 	const initMsgs = (friend) => {
 		// console.log(data);
-		// friend_info = friend
+		uni.showLoading()
+		friend_info = friend
 		// uni.showLoading()
 		uni.setNavigationBarTitle({
 			title: friend_info.name
@@ -211,6 +225,8 @@
 						}
 						msgs.value.push(msg)
 					}
+					markPrivateMessageAsRead()
+					uni.hideLoading()
 					console.log("加载完毕");
 				}
 				//单聊历史消息result示例
@@ -245,16 +261,18 @@
 				time: message.timestamp
 			}
 			msgs.value.push(msg)
+			markPrivateMessageAsRead()
+			scrollToBottom()
 	}
 	
-	onLoad(() => {
+	onLoad((option) => {
 		// getSystemInfo()
 		// scrollToBottom()
-		// initMsgs()
-		const pages = getCurrentPages();  // 无需import
-		const page = pages[pages.length - 1];
-		const eventChannel = page.getOpenerEventChannel();
-		eventChannel.on("initMsgs", initMsgs);
+		initMsgs({id:option.id,name:option.name,avatar:option.avatar})
+		// const pages = getCurrentPages();  // 无需import
+		// const page = pages[pages.length - 1];
+		// const eventChannel = page.getOpenerEventChannel();
+		// eventChannel.on("initMsgs", initMsgs);
 
 		
 		uni.$on("chooseImage", handleChooseImage)
@@ -273,6 +291,7 @@
 		uni.$off("getPrompt", getPrompt)
 		proxy.goEasy.im.off(proxy.GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, onMessageReceived);
 	})
+	
 </script>
 
 <style lang="scss" scoped>

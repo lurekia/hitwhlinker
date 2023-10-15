@@ -5,47 +5,59 @@
 		</view>
 		<view class="content">
 			<view class="header">
-				<image :src="avatarSrc" mode="aspectFill" class="avatar"></image>
+				<image :src="avatarSrc" mode="aspectFill" class="avatar" @click="switchAvatar"></image>
 				<view class="more">
-					<text style="font-size: 18px;margin-top: 4px;font-weight: 700;">姜饼麻子</text>
+					<text style="font-size: 18px;margin-top: 4px;font-weight: 700;">{{nickName}}</text>
 					<text
 						style="color: rgba(214, 88, 88, 1);font-size: 14px;margin-top: 12px;margin-left: 4px;font-weight: 700;">
-						计算机科学与技术学院-大二-计算机系
+						{{userInfo}}
 					</text>
 				</view>
 			</view>
-			<view class="info">
-				<!-- 	<view class="info-item">
-					<text style="font-size: 18px;color: rgba(232, 86, 86, 1);font-weight: 700;">561</text>
-					<text style="font-size: 14px;margin-top: 4px;">好友</text>
-				</view> -->
-				<view class="info-item">
-					<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">10</text>
-					<text style="font-size: 14px;margin-top: 4px;" @click="toMywant()">需求</text>
+
+			<view class="item">
+				<view class="item-header">
+					<text style="font-size: 12px;color: #8f939c;">商品：</text>
+					<!-- <text style="font-size: 12px;color: #333;" @click="toTag()">修改</text> -->
 				</view>
-				<view class="info-item">
-					<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">561</text>
-					<text style="font-size: 14px;margin-top: 4px;" @click="toStar()">收藏</text>
+				<view class="info-body">
+					<view class="info-item">
+						<!-- <text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">10</text> -->
+						<text style="font-size: 18px;margin-top: 4px;color: rgba(214, 88, 88, 1);font-weight: 700;"
+							@click="toMywant()">我的</text>
+						<uni-icons type="wallet" size="30" color="rgb(0,122,255)" style="margin-top: 10px;"></uni-icons>
+					</view>
+					<view class="info-item">
+						<!-- <text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">561</text> -->
+						<text style="font-size: 18px;margin-top: 4px;color: rgba(214, 88, 88, 1);font-weight: 700;"
+							@click="toStar()">收藏</text>
+						<uni-icons type="star-filled" size="30" color="yellow" style="margin-top: 10px;"></uni-icons>
+					</view>
 				</view>
 			</view>
 			<!-- 喜欢的桌椅 -->
-			<view class="info">
-				<view class="info-item">
-					<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">403</text>
-					<!-- <text style="font-size: 14px;margin-top: 4px;">需求</text> -->
-					<text class="iconfont icon">&#xe607;</text>
+			<view class="item">
+				<view class="item-header">
+					<text style="font-size: 12px;color: #8f939c;">自习：</text>
 				</view>
-				<view class="info-item">
-					<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">M102</text>
-					<!-- <text style="font-size: 14px;margin-top: 4px;" @click="toStar()">收藏</text> -->
-					<text class="iconfont icon">&#xe608;</text>
+				<view class="info-body">
+					<view class="info-item">
+						<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">403</text>
+						<!-- <text style="font-size: 14px;margin-top: 4px;">需求</text> -->
+						<text class="iconfont icon">&#xe607;</text>
+					</view>
+					<view class="info-item">
+						<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">M102</text>
+						<!-- <text style="font-size: 14px;margin-top: 4px;" @click="toStar()">收藏</text> -->
+						<text class="iconfont icon">&#xe608;</text>
+					</view>
 				</view>
 			</view>
 
 			<!-- 兴趣爱好标签 -->
-			<view class="tags">
-				<view class="tag-header">
-					<text style="font-size: 12px;color: rgba(214, 88, 88, 1);">兴趣爱好：</text>
+			<view class="item">
+				<view class="item-header">
+					<text style="font-size: 12px;color: #8f939c;">兴趣爱好：</text>
 					<text style="font-size: 12px;color: #333;" @click="toTag()">修改</text>
 				</view>
 				<view class="tag-body">
@@ -87,6 +99,7 @@
 				height: 65px;
 				width: 65px;
 				border-radius: 65px;
+				border: 1px solid rgba(214, 88, 88, 1);
 			}
 
 			.more {
@@ -97,56 +110,65 @@
 			}
 		}
 
-		.info {
-			flex-direction: row;
-			justify-content: space-around;
-			width: 100%;
-			height: 10vh;
-			padding: 0 20px;
-			background-color: #fff;
 
-			.info-item {
-				flex-direction: column;
-				align-items: center;
-				// margin-top: 30px;
-			}
-			.icon {
-				margin-top: 10px;
-				color: green;
-				font-size: 30px;
-			}
-		}
 
-		.tags {
+		.item {
 			flex-direction: column;
 			width: 100%;
 			// height: 15vh;
 			padding: 20px;
 			background-color: #fff;
 
-			.tag-header {
+			.item-header {
 				justify-content: space-between;
 				padding: 10px;
 			}
 
 			.tag-body {
-				flex-direction: column;
+				flex-direction: row;
+				flex-wrap: wrap;
+
+				width: 100%;
+
 			}
 
 			.tag-item {
 				// width: 100%;
 				// height: 30px;
-				padding: 0 30px;
+				margin: 10px 10px;
 			}
 
 			.tag {
 				display: flex;
 				justify-content: center;
-				width: 50%;
+				// width: 50%;
 				height: 13px;
-				margin: 5px;
+				// margin: 5px;
+				padding: 5px 10px;
+			}
+
+			.info-body {
+				flex-direction: row;
+				justify-content: space-around;
+				width: 100%;
+				height: 10vh;
+				padding: 0 20px;
+				background-color: #fff;
+
+				.info-item {
+					flex-direction: column;
+					align-items: center;
+					// margin-top: 30px;
+				}
+
+				.icon {
+					margin-top: 10px;
+					color: green;
+					font-size: 30px;
+				}
 			}
 		}
+
 		.logOut {
 			flex-direction: row;
 			justify-content: center;
@@ -156,7 +178,7 @@
 			padding: 30px;
 			margin-bottom: 30px;
 			background-color: #fff;
-			
+
 		}
 	}
 </style>
@@ -166,8 +188,16 @@
 		reactive,
 		ref
 	} from 'vue'
-
-	const avatarSrc = ref("../.././static/images/img5.jpg")
+	import {
+		onLoad,
+		onInit,
+		onShow
+	} from '@dcloudio/uni-app'
+	const avatarSrc = ref("")
+	const userInfo = ref("")
+	const nickName = ref("")
+	let userId = "";
+	let token = "";
 
 	const tags = ref([{
 			text: '川菜',
@@ -204,23 +234,88 @@
 			animationDuration: 300
 		})
 	}
+	const previewAvatar = () => {
+		uni.previewImage({
+			urls: [avatarSrc.value],
+			longPressActions: {
+				itemList: ['取消', '修改'],
+				success: function(data) {
+					console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+				},
+				fail: function(err) {
+					console.log(err.errMsg);
+				}
+			}
+		});
+	}
+	const switchAvatar = () => {
+		uni.chooseImage({
+			count: 1,
+			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+			sourceType: ['album'], //从相册选择
+			success: function(res) {
+				const tempFilePaths = res.tempFilePaths;
+				uni.uploadFile({
+					url: 'http://94.74.87.251:8080/system/user/profile/avatar', //仅为示例，非真实的接口地址
+					filePath: tempFilePaths[0],
+					name: 'avatarfile',
+					header: {
+						// "Content-Type": "multipart/form-data",
+						'Authorization': token
+					}, 
+					formData: {
+						// 'user': 'test',
+						// 'avatarfile': 'ada'
+					},
+					success: (res2) => {
+						// console.log(res2);
+						// 解析返回的数据为JSON对象
+						const resData = JSON.parse(res2.data);
+						// // 从JSON对象中获取图片URL
+						avatarSrc.value = resData.imgUrl;
+						uni.setStorageSync('user_info',JSON.stringify({id: userId,name: nickName.value,avatar: avatarSrc.value}))
+						// console.log("切换头像：", avatarSrc);
+					},
+				})
+
+			}
+		});
+
+
+	}
 	const logout = () => {
 		uni.removeStorage({
 			key: 'token',
-			success: function (res) {
+			success: function(res) {
 				uni.navigateTo({
 					url: '/pages/login/login',
 					animationDuration: 300
 				})
 			}
 		});
-		
 	}
 	onMounted(() => {
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
-				console.log(res.data);
+				token = res.data
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+		uni.getStorage({
+			key: 'user_info',
+			success: (res) => {
+				// console.log(res.data);
+				const user_info = JSON.parse(res.data);
+				userId = user_info.id;
+				nickName.value = user_info.name;
+				avatarSrc.value = user_info.avatar;
+				userInfo.value = "大二 - 计算机科学与技术"
 			},
 			fail: (err) => {
 				uni.navigateTo({

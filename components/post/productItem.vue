@@ -124,7 +124,8 @@
 	
 	const props = defineProps(["data", "isMine"])
 	const getMethodType = ["需自取","可配送"];
-	const productType = [{
+	const productType = [
+		{
 			id: "1",
 			text: '人物匹配',
 		},
@@ -188,22 +189,8 @@
 	})
 	const toPrivateChat = () => {
 		uni.navigateTo({
-			url: '/pages/privateChat/privateChat',
+			url: '/pages/privateChat/privateChat?id=' + props.data.userId + '&name='+props.data.nickName + '&avatar=' + props.data.avatar,
 			animationDuration: 300,
-			events:{
-				initMsgs: function(data) {
-				      console.log(data)
-				},
-			},
-			success: (res) => {
-				// const friend_info = 
-				// console.log("看看：",friend_info);
-				res.eventChannel.emit("initMsgs",{
-					id: props.data.userId,
-					name: props.data.nickName,
-					avatar: props.data.avatar
-				})
-			}
 		})
 	}
 	const handleDelete = (id) => {

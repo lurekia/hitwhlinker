@@ -53,12 +53,11 @@
 					<view class="detail-content">
 					      <p class="detail-text">{{item.content}}</p>
 					</view>
-					
 				</view>
 				<view class="info-images">
 					<text style="color:#999">图片展示</text>
 					<view>
-					    <view v-for="image in item.picture.split(',')" :key="image.index" class="image-item" >
+					    <view v-for="image in imageList" :key="image.index" class="image-item" >
 					      <image :src="image.url" mode="widthFix" ></image>
 					    </view>
 					</view>
@@ -117,14 +116,6 @@
 		  console.log(item.value);
 		})
 	})
-	// onLoad() {
-	  // uni.$on('productListToDetail', (res) => {
-	  //   console.log(res); // 为 B 页面传过来的值
-	  // })
-	// }
-	// onUnload() {
-	// 	uni.$off('productListToDetail')
-	// }
 </script>
 
 <style lang="scss" scoped>

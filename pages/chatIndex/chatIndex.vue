@@ -110,13 +110,18 @@
 	const handleClick = (index) => {
 		console.log(index);
 		
-		
-		
 		uni.navigateTo({
 			url: '/pages/chat/chat?server_name=' + chat_views.value[index].name+'&server_type='+chat_views.value[index].type,
 			animationDuration: 300,
-			success: () => {
-				uni.$emit("initMsgs",chat_views.value[index].msgs)
+			events:{
+				initMsgs: function(data) {
+				      console.log(data)
+				},
+			},
+			success: (res) => {
+				// const friend_info = 
+				// console.log("看看：",friend_info);
+				res.eventChannel.emit("initMsgs",chat_views.value[index].msgs)
 			}
 		})
 		

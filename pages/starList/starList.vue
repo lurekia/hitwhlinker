@@ -114,12 +114,12 @@
 		box-sizing: border-box;
 	}
 	.product-list {
-		width: calc(100vw - 20px);
+		width: 100vw;
 		height: 100%;
 		flex-grow: 1;
 		flex-direction: column;
 		background-color: transparent;
-		margin: 0 10px;
+		// margin: 0 10px;
 	
 		.product-item {
 			width: 100%;

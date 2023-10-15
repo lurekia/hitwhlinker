@@ -1,7 +1,7 @@
 <template>
 	<view class="card">
-		<view class="img">
-			<image :src="data.pictrue?data.pictrue:'../.././static/images/product.webp'" mode="aspectFill"
+		<view v-if="picture!==''" class="img">
+			<image :src="picture" mode="aspectFill"
 				style="width: 100%;height: 100%;border-radius: 5px;" @click="goToDetail()"></image>
 		</view>
 		<view class="info">
@@ -11,14 +11,14 @@
 			</view>
 			<view class="money">
 				<text style="color: red;font-size: 18px;margin-top: 5px;">￥</text>
-				<text style="color: red;font-size: 26px;">189</text>
-				<text style="color: red;font-size: 26px; margin:0 10px;">~</text>
-				<text style="color: red;font-size: 26px;">289</text>
+				<text style="color: red;font-size: 26px;">{{data.price}}</text>
+				<!-- <text style="color: red;font-size: 26px; margin:0 10px;">~</text>
+				<text style="color: red;font-size: 26px;">289</text> -->
 			</view>
 			<view class="tags">
-				<uni-tag text="电子产品" type="primary" class="tag" :inverted="true"></uni-tag>
-				<uni-tag text="需自提" type="success" class="method"></uni-tag>
-				<text style="color: #8f939c;font-size: 14px;">277次浏览</text>
+				<uni-tag :text="typeText" type="primary" class="tag" :inverted="true"></uni-tag>
+				<uni-tag :text="getMethodType[data.getMethod]" type="success" class="method"></uni-tag>
+				<text style="color: #8f939c;font-size: 14px;">{{data.starCounts}}次收藏</text>
 			</view>
 			<view v-if="isMine" class="user">
 				<button type="warn" size="mini" @click="handleDelete(data.id)">撤销</button>
@@ -118,10 +118,38 @@
 <script setup>
 	import {
 		reactive,
-		ref
+		ref,
+		computed
 	} from 'vue'
+	
 	const props = defineProps(["data", "isMine"])
-	// const avatarSrc = ref("../.././static/images/img5.jpg")
+	const getMethodType = ["需自取","可配送"];
+	const productType = [{
+			id: "1",
+			text: '人物匹配',
+		},
+		{
+			id: "2",
+			text: '电子产品',
+		},
+		{
+			id: "3",
+			text: '生活用品',
+		},
+		{
+			id: '4',
+			text: '学习资料',
+		},
+		{
+			id: '5',
+			text: '零食饮料',
+		},
+		{
+			id: '6',
+			text: '其他',
+		}
+	]
+ 	// const avatarSrc = ref("../.././static/images/img5.jpg")
 	// const src = ref("../.././static/images/product.webp")
 	// const name = ref("123鼠鼠")
 	// const money = ref(100)
@@ -131,24 +159,49 @@
 		uni.navigateTo({
 			url: '/pages/productDetail/productDetail',
 			animationDuration: 300,
+			events:{
+				productListToDetail: function(data) {
+				      console.log(data)
+				},
+			},
 			success: (res) => {
-				console.log("看详情：",props.data);
-				uni.$emit("productListToDetail",props.data);
+				// console.log("看详情：",props.data);
+				res.eventChannel.emit("productListToDetail",props.data);
 			}
 		})
 	}
+	const picture = computed(() => {
+		if(props.data.picture === null || props.data.picture.trim() === "") {
+			return ''
+		}
+		// console.log();
+		return props.data.picture.split(",",1)[0];
+	})
+	const typeText = computed(() => {
+		for(let type of productType) {
+			if(type.id === props.data.goodsTypeId) {
+				return type.text;
+			}
+		}
+		return "";
+	})
 	const toPrivateChat = () => {
 		uni.navigateTo({
 			url: '/pages/privateChat/privateChat',
 			animationDuration: 300,
+			events:{
+				initMsgs: function(data) {
+				      console.log(data)
+				},
+			},
 			success: (res) => {
-				const friend_info = {
+				// const friend_info = 
+				// console.log("看看：",friend_info);
+				res.eventChannel.emit("initMsgs",{
 					id: props.data.userId,
 					name: props.data.nickName,
 					avatar: props.data.avatar
-				}
-				console.log("看看：",friend_info);
-				uni.$emit("initPrivateMsgs",friend_info)
+				})
 			}
 		})
 	}

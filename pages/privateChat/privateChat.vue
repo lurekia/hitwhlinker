@@ -37,7 +37,8 @@
 	} from 'vue'
 	import {
 		onLoad,
-		onUnload
+		onUnload,
+		// getCurrentPages
 	} from '@dcloudio/uni-app'
 	import leftChat from '@/components/chat/leftChat.vue'
 	import rightChat from '@/components/chat/rightChat.vue'
@@ -246,14 +247,20 @@
 			msgs.value.push(msg)
 	}
 	
-	onMounted(() => {
+	onLoad(() => {
 		// getSystemInfo()
 		// scrollToBottom()
 		// initMsgs()
+		const pages = getCurrentPages();  // 无需import
+		const page = pages[pages.length - 1];
+		const eventChannel = page.getOpenerEventChannel();
+		eventChannel.on("initMsgs", initMsgs);
+
+		
 		uni.$on("chooseImage", handleChooseImage)
 		uni.$on("putProduct", putProduct)
 		uni.$on("getPrompt", getPrompt)
-		uni.$on("initPrivateMsgs", initMsgs)
+		
 		
 		proxy.goEasy.im.on(proxy.GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, onMessageReceived);
 	})
@@ -264,7 +271,6 @@
 		uni.$off("chooseImage", handleChooseImage)
 		uni.$off("putProduct", putProduct)
 		uni.$off("getPrompt", getPrompt)
-		uni.$off("initPrivateMsgs", initMsgs)
 		proxy.goEasy.im.off(proxy.GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, onMessageReceived);
 	})
 </script>

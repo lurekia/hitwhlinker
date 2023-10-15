@@ -314,19 +314,24 @@ import toolBox from '@/components/unicomp/toolBox.vue'
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
-		uni.$on("chooseImage",handleChooseImage)
-		uni.$on("putProduct",putProduct)
-		uni.$on("getPrompt",getPrompt)
-		uni.$on("initMsgs",initMsgs)
+		
 	})
 	onLoad((obj) => {
+		// const eventChannel = this.getOpenerEventChannel();
+		const pages = getCurrentPages();  // 无需import
+		const page = pages[pages.length - 1];
+		const eventChannel = page.getOpenerEventChannel();
+		eventChannel.on("initMsgs", initMsgs)
+		
 		title = obj.server_name
 		server_type = obj.server_type;
 		uni.setNavigationBarTitle({
 			title: title
 		})
-		// loadChat() // 加载对话
-		// 获取语料库
+		uni.$on("chooseImage",handleChooseImage)
+		uni.$on("putProduct",putProduct)
+		uni.$on("getPrompt",getPrompt)
+		uni.$on("initMsgs",initMsgs)
 	})
 	onUnload(() => {
 		// uni.$off('listToChat');

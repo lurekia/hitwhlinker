@@ -10,14 +10,13 @@
 			<view class="info-head">
 				<view class="header-content">
 				    <view class="user">
-				    	<image :src="avatarSrc" mode="aspectFill" class="avatar"></image>
+				    	<image :src="item.avatar" mode="aspectFill" class="avatar"></image>
 				    	<view class="more">
-				    		<text style="color: red;">{{name}}</text>
-				    		<text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text>
+				    		<text style="color: red;">{{item.nickName}}</text>
+				    		<!-- <text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text> -->
 				    	</view>
 				    </view>
 				    <view class="head-right">
-						
 				        <view v-if="item.getMethod !== undefined && item.getMethod !== null">
 							<view class="info-by" v-if="item.getMethod==1">
 								可配送
@@ -54,7 +53,7 @@
 					      <p class="detail-text">{{item.content}}</p>
 					</view>
 				</view>
-				<view class="info-images">
+				<view class="info-images" v-if="imageList">
 					<text style="color:#999">图片展示</text>
 					<view>
 					    <view v-for="image in imageList" :key="image.index" class="image-item" >
@@ -71,7 +70,7 @@
 		<view class="bottom-bar">
 			<uni-fav :checked="is_fav" class="favBtn" :circle="true" bg-color="#dd524d"
 								bg-color-checked="#007aff" fg-color="#ffffff" fg-color-checked="#ffffff" @click="favClick()" />
-			<button class="my-want">我想要</button>
+			<button class="my-want" @click="GotoChat">我想要</button>
 		</view>
 	</view>
 </template>
@@ -86,35 +85,114 @@
 		onLoad,onInit,onUnload,onShow,onReady
 	} from '@dcloudio/uni-app'
 	const is_fav = ref(false);
+	let token = null;
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
+	  uni.request({
+	  	url: "http://94.74.87.251:8080/school/goods/star/" + goodsId,
+	  	method: "GET",
+	  	header: {
+	  		"Authorization": token
+	  	},
+	  	success: (res) => {
+	  		// console.log(res);
+	  		if (res.data.code == 200) {
+	  			console.log(res);
+	  		} else {
+	  			uni.showToast({
+	  				title: '收藏失败，请检查网络',
+	  				icon: 'none'
+	  			})
+	  		}
+	  	},
+	  	fail: (err) => {
+	  		uni.showToast({
+	  			title: err,
+	  			icon: 'none'
+	  		})
+	  	}
+	  })
 	}
-	const imageList= [
-        { id: 1, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
-        { id: 2, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
-        { id: 3, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
-      ]
+	// const imageList= [
+ //        { id: 1, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
+ //        { id: 2, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
+ //        { id: 3, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
+ //      ]
 	const goBack = ()=>{
 		uni.navigateBack({
 			delta:1
 		})
 	}
+	const GotoChat = ()=>{
+		uni.navigateTo({
+			url: '/pages/privateChat/privateChat',
+			animationDuration: 300,
+			events:{
+				initMsgs: function(data) {
+					  console.log(data)
+				},
+			},
+			success: (res) => {
+				// const friend_info = 
+				// console.log("看看：",friend_info);
+				res.eventChannel.emit("initMsgs",{
+					id: item.value.userId,
+					name: item.value.nickName,
+					avatar: item.value.avatar
+				})
+			}
+		})
+	}
 	const show = ref(true);
-	const avatarSrc = ref("../.././static/images/img5.jpg")
+	// const avatarSrc = ref("../.././static/images/img5.jpg")
 	const src = ref("../.././static/images/product.webp")
 	const name = ref("123鼠鼠")
 	const money = ref(100)
 	const detail = ref("这是一个手表这是一个手表")
 	const date = ref("8分钟前")
 	let item = ref({})
+	// let imageList = ref([])
+	// imageList.value = item.value.picture.split(',')
+	// console.log(imageList);
+	let pictureArray = [];
+	let imageList = [];
+	let goodsId = null
 	onReady((options) => {
 		//  item = options.data;
 		// console.log('item',item);
 		uni.$on('productListToDetail', (res) => {
 		  // console.log('res',res); // 为 B 页面传过来的值
 		  item.value = res
-		  console.log(item.value);
+		  console.log('item.value',item.value);
+		  console.log('item.value.picture',item.value.picture);
+		  // 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
+		  pictureArray = item.value.picture.split(',');
+		  goodsId = item.value.id
+		  console.log('id',goodsId);
+		  // 构建imageList数组
+		  imageList = pictureArray.map((url, index) => {
+			return { id: index + 1, url: url };
+		  });
+	  
+		  console.log('imageList',imageList);
 		})
+	})
+	onShow(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				// console.log(res.data);
+				token = res.data;
+	
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	
 	})
 </script>
 

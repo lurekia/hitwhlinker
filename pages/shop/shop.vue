@@ -24,12 +24,36 @@
 
 				<view class="want-tag">
 					<scroll-view class="tag-body" scroll-x="true" :show-scrollbar="false">
-						<view class="tag" v-for="(tag,index) in tag_content" :key="index"
-							@click="handleChangeTag(index)">
-							<text style="margin-bottom: 4px;font-size: 30px;" class="iconfont">&#xe609;</text>
-							<text :style="{fontSize: '14px',color:tag.active?'#2979ff':'#8f939c'}">{{tag.text}}</text>
+						<view class="tag" @click="handleChangeTag(0)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60b;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[0].active?'#2979ff':'#8f939c'}">{{tag_content[0].text}}</text>
 						</view>
-
+						<view class="tag" @click="handleChangeTag(1)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe609;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[1].active?'#2979ff':'#8f939c'}">{{tag_content[1].text}}</text>
+						</view>
+						<view class="tag"  @click="handleChangeTag(2)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60d;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[2].active?'#2979ff':'#8f939c'}">{{tag_content[2].text}}</text>
+						</view>
+						<view class="tag" @click="handleChangeTag(3)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60e;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[3].active?'#2979ff':'#8f939c'}">{{tag_content[3].text}}</text>
+						</view>
+						<view class="tag" @click="handleChangeTag(4)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60a;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[4].active?'#2979ff':'#8f939c'}">{{tag_content[4].text}}</text>
+						</view>
+						<view class="tag" @click="handleChangeTag(5)">
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60c;</view>
+							<text
+								:style="{fontSize: '14px',color:tag_content[5].active?'#2979ff':'#8f939c'}">{{tag_content[5].text}}</text>
+						</view>
 					</scroll-view>
 				</view>
 
@@ -144,7 +168,7 @@
 		white-space: nowrap;
 		width: 100vw;
 		height: 80px;
-		// padding: 10px 0;
+		padding-top: 15px;
 	}
 
 
@@ -357,10 +381,11 @@
 			return;
 		}
 		pageNum = pageNum + 1;
+		console.log("查询页面数：",pageNum);
 		isLoading.value = true;
 		setTimeout(() => {
 			loadData();
-		}, 2000)
+		}, 1000)
 
 	}
 	const initData = () => {
@@ -372,7 +397,7 @@
 				if (proxy.goEasy.getConnectionStatus() === 'disconnected') {
 					connectGoEasy(); //连接goeasy
 				}
-				console.log("用户信息：",user_info);
+				console.log("用户信息：", user_info);
 			},
 			fail: (err) => {
 				uni.navigateTo({
@@ -381,7 +406,9 @@
 				})
 			}
 		});
+		loadingType.value = "loading"
 		products_data.value = [];
+		pageNum = 1;
 		loadData()
 	}
 

@@ -42,6 +42,7 @@
 				// 				}
 				// 			}
 				// 		});
+				// console.log(res.tempFilePaths);
 				uni.$emit("chooseImage",res.tempFilePaths)
 			}
 		});

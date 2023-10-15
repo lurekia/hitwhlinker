@@ -159,14 +159,15 @@
 		uni.navigateTo({
 			url: '/pages/productDetail/productDetail',
 			animationDuration: 300,
-			events:{
-				productListToDetail: function(data) {
-				      console.log(data)
-				},
-			},
+			// events:{
+			// 	productListToDetail: function(data) {
+			// 	      console.log(data)
+			// 	},
+			// },
 			success: (res) => {
 				// console.log("看详情：",props.data);
-				res.eventChannel.emit("productListToDetail",props.data);
+				// res.eventChannel.emit("productListToDetail",props.data);
+				uni.$emit("productListToDetail",props.data);
 			}
 		})
 	}

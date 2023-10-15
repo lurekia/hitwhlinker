@@ -56,7 +56,7 @@
 				<view class="info-images" v-if="imageList">
 					<text style="color:#999">图片展示</text>
 					<view>
-					    <view v-for="image in imageList" :key="image.index" class="image-item" >
+					    <view v-for="image in imageList" :key="image.id" class="image-item" >
 					      <image :src="image.url" mode="widthFix" ></image>
 					    </view>
 					</view>
@@ -89,7 +89,7 @@
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
 	  uni.request({
-	  	url: "http://94.74.87.251:8080/school/goods/star/" + goodsId,
+	  	url: "http://94.74.87.251:8080/school/goods/star/" + goodsId.value,
 	  	method: "GET",
 	  	header: {
 	  		"Authorization": token
@@ -143,21 +143,17 @@
 			}
 		})
 	}
-	const show = ref(true);
 	// const avatarSrc = ref("../.././static/images/img5.jpg")
-	const src = ref("../.././static/images/product.webp")
 	const name = ref("123鼠鼠")
-	const money = ref(100)
-	const detail = ref("这是一个手表这是一个手表")
 	const date = ref("8分钟前")
 	let item = ref({})
 	// let imageList = ref([])
 	// imageList.value = item.value.picture.split(',')
 	// console.log(imageList);
-	let pictureArray = [];
-	let imageList = [];
-	let goodsId = null
-	onReady((options) => {
+	let pictureArray = ref([]);
+	let imageList = ref([]);
+	let goodsId = ref(null)
+	onLoad((options) => {
 		//  item = options.data;
 		// console.log('item',item);
 		uni.$on('productListToDetail', (res) => {
@@ -166,15 +162,18 @@
 		  console.log('item.value',item.value);
 		  console.log('item.value.picture',item.value.picture);
 		  // 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
-		  pictureArray = item.value.picture.split(',');
-		  goodsId = item.value.id
-		  console.log('id',goodsId);
+		  pictureArray.value = item.value.picture.split(',');
+		  goodsId.value = item.value.id
+		  console.log('id',goodsId.value);
 		  // 构建imageList数组
-		  imageList = pictureArray.map((url, index) => {
+		  imageList.value = pictureArray.value.map((url, index) => {
 			return { id: index + 1, url: url };
 		  });
-	  
-		  console.log('imageList',imageList);
+		  //解决打开界面默认还是为收藏问题
+		  if(item.value.isStar===1){
+			  is_fav.value =true
+		  }
+		  console.log('imageList',imageList.value);
 		})
 	})
 	onShow(() => {

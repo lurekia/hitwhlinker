@@ -13,21 +13,23 @@
 					<uni-forms-item label="标题" required>
 						<uni-easyinput v-model="baseFormData.title" placeholder="请输入标题" maxlength="25" />
 					</uni-forms-item>
+					
 					<uni-forms-item label="标签" required>
 						<uni-data-select
 						        v-model="baseFormData.tag"
 						        :localdata="range"
-						        @change="change"
+						        @change="changeGoodsTag"
 						      ></uni-data-select>
 					</uni-forms-item>
+					
 					<uni-forms-item label="途径" >
-						<uni-data-checkbox v-model="typeValue" :localdata="type"></uni-data-checkbox>
+						<uni-data-checkbox v-model="baseFormData.typeValue" :localdata="type" @change="changetypeValue"></uni-data-checkbox>
 					</uni-forms-item>
 					<uni-forms-item label="价格" >
 						<uni-easyinput type="number" class="uni-mt-5" v-model="baseFormData.price" placeholder="请输入初步价格(只能输入数字)" ></uni-easyinput>
 					</uni-forms-item>
 					<uni-forms-item label="库存" >
-						<uni-number-box :value="countValue" @change="changeCountValue" />
+						<uni-number-box :value="baseFormData.count" @change="changeCountValue" />
 					</uni-forms-item>
 					
 					<!-- <uni-forms-item label="详情" required>
@@ -41,13 +43,13 @@
 					          placeholder="请输入详情介绍"
 					          @input="updateDetail"
 					        />
-					    </uni-forms-item>
-					<uni-forms-item label="需求时间" >
-						<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
 					</uni-forms-item>
+					<!-- <uni-forms-item label="需求时间" >
+						<uni-datetime-picker v-model="baseFormData.datetimerange" return-type="timestamp" type="datetimerange" rangeSeparator="至" />
+					</uni-forms-item> -->
 					<uni-forms-item label="上传图片">
 						<u-upload
-							:fileList="fileList1"
+							:fileList="baseFormData.imageArray"
 							@afterRead="afterRead"
 							@delete="deletePic"
 							name="1"
@@ -83,20 +85,97 @@
 			delta: 1
 		})
 	}
-	
+	let token = null;
+	const changeGoodsTag = (e)=>{
+		console.log(e);
+		baseFormData.goodsTypeId=e;
+	}
+	const changetypeValue = (e)=>{
+		console.log(e.detail.value);
+		baseFormData.getMethod=e.detail.value;
+	}
 	const baseFormData = reactive({
-					id:'',
-					title: '',
 					tag: '',
+					// datetimerange: [],
+					typeValue:null,
+					imageArray:[],//表单的图片数组 //非接口传过来的真实url
+					// ImageData:[],//接口返回给我的拼接后的真实url
+					
+					
+					commentCount: 0,
+					contactInfo: '',
 					content: '',
-					price:null,
-					datetimerange: [],
-					createTime:null,
-					contactInfo:'',//联系方式
-					countValue:2,//库存
+					count: 0,
+					// createBy: '',
+					// createTime: '',
+					getMethod: 0,
+					goodsTypeId: '',
+					id: 0,
+					picture: '',
+					price: 0,
+					// remark: '',
+					// stateFlg: 0,
+					title: '',
+					// updateBy: '',
+					// updateTime: '',
+					// userId: 0
 				})
+	let pageNum = 1;			
+	const submitForm =()=>{
+		uni.request({
+			url: "http://94.74.87.251:8080/school/goods",
+			method: "POST",
+			data:{
+				commentCount: baseFormData.commentCount,
+				contactInfo: baseFormData.contactInfo,
+				content: baseFormData.content,
+				count: baseFormData.count,
+				// createBy: baseFormData.createBy,
+				// createTime: baseFormData.createTime,
+				getMethod: baseFormData.getMethod,
+				goodsTypeId: baseFormData.goodsTypeId,
+				id: 0,
+				picture: baseFormData.picture,
+				price:baseFormData.price,
+				// remark: baseFormData.remark,
+				// stateFlg: baseFormData.stateFlg,
+				title: baseFormData.title,
+				// updateBy: baseFormData.updateBy,
+				// updateTime: baseFormData.updateTime,
+				// userId: baseFormData.userId
+			},
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				console.log(res);
+				if (res.data.code == 200) {
+					console.log(res);
+					uni.switchTab({
+						url:"/pages/shop/shop"
+					})
+					uni.showToast({
+						title: '上传成功',
+						icon: 'none'
+					})
+				} else {
+					uni.showToast({
+						title: '加载失败，请检查网络',
+						icon: 'none'
+					})
+		
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}		
 	const updateDetail=(event)=> {
-	    baseFormData.content = event.target.value;
+	    baseFormData.content = event.target;
 		// console.log(event.target);
 	  }
 	const type= [{
@@ -116,25 +195,25 @@
 				]
 				
 	const changeCountValue = (value)=>{
-		baseFormData.countValue = value
-		console.log(baseFormData.countValue);
+		baseFormData.count = value
+		console.log(baseFormData.count);
 	}				
 	
 	//图片的数组
-	const fileList1 = ref([]);
+	// const fileList1 = ref([]);
 
 	// 删除图片
 	const deletePic = (event) => {
-	  fileList1.value.splice(event.index, 1);
+	  baseFormData.imageArray.splice(event.index, 1);
 	};
 
 	// 新增图片
 	const afterRead = async (event) => {
 	  // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
 	  let lists = [].concat(event.file);
-	  let fileListLen = fileList1.value.length;
+	  let fileListLen = baseFormData.imageArray.length;
 	  lists.map((item) => {
-		fileList1.value.push({
+		baseFormData.imageArray.push({
 		  ...item,
 		  status: 'uploading',
 		  message: '上传中',
@@ -142,8 +221,8 @@
 	  });
 	  for (let i = 0; i < lists.length; i++) {
 		const result = await uploadFilePromise(lists[i].url);
-		let item = fileList1.value[fileListLen];
-		fileList1.value.splice(fileListLen, 1, {
+		let item = baseFormData.imageArray[fileListLen];
+		baseFormData.imageArray.splice(fileListLen, 1, {
 		  ...item,
 		  status: 'success',
 		  message: '',
@@ -156,23 +235,52 @@
 	const uploadFilePromise = (url) => {
 	  return new Promise((resolve, reject) => {
 		let a = uni.uploadFile({
-		  url: 'http://94.74.87.251:8080/upload', // 仅为示例，非真实的接口地址
+		  url: 'http://94.74.87.251:8080/upload', 
 		  filePath: url,
-		  name: 'file',
+		  name: 'image',
 		  formData: {
 			user: 'test',
 		  },
 		  success: (res) => {
+			  // 解析返回的数据为JSON对象
+			  const responseData = JSON.parse(res.data);
+			  // 从JSON对象中获取图片URL
+			  const url = responseData.msg;
+			  // 检查picture变量是否为空，如果不为空，则添加逗号
+			  if (baseFormData.picture !== '') {
+			    baseFormData.picture += ',';
+			  }
+			  
+			  // 拼接URL到picture变量，并以逗号分隔
+			  baseFormData.picture += url;
+			  console.log(baseFormData.picture);
 			setTimeout(() => {
 			  resolve(res.data.data);
+			  
+			  // console.log(baseFormData.picture+res.data);
 			}, 1000);
 		  },
 		});
 	  });
 	};
+	onMounted(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				// console.log(res.data);
+				token = res.data;
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	})
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.detail-content {
 	  margin-top: 10px;
 	}

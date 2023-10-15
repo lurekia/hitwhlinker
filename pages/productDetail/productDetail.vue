@@ -17,9 +17,15 @@
 				    	</view>
 				    </view>
 				    <view class="head-right">
-				        <view class="info-by">
-				        	可配送
-				        </view>
+						
+				        <view v-if="item.getMethod !== undefined && item.getMethod !== null">
+							<view class="info-by" v-if="item.getMethod==1">
+								可配送
+							</view>
+							<view class="info-by" v-else-if="item.getMethod==0">
+								需自提
+							</view>
+						</view>
 						<view class="view-nums">
 							<uni-icons type="eye" size="15" color="#333" class="view-num" ></uni-icons>
 							<text>666</text>
@@ -28,15 +34,15 @@
 				</view>
 				<view class="head-bottom">
 					<view class="item-title">
-						出大物实验报告
+						{{item.title}}
 					</view>
 				</view>
 			</view>
 			<view class="info-body">
 				<view class="info-money">
-					<cn-money :money="9168.45" :size="48"></cn-money>
+					<cn-money :money="item.price" :size="48"></cn-money>
 					<view class="info-count">
-						库存:<text class="info-count-value" >888</text>
+						库存:<text class="info-count-value" >{{item.count}}</text>
 					</view>
 				</view>
 				<view class="info-detail">
@@ -45,20 +51,20 @@
 					材质：电子版<br/>
 					质量：高<br/>
 					<view class="detail-content">
-					      <p class="detail-text">{{ baseFormData.content }}</p>
+					      <p class="detail-text">{{item.content}}</p>
 					</view>
 					
 				</view>
 				<view class="info-images">
 					<text style="color:#999">图片展示</text>
 					<view>
-					    <view v-for="image in imageList" :key="image.id" class="image-item" >
+					    <view v-for="image in item.picture.split(',')" :key="image.index" class="image-item" >
 					      <image :src="image.url" mode="widthFix" ></image>
 					    </view>
 					</view>
 				</view>
 				<view class="info-contact">
-					联系方式： TEL:13668676731
+					联系方式：{{item.contactInfo}}
 				</view>
 			</view>
 			
@@ -75,8 +81,11 @@
 	import cnMoney from '@/components/cn-money/cn-money.vue';
 	import {
 		reactive,
-		ref
+		ref, watchEffect
 	} from 'vue'
+	import {
+		onLoad,onInit,onUnload,onShow,onReady
+	} from '@dcloudio/uni-app'
 	const is_fav = ref(false);
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
@@ -91,19 +100,6 @@
 			delta:1
 		})
 	}
-	const list = ref([
-	  {
-	    text: '点赞',
-	    color: 'blue',
-	    fontSize: 28
-	  },
-	  {
-	    text: '分享'
-	  },
-	  {
-	    text: '评论'
-	  }
-	]);
 	const show = ref(true);
 	const avatarSrc = ref("../.././static/images/img5.jpg")
 	const src = ref("../.././static/images/product.webp")
@@ -111,9 +107,27 @@
 	const money = ref(100)
 	const detail = ref("这是一个手表这是一个手表")
 	const date = ref("8分钟前")
+	let item = ref({})
+	onReady((options) => {
+		//  item = options.data;
+		// console.log('item',item);
+		uni.$on('productListToDetail', (res) => {
+		  // console.log('res',res); // 为 B 页面传过来的值
+		  item.value = res
+		  console.log(item.value);
+		})
+	})
+	// onLoad() {
+	  // uni.$on('productListToDetail', (res) => {
+	  //   console.log(res); // 为 B 页面传过来的值
+	  // })
+	// }
+	// onUnload() {
+	// 	uni.$off('productListToDetail')
+	// }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.detail-content {
 	  margin-top: 10px;
 	}

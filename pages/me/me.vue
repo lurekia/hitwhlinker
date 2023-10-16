@@ -272,8 +272,22 @@
 						// 解析返回的数据为JSON对象
 						const resData = JSON.parse(res2.data);
 						// // 从JSON对象中获取图片URL
-						avatarSrc.value = resData.imgUrl;
-						uni.setStorageSync('user_info',JSON.stringify({id: userId,name: nickName.value,avatar: avatarSrc.value}))
+						// if()
+						console.log(resData);
+						if(resData.code === 200) {
+							avatarSrc.value = 'http://94.74.87.251:8080' + resData.imgUrl;
+							uni.setStorageSync('user_info',JSON.stringify({id: userId,name: nickName.value,avatar: avatarSrc.value}))
+							uni.showToast({
+								title: "修改成功",
+								icon: 'none'
+							})
+						} else {
+							uni.showToast({
+								title: resData.msg,
+								icon: 'none'
+							})
+						}
+						
 						// console.log("切换头像：", avatarSrc);
 					},
 				})
@@ -290,6 +304,16 @@
 				uni.navigateTo({
 					url: '/pages/login/login',
 					animationDuration: 300
+				})
+				uni.showToast({
+					title: "登出成功",
+					icon: 'none'
+				})
+			},
+			fail: function(err) {
+				uni.showToast({
+					title: "登出失败",
+					icon: 'none'
 				})
 			}
 		});
@@ -315,6 +339,8 @@
 				userId = user_info.id;
 				nickName.value = user_info.name;
 				avatarSrc.value = user_info.avatar;
+				
+				console.log(avatarSrc.value);
 				userInfo.value = "大二 - 计算机科学与技术"
 			},
 			fail: (err) => {

@@ -56,13 +56,18 @@
 		time: "2023/7/29 12:00:00"
 	}, ]);
 	// 对方用户信息
+	let user_info = {
+		id: "100",
+		name: "小红",
+		avatar: "../.././static/images/img2.jpg"
+	};
 	let friend_info = {
 		id: "100",
 		name: "小红",
 		avatar: "../.././static/images/img2.jpg"
 	};
 	// const server_id = null;
-	let server_type = "";
+	// let server_type = "";
 	// 状态参数
 	const toolShow = ref(false)
 	// 样式参数
@@ -166,7 +171,7 @@
 				id: friend_info.id, //接收方用户id
 				data: {
 					"avatar": friend_info.avatar,
-					"nickname": friend_info.name
+					"name": friend_info.name
 				} //接收方用户扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
 			}
 		});
@@ -203,7 +208,6 @@
 	const initMsgs = (friend) => {
 		// console.log(data);
 		uni.showLoading()
-		friend_info = friend
 		// uni.showLoading()
 		uni.setNavigationBarTitle({
 			title: friend_info.name
@@ -268,12 +272,28 @@
 	onLoad((option) => {
 		// getSystemInfo()
 		// scrollToBottom()
-		initMsgs({id:option.id,name:option.name,avatar:option.avatar})
+		friend_info = {id:option.id,name:option.name,avatar:option.avatar}
+		left_avatar.value = friend_info.avatar;
+		initMsgs()
 		// const pages = getCurrentPages();  // 无需import
 		// const page = pages[pages.length - 1];
 		// const eventChannel = page.getOpenerEventChannel();
 		// eventChannel.on("initMsgs", initMsgs);
-
+		uni.getStorage({
+			key: 'user_info',
+			success: (res) => {
+				// console.log(res.data);
+				user_info = JSON.parse(res.data);
+				right_avatar.value = user_info.avatar;
+				console.log("用户信息：", user_info);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
 		
 		uni.$on("chooseImage", handleChooseImage)
 		uni.$on("putProduct", putProduct)

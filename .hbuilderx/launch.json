@@ -2,11 +2,14 @@
     "version" : "1.0",
     "configurations" : [
         {
-            "playground" : "standard",
+            "playground" : "custom",
             "type" : "uni-app:app-android"
         },
         {
             "app-plus" : {
+                "launchtype" : "local"
+            },
+            "quickapp-union" : {
                 "launchtype" : "local"
             },
             "type" : "uniCloud"

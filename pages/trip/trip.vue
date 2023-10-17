@@ -21,7 +21,7 @@
 		
 			<view class="my-list-wrapper">
 				<uni-list class="my-list">
-					<uni-list-item  direction="column" v-for="item in selected" :key="item.id" 
+					<uni-list-item  direction="column" v-for="item in selected" :key="item.index" 
 					 thumb-size="lg"  clickable @click="showDetail(item)">
 					<!-- 通过header插槽定义列表的标题 -->
 						<template v-slot:header>
@@ -33,7 +33,7 @@
 							<!-- 同步footer插槽定义列表底部的显示效果 -->
 						<template v-slot:footer>
 							<view class="uni-footer">
-								<text class="uni-footer-time">{{item.time}}</text>
+								<text class="uni-footer-time">{{item.startTime}}</text>
 							</view>
 						</template>
 			
@@ -48,159 +48,103 @@
 
 <script setup>
 	import { ref, nextTick,reactive,onMounted } from 'vue'
-	const activities = reactive([
-		{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:1,
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'2',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'3',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'4',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'5',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'6',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'7',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
-			date:'2023-08-20',
-			time:'9:00',
-			title:'发布会',
-			position:'G101',
-			tag:'学术讲座',//活动所属分类
-			id:'8',
-			detail:'56656556',//活动的详细信息
-			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-			viewNum:0,//活动的浏览量
-			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
-			authorName:'HITwhLinker',//发布者名称
-			like: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},
-	])
-	const selected = reactive([])
+	import {
+		onLoad,
+		onInit,
+		onShow
+	} from '@dcloudio/uni-app'
+	const activities = ref([])
+	const selected = ref([])
 	const showCalendar = ref(false)
 	nextTick(() => {
 	  showCalendar.value = true
 	})
+	const loadData = () => {
+		uni.request({
+			url: "http://94.74.87.251:8080/school/activity/list",
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				// console.log(res);
+				if (res.data.code == 200) {
+					activities.value = [...activities.value, ...res.data.rows];
+					console.log('activities.value',activities.value);
+					activities.value.forEach(obj => {
+					  // 处理 detail 属性
+					  if (obj.detail) {
+						  const regex = /<img[^>]+src="([^">]+)"/g;
+						  obj.detail = obj.detail.replace(regex, '<img src="http://94.74.87.251:8080$1"');
+					  }
+					
+					  // 处理 avatar 属性
+					  if (obj.avatar) {
+					    obj.avatar = 'http://94.74.87.251:8080' + obj.avatar;
+					  }
+					  if(obj.cover){
+						  obj.cover = 'http://94.74.87.251:8080' + obj.cover;
+					  }
+					  console.log('修改后的值',activities.value);
+					});
+					
+				} else {
+					uni.showToast({
+						title: '加载失败，请检查网络',
+						icon: 'none'
+					})
+	
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}
+	let token = null;
+	onShow(() => {
+		uni.getStorage({
+			key: 'token',
+			success: (res) => {
+				token = res.data;
+				loadData();
+	
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
+	})
 	const showDetail = (item) => {
 		console.log('555');
-		item.viewNum++
 		uni.navigateTo({
 			url: '/pages/activityDetail/activityDetail?id=' + item.id // 通过查询参数传递项目ID
 		})
 	}
 	function changeDate(e) {
 		// 清空数组
-	  selected.splice(0);
+	  selected.value.splice(0);
 	  console.log('change 返回:', e)
-	  activities.forEach(activity => {
-	     if (activity.date === e.fulldate) {
-	       selected.push(activity)
-		   console.log('selected',selected);
+	  activities.value.forEach(activity => {
+	     if (activity.startDate === e.fulldate) {
+			 console.log(activity.title);
+	       selected.value.push(activity)
+		   console.log('selected.value',selected.value);
 	     }
 	   })
 	  // console.log(selected);
 	}
 	function monthSwitch() {
-		selected.splice(0);
+		selected.value.splice(0);
 	}
 	// 跳转到列表
 	const goToList = () => {		
-		console.log('66666');
 		uni.navigateTo({
 			url:'/pages/activityList/activityList',
 		})
@@ -209,7 +153,7 @@
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
-				console.log(res.data);
+				// console.log(res.data);
 			},
 			fail: (err) => {
 				uni.navigateTo({

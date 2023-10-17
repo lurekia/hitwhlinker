@@ -35,6 +35,16 @@
 					</view>
 				</view>
 			</view>
+			<view class="may-want">
+				<view class="part-in-text">
+					猜你想要
+				</view>
+				<view class="product-list">
+					<product-item v-for="item in products_data" class="product-item" :key="item.id" :data="item"
+						:isMine="false">
+					</product-item>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -53,7 +63,85 @@
 		onInit,
 		onShow
 	} from '@dcloudio/uni-app'
-	const data = reactive([{
+	import productItem from '@/components/post/productItem.vue'
+	const products_data = [{
+    "id": 27,
+    "title": "45646",
+    "price": 6456,
+    "content": "465",
+    "count": 1,
+    "picture": "",
+    "userId": 1,
+    "nickName": "哈小助",
+    "avatar": "/profile/avatar/2023/10/17/1697537349691_1691805472066_20231017180911A008.jpeg",
+    "contactInfo": null,
+    "commentCount": 0,
+    "goodsTypeId": "2",
+    "stateFlg": 0,
+    "getMethod": 1,
+    "starCounts": 0,
+    "isStar": 0
+},{
+    "id": 27,
+    "title": "45646",
+    "price": 6456,
+    "content": "465",
+    "count": 1,
+    "picture": "",
+    "userId": 1,
+    "nickName": "哈小助",
+    "avatar": "/profile/avatar/2023/10/17/1697537349691_1691805472066_20231017180911A008.jpeg",
+    "contactInfo": null,
+    "commentCount": 0,
+    "goodsTypeId": "2",
+    "stateFlg": 0,
+    "getMethod": 1,
+    "starCounts": 0,
+    "isStar": 0
+},{
+    "id": 27,
+    "title": "45646",
+    "price": 6456,
+    "content": "465",
+    "count": 1,
+    "picture": "",
+    "userId": 1,
+    "nickName": "哈小助",
+    "avatar": "/profile/avatar/2023/10/17/1697537349691_1691805472066_20231017180911A008.jpeg",
+    "contactInfo": null,
+    "commentCount": 0,
+    "goodsTypeId": "2",
+    "stateFlg": 0,
+    "getMethod": 1,
+    "starCounts": 0,
+    "isStar": 0
+}]
+	const data = reactive(
+	
+	[
+		
+		{
+			authorId:null,
+			nickName:'',//发布人名称
+			avatar:'',//发布人头像
+			cover:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的封面
+			detail:'56656556',//活动的详细信息
+			position:'G101',
+			// remark:'',
+			// searchValue:'',
+			startDate:'',//yyyy-MM-dd
+			startTime:"",//HH：mm：ss
+			status:1,//0 未开始  1已结束
+			tag:'学术讲座',//活动所属分类
+			id:1,
+			// date:'2023-08-20',
+			// time:'9:00',
+			title:'发布会',
+			// updateBy:'',   //不用管
+			viewNum:0,//活动的浏览量
+			isLike: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
 		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
 		date: '2023-08-20',
 		time: '9:00',
@@ -191,32 +279,6 @@
 	}
 	onLoad(() => {
 		getCurrentDate();
-		// uni.getLocation({
-		// 	type: 'wgs84',
-		// 	// geocode:true,
-		// 	success: function (res) {
-		// 		console.log('当前位置的经度：' + res.longitude);
-		// 		console.log('当前位置的纬度：' + res.latitude);
-		// 		console.log('当前位置：' + res);
-		// 	}
-		// });
-		// console.log("获取天气信息");
-		// uni.request({
-		// 	url: 'https://wthrcdn.etouch.cn/weather_mini?city=威海',
-		// 	method: 'GET',
-		// 	sslVerify:false,
-		// 	success: res => {
-		// 		// let obj = res.data;
-		// 		// const high = obj.data.forecast[0].high;
-		// 		// const low = obj.data.forecast[0].low
-		// 		// console.log(high);
-		// 		// console.log(low);
-		// 		console.log(res);
-		// 	},
-		// 	fail: err => {
-		// 		console.log(err);
-		// 	}
-		// });
 
 	})
 	onShow(() => {
@@ -224,7 +286,6 @@
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
-				// console.log(res.data);
 			},
 			fail: (err) => {
 				uni.navigateTo({

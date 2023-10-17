@@ -150,33 +150,19 @@
 			text: '其他',
 		}
 	]
- 	// const avatarSrc = ref("../.././static/images/img5.jpg")
-	// const src = ref("../.././static/images/product.webp")
-	// const name = ref("123鼠鼠")
-	// const money = ref(100)
-	// const detail = ref("这是一个手表这是一个手表")
-	// const date = ref("8分钟前")
 	const goToDetail = () => {
 		uni.navigateTo({
-			url: '/pages/productDetail/productDetail',
-			animationDuration: 300,
-			// events:{
-			// 	productListToDetail: function(data) {
-			// 	      console.log(data)
-			// 	},
-			// },
-			success: (res) => {
-				// console.log("看详情：",props.data);
-				// res.eventChannel.emit("productListToDetail",props.data);
-				uni.$emit("productListToDetail",props.data);
-			}
+			url: '/pages/productDetail/productDetail?id='+props.data.id,
+			// animationDuration: 300,
+			// success: (res) => {
+			// 	uni.$emit("productListToDetail",props.data);
+			// }
 		})
 	}
 	const picture = computed(() => {
 		if(props.data.picture === null || props.data.picture.trim() === "") {
 			return ''
 		}
-		// console.log();
 		return props.data.picture.split(",",1)[0];
 	})
 	const typeText = computed(() => {

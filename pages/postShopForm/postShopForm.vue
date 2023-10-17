@@ -105,14 +105,14 @@
 					commentCount: 0,
 					contactInfo: '',
 					content: '',
-					count: 0,
+					count: 1,
 					// createBy: '',
 					// createTime: '',
-					getMethod: 0,
+					getMethod: null,
 					goodsTypeId: '',
 					id: 0,
 					picture: '',
-					price: 0,
+					price: null,
 					// remark: '',
 					// stateFlg: 0,
 					title: '',
@@ -120,6 +120,14 @@
 					// updateTime: '',
 					// userId: 0
 				})
+	function if_GetMethod(){
+		if(baseFormData.getMethod===null)
+		{
+			return -1;
+		}else{
+			return baseFormData.getMethod
+		}
+	}
 	let pageNum = 1;			
 	const submitForm =()=>{
 		uni.request({
@@ -132,7 +140,7 @@
 				count: baseFormData.count,
 				// createBy: baseFormData.createBy,
 				// createTime: baseFormData.createTime,
-				getMethod: baseFormData.getMethod,
+				getMethod: if_GetMethod(),
 				goodsTypeId: baseFormData.goodsTypeId,
 				id: 0,
 				picture: baseFormData.picture,

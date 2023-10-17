@@ -98,6 +98,7 @@
 	  		// console.log(res);
 	  		if (res.data.code == 200) {
 	  			console.log(res);
+				loadData()
 	  		} else {
 	  			uni.showToast({
 	  				title: '收藏失败，请检查网络',
@@ -113,11 +114,7 @@
 	  	}
 	  })
 	}
-// const imageList= [
- //        { id: 1, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
- //        { id: 2, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
- //        { id: 3, url: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png' },
- //      ]
+
 	const goBack = ()=>{
 		uni.navigateBack({
 			delta:1
@@ -147,51 +144,87 @@
 	const name = ref("123鼠鼠")
 	const date = ref("8分钟前")
 	let item = ref({})
-	// let imageList = ref([])
-	// imageList.value = item.value.picture.split(',')
-	// console.log(imageList);
 	let pictureArray = ref([]);
 	let imageList = ref([]);
-	let goodsId = ref(null)
-	onLoad((options) => {
-		//  item = options.data;
-		// console.log('item',item);
-		uni.$on('productListToDetail', (res) => {
-		  // console.log('res',res); // 为 B 页面传过来的值
-		  item.value = res
-		  console.log('item.value',item.value);
-		  console.log('item.value.picture',item.value.picture);
-		  // 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
-		  pictureArray.value = item.value.picture.split(',');
-		  goodsId.value = item.value.id
-		  console.log('id',goodsId.value);
-		  // 构建imageList数组
-		  imageList.value = pictureArray.value.map((url, index) => {
-			return { id: index + 1, url: url };
-		  });
-		  //解决打开界面默认还是为收藏问题
-		  if(item.value.isStar===1){
-			  is_fav.value =true
-		  }
-		  console.log('imageList',imageList.value);
-		})
-	})
-	onShow(() => {
-		uni.getStorage({
-			key: 'token',
+	// onLoad((options) => {
+	// 	uni.$on('productListToDetail', (res) => {
+		 //  item.value = res
+		 //  console.log('item.value',item.value);
+		 //  console.log('item.value.picture',item.value.picture);
+		 //  // 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
+		 //  pictureArray.value = item.value.picture.split(',');
+		 //  goodsId.value = item.value.id
+		 //  console.log('id',goodsId.value);
+		 //  // 构建imageList数组
+		 //  imageList.value = pictureArray.value.map((url, index) => {
+			// return { id: index + 1, url: url };
+		 //  });
+		 //  //解决打开界面默认还是为收藏问题
+		 //  if(item.value.isStar===1){
+			//   is_fav.value =true
+		 //  }
+		 //  console.log('imageList',imageList.value);
+	// 	})
+	// })
+	const loadData = (id)=>{
+		goodsId.value = id
+		console.log(goodsId.value);
+		uni.request({
+			url:"http://94.74.87.251:8080/school/goods/" + goodsId.value,
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
 			success: (res) => {
-				// console.log(res.data);
-				token = res.data;
-	
+				console.log('res',res);
+				if (res.data.code == 200) {
+					item.value = res.data.data
+					console.log('item.value',item.value);
+					// console.log('item.value.picture',item.value.picture);
+					// 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
+					pictureArray.value = item.value.picture.split(',');
+					goodsId.value = item.value.id
+					// console.log('id',goodsId.value);
+					// 构建imageList数组
+					imageList.value = pictureArray.value.map((url, index) => {
+								return { id: index + 1, url: url };
+					});
+					// console.log('item.value修改前的',item.value.avatar);
+					// item.value.avatar = 'http://94.74.87.251:8080' + item.value.avatar;
+					// console.log('item.value修改后的',item.value.avatar);
+					//解决打开界面默认还是为收藏问题
+					if(item.value.isStar===1){
+								  is_fav.value =true
+					}
+					// console.log('imageList',imageList.value);
+				} else {
+				}
 			},
 			fail: (err) => {
-				uni.navigateTo({
-					url: '/pages/login/login',
-					animationDuration: 300
+				uni.showToast({
+					title: err,
+					icon: 'none'
 				})
 			}
-		});
+		})
+	}
+	let goodsId = ref(null)
+	onLoad((option) => {
+		uni.getStorage({
+				key: 'token',
+				success: (res) => {
+					token = res.data;
+					loadData(option.id)
+				},
+				fail: (err) => {
+					uni.navigateTo({
+						url: '/pages/login/login',
+						animationDuration: 300
+					})
+				}
+			});
 	
+		
 	})
 </script>
 
@@ -290,7 +323,7 @@
 			}
 			.view-nums{
 			  // opacity: 0.;
-			  font-size: 15rpx;
+			  font-size: 25rpx;
 			  color: #333;
 			  display: flex;
 			  .view-num {
@@ -305,7 +338,7 @@
 		.item-title {
 			font-weight: 710;
 			font-size: 35rpx;
-		}
+			}
 		}	
 	}
 .info-body {

@@ -156,29 +156,14 @@
 		authorName: 'HITwhLinker', //发布者名称
 		like: false, // 默认没点赞
 		likeCount: 26, // 点赞数量
-	}, {
+	},{
 		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
 		date: '2023-08-20',
 		time: '9:00',
 		title: '发布会',
 		position: 'G101',
 		tag: '学术讲座', //活动所属分类
-		id: '2',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。<img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}, {
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '3',
+		id: '1',
 		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
 		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 		viewNum: 0, //活动的浏览量
@@ -186,14 +171,14 @@
 		authorName: 'HITwhLinker', //发布者名称
 		like: false, // 默认没点赞
 		likeCount: 26, // 点赞数量
-	}, {
+	},{
 		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
 		date: '2023-08-20',
 		time: '9:00',
 		title: '发布会',
 		position: 'G101',
 		tag: '学术讲座', //活动所属分类
-		id: '4',
+		id: '1',
 		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
 		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
 		viewNum: 0, //活动的浏览量
@@ -201,67 +186,7 @@
 		authorName: 'HITwhLinker', //发布者名称
 		like: false, // 默认没点赞
 		likeCount: 26, // 点赞数量
-	}, {
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '5',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}, {
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '6',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}, {
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '7',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}, {
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '8',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}, ])
+	}])
 	let weather_info = ref("");
 	let city = ref("");
 	const achieve = (open) => {
@@ -351,6 +276,21 @@
 </script>
 
 <style lang="scss" scoped>
+	.product-list {
+		// height: 60vh;
+		// flex-grow: 1;
+		flex-direction: column;
+		background-color: transparent;
+	
+		// margin: 0 10px;
+		// margin-bottom: 100px;
+		.product-item {
+			width: 100%;
+			// height: 340px;
+			margin-top: 10px;
+			background-color: #fff;
+		}
+	}
 	.homeBody {
 		padding: 10rpx 40rpx 0 40rpx;
 

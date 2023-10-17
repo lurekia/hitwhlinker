@@ -53,7 +53,7 @@
 					      <p class="detail-text">{{item.content}}</p>
 					</view>
 				</view>
-				<view class="info-images" v-if="imageList">
+				<view class="info-images" v-if="imageList||imageList[0].url">
 					<text style="color:#999">图片展示</text>
 					<view>
 					    <view v-for="image in imageList" :key="image.id" class="image-item" >
@@ -68,8 +68,8 @@
 			
 		</scroll-view> 
 		<view class="bottom-bar">
-			<uni-fav :checked="is_fav" class="favBtn" :circle="true" bg-color="#dd524d"
-								bg-color-checked="#007aff" fg-color="#ffffff" fg-color-checked="#ffffff" @click="favClick()" />
+			<uni-fav :checked="is_fav" class="favBtn" :circle="true" bg-color="#e85353"
+								bg-color-checked="#ffcd42" fg-color="#ffffff" fg-color-checked="#ffffff" @click="favClick()" />
 			<button class="my-want" @click="GotoChat">我想要</button>
 		</view>
 	</view>
@@ -122,22 +122,8 @@
 	}
 	const GotoChat = ()=>{
 		uni.navigateTo({
-			url: '/pages/privateChat/privateChat',
+			url: '/pages/privateChat/privateChat?id=' + item.value.userId + '&name='+item.value.nickName + '&avatar=' + item.value.avatar,
 			animationDuration: 300,
-			events:{
-				initMsgs: function(data) {
-					  console.log(data)
-				},
-			},
-			success: (res) => {
-				// const friend_info = 
-				// console.log("看看：",friend_info);
-				res.eventChannel.emit("initMsgs",{
-					id: item.value.userId,
-					name: item.value.nickName,
-					avatar: item.value.avatar
-				})
-			}
 		})
 	}
 	// const avatarSrc = ref("../.././static/images/img5.jpg")
@@ -189,14 +175,14 @@
 					imageList.value = pictureArray.value.map((url, index) => {
 								return { id: index + 1, url: url };
 					});
-					// console.log('item.value修改前的',item.value.avatar);
-					// item.value.avatar = 'http://94.74.87.251:8080' + item.value.avatar;
-					// console.log('item.value修改后的',item.value.avatar);
+					console.log('item.value修改前的',item.value.avatar);
+					item.value.avatar = 'http://94.74.87.251:8080' + item.value.avatar;
+					console.log('item.value修改后的',item.value.avatar);
 					//解决打开界面默认还是为收藏问题
 					if(item.value.isStar===1){
 								  is_fav.value =true
 					}
-					// console.log('imageList',imageList.value);
+					console.log('imageList',imageList.value);
 				} else {
 				}
 			},
@@ -247,7 +233,7 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		background-color: pink;
+		background-color: #f8f8f8;
 		.favBtn{
 			position: absolute;
 			top: 30rpx;
@@ -263,7 +249,8 @@
 			height: 60rpx;
 			line-height: 60rpx;
 			text-align: center;
-			background-color: crimson;
+			background-color: #e85353;
+			// background-color: crimson;
 			border-radius: 30rpx;
 		}
 	}

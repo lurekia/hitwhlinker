@@ -273,37 +273,37 @@
 	// const tagChooseVisible = ref(false)
 
 	const tag_content = ref([{
-			id: 1,
+			id: '0',
 			text: '人物匹配',
 			icon: '&#xe60b;',
 			active: false,
 		},
 		{
-			id: 2,
+			id: '1',
 			text: '电子产品',
 			icon: '&#xe60b;',
 			active: false,
 		},
 		{
-			id: 3,
+			id: '2',
 			text: '生活用品',
 			icon: '&#xe60b;',
 			active: false,
 		},
 		{
-			id: 4,
+			id: '3',
 			text: '学习资料',
 			icon: '&#xe60b;',
 			active: false,
 		},
 		{
-			id: 5,
+			id: "4",
 			text: '零食饮料',
 			icon: '&#xe60b;',
 			active: false,
 		},
 		{
-			id: 6,
+			id: "5",
 			text: '其他',
 			icon: '&#xe60b;',
 			active: false,

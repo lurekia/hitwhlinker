@@ -1,9 +1,6 @@
 <template>
-	<view class="card">
-		<view v-if="picture!==''" class="img">
-			<image :src="picture" mode="aspectFill"
-				style="width: 100%;height: 100%;border-radius: 5px;" @click="goToDetail()"></image>
-		</view>
+	<view class="card" @click="goToDetail()">
+		
 		<view class="info">
 
 			<view class="title">
@@ -27,12 +24,15 @@
 				<view class="nickname">
 					<text>{{data.nickName}}</text>
 				</view>
-				<view class="link" @click="toPrivateChat()">
+				<view class="link" @click.stop="toPrivateChat()">
 					<text>聊聊-&gt;</text>
 				</view>
 			</view>
 		</view>
-
+		<view v-if="picture!==''" class="img">
+			<image :src="picture" mode="aspectFill"
+				style="width: 100%;height: 100%;border-radius: 5px;" ></image>
+		</view>
 	</view>
 </template>
 <style lang="scss" scoped>
@@ -54,7 +54,7 @@
 	.info {
 		flex-grow: 1;
 		height: 100%;
-		margin-left: 10px;
+		margin-right: 10px;
 		flex-direction: column;
 		
 		.money {
@@ -126,27 +126,27 @@
 	const getMethodType = ["需自取","可配送"];
 	const productType = [
 		{
-			id: "1",
+			id: "0",
 			text: '人物匹配',
 		},
 		{
-			id: "2",
+			id: "1",
 			text: '电子产品',
 		},
 		{
-			id: "3",
+			id: "2",
 			text: '生活用品',
 		},
 		{
-			id: '4',
+			id: '3',
 			text: '学习资料',
 		},
 		{
-			id: '5',
+			id: '4',
 			text: '零食饮料',
 		},
 		{
-			id: '6',
+			id: '5',
 			text: '其他',
 		}
 	]

@@ -2,8 +2,8 @@
     "name" : "hitwhlinker",
     "appid" : "__UNI__AD92B35",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.1",
+    "versionCode" : 101,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
@@ -17,7 +17,8 @@
             "delay" : 0
         },
         "modules" : {
-            "Maps" : {}
+            "Speech" : {},
+            "Record" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -49,7 +50,14 @@
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},
-                "maps" : {}
+                "maps" : {},
+                "speech" : {
+                    "baidu" : {
+                        "appid" : "41186225",
+                        "apikey" : "GYcpkRTfseGWG6cuh3KS2pYm",
+                        "secretkey" : "5oYIyMsdlEtp26X6XgSxHhMfScjBWeio"
+                    }
+                }
             }
         }
     },
@@ -64,5 +72,12 @@
         },
         "usingComponents" : true
     },
-    "vueVersion" : "3"
+    "vueVersion" : "3",
+    "quickapp-webview" : {
+        "package" : "com.hitwh.linker",
+        "versionCode" : 1,
+        "versionName" : "1.0",
+        "minPlatformVersion" : 1062,
+        "icon" : "D:/img/img/appcover.png"
+    }
 }

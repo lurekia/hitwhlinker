@@ -54,7 +54,7 @@
 						const user_info = {
 							id: user.userId,
 							name: user.nickName,
-							avatar: user.avatar,
+							avatar: "http://94.74.87.251:8080" + user.avatar,
 						}
 						uni.setStorageSync('user_info',JSON.stringify(user_info))
 					}
@@ -99,8 +99,8 @@
 							
 							that.saveData(res.data.token);
 							
-							uni.switchTab({ // 跳转到新闻页面
-								url: "../home/home",
+							uni.reLaunch({ // 跳转到新闻页面
+								url: "/pages/home/home",
 							})
 							uni.showToast({
 								title: '登录成功',

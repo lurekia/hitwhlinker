@@ -12,7 +12,7 @@
 		</scroll-view>
 		<view class="bottom-box">
 			<view class="bottom-input" :style="{paddingBottom:keyBoardHeight+'px'}">
-				<text class="iconfont icon">&#xe605;</text>
+				<text class="iconfont icon" @click="startRecord">&#xe605;</text>
 				<view class="textarea-container">
 					<textarea auto-height :fixed="true" confirm-type="send" v-model="input" @confirm="submit"
 						:adjust-position="false" :cursor-spacing="20" @focus="scrollToBottom()" />
@@ -41,6 +41,7 @@
 	import leftChat from '@/components/chat/leftChat.vue'
 	import rightChat from '@/components/chat/rightChat.vue'
 	import toolBox from '@/components/unicomp/toolBox.vue'
+	import Voice from '@/lib/BDvoice/voicePlay/voiceplay.js'
 	// 设备信息
 	let systemInfo = null
 	let msgs = ref([
@@ -154,6 +155,18 @@
 			time: "2023/7/29 12:00:00"
 		},
 	]);
+
+	// 对方用户信息
+	let user_info = {
+		id: "100",
+		name: "小红",
+		avatar: "../.././static/images/img2.jpg"
+	};
+	// let friend_info = {
+	// 	id: "100",
+	// 	name: "小红",
+	// 	avatar: "../.././static/images/img2.jpg"
+	// };
 	// 对方用户名
 	let title = "";
 	// const server_id = null;
@@ -266,32 +279,57 @@
 	uni.onKeyboardHeightChange(listenKeyboard)
 	// #endif
 	const query_server = (str) => {
-		uni.request({
-			url: 'http://119.8.190.49:5000/query_local_information',
-			method: "POST",
-			data: {
-				query: str,
-				type: server_type
-			},
-			header: {
-				"Content-Type": "application/json;charset=UTF-8"
-			},
-			success: (res) => {
-				console.log(res);
-				const msg = {
-					left: true,
-					content: res.data.answer,
-					tag: 'text',
-					time: "2023/7/29 12:00:00"
-				}
-				msgs.value.push(msg)
-				scrollToBottom()
-			},
-			fail: (err) => {
-				console.log(err);
-			}
-		})
+		// uni.request({
+		// 	url: 'http://119.8.190.49:5000/query_local_information',
+		// 	method: "POST",
+		// 	data: {
+		// 		query: str,
+		// 		type: server_type
+		// 	},
+		// 	header: {
+		// 		"Content-Type": "application/json;charset=UTF-8"
+		// 	},
+		// 	success: (res) => {
+		// 		console.log(res);
+		// 		const msg = {
+		// 			left: true,
+		// 			content: res.data.answer,
+		// 			tag: 'text',
+		// 			time: "2023/7/29 12:00:00"
+		// 		}
+		// 		msgs.value.push(msg)
+		// 		scrollToBottom()
+		// 	},
+		// 	fail: (err) => {
+		// 		console.log(err);
+		// 	}
+		// })
+		const msg = {
+			left: true,
+			content: '我都不知道你在说什么',
+			tag: 'text',
+			time: "2023/7/29 12:00:00"
+		}
+		msgs.value.push(msg)
+		Voice(msg.content)
 	}
+
+	const testVoice = () => {
+		console.log("祝你恭喜发财");
+		// Voice("祝你恭喜发财")
+
+		// const innerAudioContext = uni.createInnerAudioContext();
+		// innerAudioContext.autoplay = true;
+		// innerAudioContext.src = 'https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3';
+		// innerAudioContext.onPlay(() => {
+		//   console.log('开始播放');
+		// });
+		// innerAudioContext.onError((res) => {
+		//   console.log(res.errMsg);
+		//   console.log(res.errCode);
+		// });
+	}
+
 	const submit = () => {
 		if (input.value === '') {
 			return
@@ -333,10 +371,22 @@
 		// 	msgs.value.push(msg)
 		// }
 	}
+	const startRecord = () => {
+		var options = { // 语音转文字的设置
+			engine: 'baidu'
+		};
+		console.log('开始语音识别：');
+		plus.speech.startRecognize(options, function(s) { //plus.speech.startRecognize可查官方文档
+			console.log(s);
+			input.value += s;
+		}, function(e) {
+			console.log('语音识别失败：' + JSON.stringify(e));
+		});
+	}
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
-
+		testVoice()
 	})
 	onLoad((obj) => {
 		// const eventChannel = this.getOpenerEventChannel();
@@ -344,6 +394,22 @@
 		const page = pages[pages.length - 1];
 		const eventChannel = page.getOpenerEventChannel();
 		eventChannel.on("initMsgs", initMsgs)
+
+		uni.getStorage({
+			key: 'user_info',
+			success: (res) => {
+				// console.log(res.data);
+				user_info = JSON.parse(res.data);
+				right_avatar.value = user_info.avatar;
+				console.log("用户信息：", user_info);
+			},
+			fail: (err) => {
+				uni.navigateTo({
+					url: '/pages/login/login',
+					animationDuration: 300
+				})
+			}
+		});
 
 		title = obj.server_name
 		server_type = obj.server_type;

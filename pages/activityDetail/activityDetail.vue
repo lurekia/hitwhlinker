@@ -36,6 +36,7 @@
 				    <text>{{ item.likeCount }}</text>
 			</view>
 		</view>
+		<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 	</view>
 </template>
 
@@ -50,6 +51,7 @@
 	import {
 		onLoad,onInit
 	} from '@dcloudio/uni-app'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	// import { sortBy } from 'lodash'
 	// 返回标志
 	const goBack = () => {

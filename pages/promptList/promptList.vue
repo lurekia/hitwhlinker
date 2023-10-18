@@ -12,6 +12,7 @@
 			<text style="font-size: 12px;color: #333;">示例："第{五}周{G}楼{一}楼哪些教室有空"</text>
 		</view>
 	</view>
+	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
@@ -20,6 +21,7 @@
 		ref
 	} from 'vue'
 	import promptItem from '@/components/prompt/promptItem.vue'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const raw_prompts = ref([
 		"帮我预约{10月1号下午}{3点到5点}的{4楼a区24号}座位",
 		"第{五}周{G}楼{一}楼哪些教室有空"

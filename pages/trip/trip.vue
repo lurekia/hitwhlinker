@@ -43,11 +43,12 @@
 		
 	</view>
 	
-	
+	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
 	import { ref, nextTick,reactive,onMounted } from 'vue'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const activities = reactive([
 		{
 			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片

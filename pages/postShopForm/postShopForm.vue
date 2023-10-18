@@ -67,6 +67,7 @@
 			</view>
 		</view>
 	</view>
+	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
@@ -80,6 +81,7 @@
 	import {
 		onLoad,onInit
 	} from '@dcloudio/uni-app'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const goBack = () => {
 		uni.navigateBack({
 			delta: 1

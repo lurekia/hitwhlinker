@@ -70,6 +70,7 @@
 				<button type="warn" style="width: 80vw;" @click="logout()">登出</button>
 			</view>
 		</view>
+		<dragball :x='200' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 	</view>
 
 </template>
@@ -186,13 +187,21 @@
 	import {
 		onMounted,
 		reactive,
-		ref
+		ref,
+		// getCurrentInstance
 	} from 'vue'
 	import {
 		onLoad,
 		onInit,
 		onShow
 	} from '@dcloudio/uni-app'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
+	// const {proxy} = getCurrentInstance()
+	// const handleMoveBall = (wz) => {
+	// 	proxy.inx = wz.x;
+	// 	proxy.iny = wz.y;
+	// }
+	
 	const avatarSrc = ref("")
 	const userInfo = ref("")
 	const nickName = ref("")
@@ -294,8 +303,6 @@
 
 			}
 		});
-
-
 	}
 	const logout = () => {
 		uni.removeStorage({

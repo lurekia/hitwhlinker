@@ -28,6 +28,8 @@ export function createApp() {
   app.use(uviewPlus)
   app.config.globalProperties.GoEasy = GoEasy;
   app.config.globalProperties.goEasy = goEasy;
+  app.config.globalProperties.inx = 50;
+  app.config.globalProperties.iny = 50;
   return {
     app
   }

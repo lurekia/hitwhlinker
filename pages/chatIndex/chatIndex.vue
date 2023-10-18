@@ -6,10 +6,10 @@
 		<!-- 头部 -->
 		<view class="header">
 			<text class="title">Student Buddy</text>
-			<view class="tool">
+			<!-- <view class="tool">
 				<text class="iconfont icon">&#xe602;</text>
 				<text class="iconfont icon">&#xe601;</text>
-			</view>
+			</view> -->
 		</view>
 		<!-- 所有好友列表 -->
 		<!-- <scroll-view class="content" scroll-y="true"> 
@@ -26,9 +26,9 @@
 				</li>
 			</ul>
 		</scroll-view> -->
-
 		<scroll-view id="user-list-box" scroll-y="true">
 			<!-- 会话用户列表 -->
+			<uni-section class="mb-10" title="助手列表" type="line"></uni-section>
 			<uni-list :border="true">
 				<uni-list-chat v-for="(chat,index) in chat_views" :key="chat.id" :showBadge="chat.unread_count>0"
 					:badgeText="chat.unread_count" badge-positon="left" :title="chat.name" :avatar="chat.head_img_url"
@@ -37,7 +37,8 @@
 				</uni-list-chat>
 
 			</uni-list>
-
+			
+			<uni-section class="mb-10" title="会话列表" type="line"></uni-section>
 			<uni-list :border="true">
 				<uni-list-chat v-for="(conversation,index) in conversations" :key="index"
 					:showBadge="conversation.unread>0" :badgeText="conversation.unread" badge-positon="left"
@@ -50,6 +51,7 @@
 			</uni-list>
 		</scroll-view>
 	</view>
+	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
@@ -68,7 +70,7 @@
 		onShow,
 		onUnload
 	} from '@dcloudio/uni-app'
-
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const {
 		proxy
 	} = getCurrentInstance()
@@ -82,7 +84,7 @@
 			id: 1,
 			name: "活动我先知",
 			type: "Club_activities",
-			head_img_url: "../.././static/images/img1.jpg",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img1_20231017141016A001.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -92,7 +94,7 @@
 			id: 2,
 			name: "新生引导员",
 			type: "StuDoc",
-			head_img_url: "../.././static/images/img2.jpg",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -102,7 +104,7 @@
 			id: 3,
 			name: "餐厅探店侠",
 			type: "Canteen",
-			head_img_url: "../.././static/images/img3.jpg",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img3_20231017141058A003.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -112,7 +114,7 @@
 			id: 4,
 			name: "预约助手",
 			type: "classroom",
-			head_img_url: "../.././static/images/img4.jpg",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -122,7 +124,17 @@
 			id: 5,
 			name: "学习助手",
 			type: "Learning_buddy",
-			head_img_url: "../.././static/images/img5.jpg",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg",
+			msgs: [],
+			last_word: "你好呀",
+			last_word_date: 1690702956056,
+			unread_count: 0
+		},
+		{
+			id: 6,
+			name: "hitwhlinker",
+			type: "hitwhlinker",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
@@ -180,21 +192,10 @@
 	// 点击跳转聊天界面
 	const handleClick = (index) => {
 		console.log(index);
-
+		const server = chat_views.value[index]
 		uni.navigateTo({
-			url: '/pages/chat/chat?server_name=' + chat_views.value[index].name + '&server_type=' + chat_views
-				.value[index].type,
+			url: '/pages/chat/chat?server_name=' + server.name + '&server_type=' + server.type+ '&server_avatar=' + server.head_img_url,
 			animationDuration: 300,
-			events: {
-				initMsgs: function(data) {
-					console.log(data)
-				},
-			},
-			success: (res) => {
-				// const friend_info = 
-				// console.log("看看：",friend_info);
-				res.eventChannel.emit("initMsgs", chat_views.value[index].msgs)
-			}
 		})
 
 	}
@@ -226,7 +227,7 @@
 					console.log(res);
 					if (res.statusCode == 200) {
 						chat_views.value[i].msgs = res.data
-						if (res.data.length == 0) {
+						if (res.data.length === 0) {
 							chat_views.value[i].last_word = "无"
 							chat_views.value[i].last_word_date = 0
 						} else {

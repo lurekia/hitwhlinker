@@ -71,7 +71,7 @@
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType"
 				:content-text="contentText"></uni-load-more>
-
+			<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 		</scroll-view>
 		<uni-drawer ref="filter" mode="right" :mask-click="true">
 			<scroll-view style="height: 100%;padding: 10px;" scroll-y="true">
@@ -222,7 +222,7 @@
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
 	import loginVue from '../login/login.vue';
-
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const {
 		proxy
 	} = getCurrentInstance()

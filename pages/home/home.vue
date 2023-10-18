@@ -36,23 +36,33 @@
 				</view>
 			</view>
 		</view>
+		<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 	</view>
+	
 </template>
 
 <script setup>
 	import turns from '../../components/pc-turns/pc-turns.vue'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	import {
 		ref,
 		reactive,
 		onMounted,
 		computed,
-		watch
+		watch,
+		// getCurrentInstance
 	} from 'vue'
 	import {
 		onLoad,
 		onInit,
 		onShow
 	} from '@dcloudio/uni-app'
+	
+	// const {proxy} = getCurrentInstance()
+	// const handleMoveBall = (wz) => {
+	// 	proxy.inx = wz.x;
+	// 	proxy.iny = wz.y;
+	// }
 	const data = reactive([{
 		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
 		date: '2023-08-20',

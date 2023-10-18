@@ -6,7 +6,7 @@
 			<view class="title">
 				<rich-text :nodes="data.title"></rich-text>
 			</view>
-			<view class="money">
+			<view class="money" v-if="data.price">
 				<text style="color: red;font-size: 18px;margin-top: 5px;">￥</text>
 				<text style="color: red;font-size: 26px;">{{data.price}}</text>
 				<!-- <text style="color: red;font-size: 26px; margin:0 10px;">~</text>
@@ -15,17 +15,22 @@
 			<view class="tags">
 				<uni-tag :text="typeText" type="primary" class="tag" :inverted="true"></uni-tag>
 				<uni-tag :text="getMethodType[data.getMethod]" type="success" class="method"></uni-tag>
-				<text style="color: #8f939c;font-size: 14px;">{{data.starCounts}}次收藏</text>
+				
+				<view >
+					<uni-icons type="star-filled" size="20" color="#ffb001" class="star-num" ></uni-icons>{{data.starCounts}}
+				</view>
 			</view>
 			<view v-if="isMine" class="user">
-				<button type="warn" size="mini" @click="handleDelete(data.id)">撤销</button>
+				<button type="warn" size="mini" @click.stop="handleDelete(data.id)">撤销</button>
 			</view>
 			<view v-else class="user">
 				<view class="nickname">
 					<text>{{data.nickName}}</text>
 				</view>
 				<view class="link" @click.stop="toPrivateChat()">
-					<text>聊聊-&gt;</text>
+					<!-- <text>Chat</text> -->
+					<uni-icons type="chatboxes" size="20" color="#306af1" class="star-num" ></uni-icons>
+					
 				</view>
 			</view>
 		</view>
@@ -49,6 +54,7 @@
 		border-radius: 10px;
 		border: 1px solid rgb(216, 216, 216);
 		padding: 10px;
+		padding-bottom: 0;
 	}
 
 	.info {
@@ -66,6 +72,7 @@
 			width: 100%;
 			height: 45px;
 			margin-bottom: 10px;
+			font-size: 38rpx;
 		}
 
 		.tags {
@@ -74,7 +81,7 @@
 			height: 30px;
 			align-items: center;
 			justify-content: space-around;
-			margin-bottom: 5px;
+			// margin-bottom: 5px;
 
 			.tag {
 				margin-right: 5px;
@@ -100,7 +107,7 @@
 				color: red;
 			}
 			.link {
-				color: #8f939c;
+				color: #306af1;
 			}
 		}
 
@@ -150,33 +157,19 @@
 			text: '其他',
 		}
 	]
- 	// const avatarSrc = ref("../.././static/images/img5.jpg")
-	// const src = ref("../.././static/images/product.webp")
-	// const name = ref("123鼠鼠")
-	// const money = ref(100)
-	// const detail = ref("这是一个手表这是一个手表")
-	// const date = ref("8分钟前")
 	const goToDetail = () => {
 		uni.navigateTo({
-			url: '/pages/productDetail/productDetail',
-			animationDuration: 300,
-			// events:{
-			// 	productListToDetail: function(data) {
-			// 	      console.log(data)
-			// 	},
-			// },
-			success: (res) => {
-				// console.log("看详情：",props.data);
-				// res.eventChannel.emit("productListToDetail",props.data);
-				uni.$emit("productListToDetail",props.data);
-			}
+			url: '/pages/productDetail/productDetail?id='+props.data.id,
+			// animationDuration: 300,
+			// success: (res) => {
+			// 	uni.$emit("productListToDetail",props.data);
+			// }
 		})
 	}
 	const picture = computed(() => {
 		if(props.data.picture === null || props.data.picture.trim() === "") {
 			return ''
 		}
-		// console.log();
 		return props.data.picture.split(",",1)[0];
 	})
 	const typeText = computed(() => {

@@ -6,9 +6,9 @@
 			<view class="calendar-header"  >
 				校园日历
 			</view>
-			<view class="list-icon" @click="goToList()">
+			<!-- <view class="list-icon" @click="goToList()">
 				<uni-icons type="list" size="20" color="#fff" ></uni-icons>
-			</view>
+			</view> -->
 			<view class="calendar-wrapper">
 				<uni-calendar
 				class="uni-calendar--hook" 
@@ -19,7 +19,8 @@
 			</view>
 		</view>
 		
-			<view class="my-list-wrapper">
+		<scroll-view style="height:35vh;padding: 10px;margin-bottom: 100rpx;" scroll-y="true">
+			<view >
 				<uni-list class="my-list">
 					<uni-list-item  direction="column" v-for="item in selected" :key="item.index" 
 					 thumb-size="lg"  clickable @click="showDetail(item)">
@@ -33,14 +34,30 @@
 							<!-- 同步footer插槽定义列表底部的显示效果 -->
 						<template v-slot:footer>
 							<view class="uni-footer">
-								<text class="uni-footer-time">{{item.startTime}}</text>
+								<text class="uni-footer-time">{{item.startTime.substring(0, 5)}}</text>
+								<view class="act-tag">
+									<view class="tag-view" v-if="(item.tag==='讲座')||(item.tag==='讲座报告')">
+										<uni-tag text="讲座" type="primary" size="small" />
+									</view>
+									<view class="tag-view" v-if="item.tag==='竞赛'">
+										<uni-tag text="竞赛" size="small" />
+									</view>
+									<view class="tag-view" v-if="item.tag==='演出'">
+										<uni-tag text="演出" type="warning" size="small"/>
+									</view>
+									<view class="tag-view" v-if="item.tag==='电影'">
+										<uni-tag text="电影" type="error" size="small"/>
+									</view>
+									<view class="tag-view" v-if="item.tag==='主题活动'">
+										<uni-tag text="活动" type="success" size="small"/>
+									</view>
+								</view>
 							</view>
 						</template>
-			
 					</uni-list-item>
 				</uni-list>
 			</view>
-		
+		</scroll-view>
 	</view>
 	
 	
@@ -55,13 +72,14 @@
 	} from '@dcloudio/uni-app'
 	const activities = ref([])
 	const selected = ref([])
+	
 	const showCalendar = ref(false)
 	nextTick(() => {
 	  showCalendar.value = true
 	})
 	const loadData = () => {
 		uni.request({
-			url: "http://94.74.87.251:8080/school/activity/list",
+			url: "http://94.74.87.251:8080/school/activity/list?pageNum=1&pageSize=100",
 			method: "GET",
 			header: {
 				"Authorization": token
@@ -138,6 +156,18 @@
 		   console.log('selected.value',selected.value);
 	     }
 	   })
+	   selected.value.sort((a, b) => {
+	     // 将日期和时间字符串拼接为完整的日期时间格式
+	     const dateTimeA = `${a.startDate}T${a.startTime}`;
+	     const dateTimeB = `${b.startDate}T${b.startTime}`;
+	     
+	     // 将日期时间字符串转换为时间数值进行比较
+	     const timeA = Date.parse(dateTimeA);
+	     const timeB = Date.parse(dateTimeB);
+	     
+	     // 按时间的升序排序
+	     return timeA - timeB;
+	   });
 	  // console.log(selected);
 	}
 	function monthSwitch() {
@@ -173,7 +203,7 @@
 		top: calc(30rpx + var(--status-bar-height));
 		right: 120rpx;
 		// 奇怪  莫名其妙要加一个z-index  否则就会被覆盖
-		z-index: 99 
+		z-index: 99 ;
 	}
 	.uni-title {
 		font-weight: 550;
@@ -184,6 +214,12 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+	.act-tag {
+		margin-left: 20rpx;
+	}
+	.uni-footer {
+		display: flex;
+	}
 	.uni-footer-time {
 		color: #333;
 		font-size: 30rpx;
@@ -191,22 +227,28 @@
 	.uni-footer-position {
 		color: #d65858;
 		font-weight: 550;
+		width:40%;
 		font-size: 35rpx;
 	}
 	.page {
 	  position: relative;
 	  display: flex;
 	  flex-direction: column;
+	  height: 92vh;
 	}
 	.calendar-wrapper {
 	  flex-shrink: 0;
 	}
 	.my-list-wrapper {
-	  height: 45vh;
+	  height: 50vh;
 	  overflow-y: scroll; /* 内容超出自动滚动 */
 	  border-top-left-radius: 20rpx;
 	  border-top-right-radius: 20rpx;
 	  
+	}
+		
+	.zhuti ::v-deep .uni-tag{
+		background-color: #ae81bd;
 	}
 	.my-list ::v-deep .uni-list {
 		border-top-left-radius: 20rpx;

@@ -31,10 +31,6 @@
 					<uni-forms-item label="库存" >
 						<uni-number-box :value="baseFormData.count" @change="changeCountValue" />
 					</uni-forms-item>
-					
-					<!-- <uni-forms-item label="详情" required>
-						<uni-easyinput type="textarea" v-model="baseFormData.content"   autoHeight  placeholder="请输入详情介绍" />
-					</uni-forms-item> -->
 					<uni-forms-item label="详情" required>
 					      <uni-easyinput
 					          type="textarea"
@@ -201,7 +197,45 @@
 				  { value: 4, text: "零食饮料" },
 				  { value: 5, text: "人物匹配" },
 				]
-				
+	const loadData = ()=>{
+		uni.request({
+			url:"http://94.74.87.251:8080/school/goods_type/list",
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				console.log('res',res);
+				if (res.data.code == 200) {
+					
+				} else {
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}
+	onLoad((option) => {
+		uni.getStorage({
+				key: 'token',
+				success: (res) => {
+					token = res.data;
+					loadData()
+				},
+				fail: (err) => {
+					uni.navigateTo({
+						url: '/pages/login/login',
+						animationDuration: 300
+					})
+				}
+			});
+	
+		
+	})			
 	const changeCountValue = (value)=>{
 		baseFormData.count = value
 		console.log(baseFormData.count);

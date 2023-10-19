@@ -17,7 +17,7 @@
 				<uni-tag :text="getMethodType[data.getMethod]" type="success" class="method"></uni-tag>
 				
 				<view >
-					<uni-icons type="star-filled" size="20" color="#ffb001" class="star-num" ></uni-icons>{{data.starCounts}}
+					<uni-icons type="star-filled" size="20" color="#ffb001"  ></uni-icons>{{data.starCounts}}
 				</view>
 			</view>
 			<view v-if="isMine" class="user">
@@ -29,7 +29,7 @@
 				</view>
 				<view class="link" @click.stop="toPrivateChat()">
 					<!-- <text>Chat</text> -->
-					<uni-icons type="chatboxes" size="20" color="#306af1" class="star-num" ></uni-icons>
+					<uni-icons type="chatboxes" size="20" color="#306af1" ></uni-icons>
 					
 				</view>
 			</view>
@@ -55,6 +55,7 @@
 		border: 1px solid rgb(216, 216, 216);
 		padding: 10px;
 		padding-bottom: 0;
+		box-shadow: 1rpx 5rpx 6rpx 2rpx rgba(0, 0, 0, 0.1), 2rpx 5rpx 10rpx 1rpx rgba(0, 0, 0, 0.1);
 	}
 
 	.info {
@@ -104,7 +105,7 @@
 			height: 30px;
 			font-size: 12px;
 			.nickname {
-				color: red;
+				color: #306af1;
 			}
 			.link {
 				color: #306af1;
@@ -160,10 +161,6 @@
 	const goToDetail = () => {
 		uni.navigateTo({
 			url: '/pages/productDetail/productDetail?id='+props.data.id,
-			// animationDuration: 300,
-			// success: (res) => {
-			// 	uni.$emit("productListToDetail",props.data);
-			// }
 		})
 	}
 	const picture = computed(() => {

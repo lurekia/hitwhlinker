@@ -2,7 +2,7 @@
 	<view>
 		<view class="topbar">
 			<view class="topbar-content">
-				需求发布
+				信息发布
 			</view>
 			<uni-icons type="back" size="30" color="#fff" class="go-back" @click="goBack"></uni-icons>
 		</view>
@@ -13,7 +13,6 @@
 					<uni-forms-item label="标题" required>
 						<uni-easyinput v-model="baseFormData.title" placeholder="请输入标题" maxlength="25" />
 					</uni-forms-item>
-					
 					<uni-forms-item label="标签" required>
 						<uni-data-select
 						        v-model="baseFormData.tag"
@@ -21,7 +20,6 @@
 						        @change="changeGoodsTag"
 						      ></uni-data-select>
 					</uni-forms-item>
-					
 					<uni-forms-item label="途径" >
 						<uni-data-checkbox v-model="baseFormData.typeValue" :localdata="type" @change="changetypeValue"></uni-data-checkbox>
 					</uni-forms-item>
@@ -37,6 +35,7 @@
 					          v-model="baseFormData.content"
 					          autoHeight
 					          placeholder="请输入详情介绍"
+							  maxlength="500"
 					          @input="updateDetail"
 					        />
 					</uni-forms-item>

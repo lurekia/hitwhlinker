@@ -12,8 +12,8 @@
 				    <view class="user">
 				    	<image :src="item.avatar" mode="aspectFill" class="avatar"></image>
 				    	<view class="more">
-				    		<text style="color: red;font-size: 25rpx;font-weight: 500;">{{item.nickName}}</text>
-				    		<text style="color: gray;font-size: 10px;margin-top: 4px;">{{formattedTime(item.createTime)}}</text>
+				    		<text style="color: #2c7bfe;font-size: 30rpx;font-weight: 500;">{{item.nickName}}</text>
+				    		<text style="color: gray;font-size: 25rpx;margin-top: 4px;">{{formattedTime(item.createTime)}}</text>
 				    	</view>
 				    </view>
 				    <view class="head-right">
@@ -221,7 +221,7 @@
 <style lang="scss" scoped>
 	.detail-content {
 	  margin-top: 10px;
-	  font-size: 40rpx;
+	  font-size: 35rpx;
 	}
 	.method {
 		margin-right: 5px;
@@ -302,9 +302,9 @@
 				display: flex;
 				align-items: flex-start;
 				.avatar {
-					height: 30px;
-					width: 30px;
-					border-radius: 30px;
+					height: 40px;
+					width: 40px;
+					border-radius: 40px;
 				}
 				.more {
 					display: flex;
@@ -333,7 +333,7 @@
 		margin: 20rpx 0;
 		.item-title {
 			font-weight: 710;
-			font-size: 40rpx;
+			font-size: 45rpx;
 			}
 		}	
 	}

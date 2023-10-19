@@ -38,10 +38,10 @@
 				<uni-icons type="hand-down" size="22" @click="toggleRecommend()" v-if="!recommendMore"></uni-icons>
 				<uni-icons type="hand-down-filled" size="22"  @click="toggleRecommend()"  v-else="recommendMore"></uni-icons>
 			</view> -->
-			<view class="view-nums">
+			<!-- <view class="view-nums">
 				<uni-icons type="eye" size="20" color="#191919" class="view-num" ></uni-icons>
 				<text>{{item.viewNum}}</text>
-			</view>
+			</view> -->
 			<view class="like-count">
 				<uni-icons type="heart" size="22" color="#ef5656" @click="toggleLike()" v-if="!is_fav"></uni-icons>
 				<uni-icons type="heart-filled" size="22" color="#ef5656" @click="toggleLike()" v-else="is_fav"></uni-icons>

@@ -23,7 +23,7 @@
 			<view >
 				<uni-list class="my-list">
 					<uni-list-item  direction="column" v-for="item in selected" :key="item.index" 
-					 thumb-size="lg"  clickable @click="showDetail(item)">
+					 thumb-size="lg"  clickable @click="showDetail(item)"   @longpress="showFloatWindow(item)" @touchend="hideFloatWindow">
 					<!-- 通过header插槽定义列表的标题 -->
 						<template v-slot:header>
 							<view class="uni-header">
@@ -73,11 +73,59 @@
 	} from '@dcloudio/uni-app'
 	const activities = ref([])
 	const selected = ref([])
-	
+	const showToastText = ref('')
 	const showCalendar = ref(false)
 	nextTick(() => {
 	  showCalendar.value = true
 	})
+	const floatWindowVisible = ref(false)
+	const selectedItemID = ref(null)
+	function showFloatWindow(item) {
+	      floatWindowVisible.value = true;
+		  selectedItemID.value = item.id;
+		  // 显示加载提示
+		    uni.showLoading({
+		      title: 'Loading...',
+		      mask: true
+		    });
+		  uni.request({
+		  	url: "http://119.8.190.49:5000/act_summary",
+		  	method: "POST",
+			data:{
+				id:item.id,
+				detail:item.detail
+			},
+		  	success: (res) => {
+		  		console.log('res',res.data.summary);
+				uni.hideToast();//隐藏加载
+				 if (selectedItemID.value === item.id) {
+				        showToastText.value = res.data.summary
+				        uni.showToast({
+				          title: showToastText.value,
+				          icon: "none",
+				          duration: 2000,
+				        });
+				      }
+				
+		  		showToastText.value = res.data.summary
+				console.log('showToastText.value',showToastText.value);
+		  	},
+		  	fail: (err) => {
+		  		uni.showToast({
+		  			title: err,
+		  			icon: 'none'
+		  		})
+		  	}
+		  })
+		
+		  // showToastText.value = ''
+	     
+	    }
+	function   hideFloatWindow() {
+	      floatWindowVisible.value = false;
+	      // 使用 uni.hideToast() 或 uni.hideModal() 等 API 关闭悬浮窗
+	      uni.hideToast();
+	    }
 	const loadData = () => {
 		uni.request({
 			url: "http://94.74.87.251:8080/school/activity/list?pageNum=1&pageSize=100",

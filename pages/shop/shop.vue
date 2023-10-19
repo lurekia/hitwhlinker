@@ -5,7 +5,7 @@
 		</view>
 		<view class="header">
 			<view class="title">
-				需求市场
+				发掘市集
 			</view>
 			<view @click="goToPostForm">
 				<uni-icons type="compose" size="30" color="#fff"></uni-icons>

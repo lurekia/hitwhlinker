@@ -96,7 +96,7 @@
 							viewNum:item.viewNum
 						}}
 						this.imglist.push(obj)
-						console.log('imgListvalue',this.imglist);
+						console.log('加完之后的imgListvalue',this.imglist);
 					}else if(this.keys && item.src){
 						let obj = {src:item.src,content:{
 							date:item.date,
@@ -139,8 +139,8 @@
 					this.showlist[2].scale = 0.9
 					this.db_multis = true
 				}
-				console.log(this.showlist);
-				console.log(this.imglist);
+				console.log('this.showlist',this.showlist);
+				console.log('this.imglist',this.imglist);
 			},
 			revolve(){
 				if(this.imglist.length < 2)return;

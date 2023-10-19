@@ -55,7 +55,9 @@
 							id: user.userId,
 							name: user.nickName,
 							avatar: "http://94.74.87.251:8080" + user.avatar,
+							deptName: user.dept.deptName
 						}
+						// console.log(user.dept.deptName);
 						uni.setStorageSync('user_info',JSON.stringify(user_info))
 					}
 				})
@@ -98,14 +100,40 @@
 							that.token = res.data.token;
 							
 							that.saveData(res.data.token);
+							uni.request({
+								url: 'http://94.74.87.251:8080/preference/list',
+								method: "GET",
+								header: {
+									"Authorization": that.token
+								},
+								success: (res) => {
+									// console.log(res);
+									const data = res.data
+									if(data.data.clubs.length + data.data.plans.length + data.data.lectures.length + data.data.cuisines.length === 0) {
+										uni.reLaunch({
+											url: "/pages/tag/tag",
+										})
+										uni.showToast({
+											title: '选个兴趣爱好吧！',
+											icon: 'none'
+										})
+									} else {
+										uni.reLaunch({ // 跳转到新闻页面
+											url: "/pages/home/home",
+										})
+										uni.showToast({
+											title: '登录成功',
+											icon: 'none'
+										})
+									}
+
+								},
+								fail: (err) => {
+									console.log(err);
+								}
+							})
 							
-							uni.reLaunch({ // 跳转到新闻页面
-								url: "/pages/home/home",
-							})
-							uni.showToast({
-								title: '登录成功',
-								icon: 'none'
-							})
+							
 							
 						} else {
 							uni.showToast({

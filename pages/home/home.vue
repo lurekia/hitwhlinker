@@ -73,7 +73,6 @@
 	// 	proxy.inx = wz.x;
 	// 	proxy.iny = wz.y;
 	// }
-	const data = reactive([{
 	import productItem from '@/components/post/productItem.vue'
 	const products_data = [{
     "id": 27,

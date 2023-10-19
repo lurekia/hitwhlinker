@@ -30,9 +30,8 @@
 			<!-- 会话用户列表 -->
 			<uni-section class="mb-10" title="助手列表" type="line"></uni-section>
 			<uni-list :border="true">
-				<uni-list-chat v-for="(chat,index) in chat_views" :key="chat.id" :showBadge="chat.unread_count>0"
-					:badgeText="chat.unread_count" badge-positon="left" :title="chat.name" :avatar="chat.head_img_url"
-					:note="chat.last_word" :time="friendlyTime(chat.last_word_date)" :clickable="true"
+				<uni-list-chat v-for="(chat,index) in chat_views" :key="chat.id" :title="chat.name" :avatar="chat.head_img_url"
+					:clickable="true"
 					@click="handleClick(index)">
 				</uni-list-chat>
 
@@ -51,7 +50,7 @@
 			</uni-list>
 		</scroll-view>
 	</view>
-	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
+	<dragball :x='300' :y='300' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
@@ -83,7 +82,7 @@
 	const chat_views = ref([{
 			id: 1,
 			name: "活动我先知",
-			type: "Club_activities",
+			type: "Activity",
 			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img1_20231017141016A001.jpg",
 			msgs: [],
 			last_word: "你好呀",
@@ -92,8 +91,8 @@
 		},
 		{
 			id: 2,
-			name: "新生引导员",
-			type: "StuDoc",
+			name: "政策小帮手",
+			type: "Policy",
 			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg",
 			msgs: [],
 			last_word: "你好呀",
@@ -112,34 +111,24 @@
 		},
 		{
 			id: 4,
+			name: "学习助手",
+			type: "Study",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg",
+			msgs: [],
+			last_word: "你好呀",
+			last_word_date: 1690702956056,
+			unread_count: 0,
+		},
+		{
+			id: 5,
 			name: "预约助手",
-			type: "classroom",
+			type: "reservation",
 			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg",
 			msgs: [],
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
-		},
-		{
-			id: 5,
-			name: "学习助手",
-			type: "Learning_buddy",
-			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg",
-			msgs: [],
-			last_word: "你好呀",
-			last_word_date: 1690702956056,
-			unread_count: 0
-		},
-		{
-			id: 6,
-			name: "hitwhlinker",
-			type: "hitwhlinker",
-			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg",
-			msgs: [],
-			last_word: "你好呀",
-			last_word_date: 1690702956056,
-			unread_count: 0
-		},
+		}
 	]);
 
 	const conversations = ref([])
@@ -217,7 +206,7 @@
 				url: 'http://119.8.190.49:5000/get_chat_history',
 				method: "GET",
 				data: {
-					user_id: user_info.id,
+					user_id: "132",
 					npc_name: chat_views.value[i].type
 				},
 				header: {

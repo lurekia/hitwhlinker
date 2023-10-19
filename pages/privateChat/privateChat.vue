@@ -175,7 +175,7 @@
 				} //接收方用户扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
 			}
 		});
-
+		console.log(textMessage);
 		//发送消息
 		im.sendMessage({
 			message: textMessage,
@@ -321,22 +321,22 @@
 	}
 
 	page {
-		overflow-anchor: auto;
-		background-color: #efefef;
-	}
-
-	.page {
-		flex: 1;
-		height: calc(100vh - 45px);
-		background-color: #efefef;
-	}
-
-
-	.content {
-		flex-direction: column;
-		flex-grow: 1;
-		background-color: transparent;
-	}
+			overflow-anchor: auto;
+			background-color: #efefef;
+		}
+	
+		.page {
+			flex: 1;
+			height: calc(100vh - 45px);
+			// background-color: pink;
+		}
+	
+	
+		.content {
+			flex-direction: column;
+			flex-grow: 1;
+			background-color: #efefef;
+		}
 
 	.msg-list {
 		flex-direction: column;

@@ -17,7 +17,7 @@
 
 			<view class="item">
 				<view class="item-header">
-					<text style="font-size: 12px;color: #8f939c;">商品：</text>
+					<text style="font-size: 12px;color: #8f939c;">需求：</text>
 					<!-- <text style="font-size: 12px;color: #333;" @click="toTag()">修改</text> -->
 				</view>
 				<view class="info-body">
@@ -36,23 +36,21 @@
 				</view>
 			</view>
 			<!-- 喜欢的桌椅 -->
-			<view class="item">
+			<!-- <view class="item">
 				<view class="item-header">
 					<text style="font-size: 12px;color: #8f939c;">自习：</text>
 				</view>
 				<view class="info-body">
 					<view class="info-item">
 						<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">403</text>
-						<!-- <text style="font-size: 14px;margin-top: 4px;">需求</text> -->
 						<text class="iconfont icon">&#xe607;</text>
 					</view>
 					<view class="info-item">
 						<text style="font-size: 18px;color: rgba(214, 88, 88, 1);font-weight: 700;">M102</text>
-						<!-- <text style="font-size: 14px;margin-top: 4px;" @click="toStar()">收藏</text> -->
 						<text class="iconfont icon">&#xe608;</text>
 					</view>
 				</view>
-			</view>
+			</view> -->
 
 			<!-- 兴趣爱好标签 -->
 			<view class="item">
@@ -208,21 +206,7 @@
 	let userId = "";
 	let token = "";
 
-	const tags = ref([{
-			text: '川菜',
-		},
-		{
-			text: '文化与历史',
-		},
-		{
-			text: '文学',
-		},
-		{
-			text: '学术研究与前沿',
-		},
-		{
-			text: '读研',
-		},
+	const tags = ref([
 	])
 
 	const toTag = () => {
@@ -304,6 +288,44 @@
 			}
 		});
 	}
+	const loadTags = () => {
+		console.log('获取兴趣标签');
+		uni.request({
+			url: 'http://94.74.87.251:8080/preference/list',
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				// console.log(res);
+				const data = res.data
+				tags.value = []
+				for(let i=0;i<data.data.clubs.length;i++) {
+					tags.value.push({
+						text: data.data.clubs[i].clubTypeName,
+					})
+				}
+				for(let i=0;i<data.data.cuisines.length;i++) {
+					tags.value.push({
+						text: data.data.cuisines[i].cuisineName,
+					})
+				}
+				for(let i=0;i<data.data.lectures.length;i++) {
+					tags.value.push({
+						text: data.data.lectures[i].lectureTypeName,
+					})
+				}
+				for(let i=0;i<data.data.plans.length;i++) {
+					tags.value.push({
+						text: data.data.plans[i].planName,
+					})
+				}
+			},
+			fail: (err) => {
+				console.log(err);
+			}
+		})
+	}
 	const logout = () => {
 		uni.removeStorage({
 			key: 'token',
@@ -330,6 +352,7 @@
 			key: 'token',
 			success: (res) => {
 				token = res.data
+				loadTags()
 			},
 			fail: (err) => {
 				uni.navigateTo({

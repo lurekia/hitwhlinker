@@ -88,7 +88,7 @@
 	import rightChat from '@/components/chat/rightChat.vue'
 	import toolBox from '@/components/unicomp/toolBox.vue'
 	import Voice from '@/lib/BDvoice/voicePlay/voiceplay.js'
-	
+	// import {chat} from '@/lib/gpt.js'
 	// 设备信息
 	let systemInfo = null
 	const getSystemInfo = () => {
@@ -165,49 +165,50 @@
 
 
 
-
-
 	// 数据相关
 	// 输入框
 	const input = ref("");
-	let msgs = ref([{
-			left: true,
-			content: "请问有什么为您服务的吗？",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: false,
-			content: "帮我预约个图书馆座位",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: true,
-			content: "已根据您的需求，为您找好座位，请看是否需要修改，否则三秒内即将自动为您选座",
-			tag: 'libraryForm',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: false,
-			content: "我觉得这个座位可以",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: true,
-			content: "好的，已经为您预约好座位，请按时去图书馆自习",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
+	let res_type = '';
+	let msgs = ref([
+		// {
+		// 	left: true,
+		// 	content: "请问有什么为您服务的吗？",
+		// 	tag: 'text',
+		// 	time: "2023/7/29 12:00:00"
+		// },
+		// {
+		// 	left: false,
+		// 	content: "帮我预约个图书馆座位",
+		// 	tag: 'text',
+		// 	time: "2023/7/29 12:00:00"
+		// },
+		// {
+		// 	left: true,
+		// 	content: "已根据您的需求，为您找好座位，请看是否需要修改，否则三秒内即将自动为您选座",
+		// 	tag: 'libraryForm',
+		// 	time: "2023/7/29 12:00:00"
+		// },
+		// {
+		// 	left: false,
+		// 	content: "我觉得这个座位可以",
+		// 	tag: 'text',
+		// 	time: "2023/7/29 12:00:00"
+		// },
+		// {
+		// 	left: true,
+		// 	content: "好的，已经为您预约好座位，请按时去图书馆自习",
+		// 	tag: 'text',
+		// 	time: "2023/7/29 12:00:00"
+		// },
 	]);
 	const initMsgs = (data) => {
 		console.log(data);
+		msgs.value = [];
 		uni.request({
 			url: 'http://119.8.190.49:5000/get_chat_history',
 			method: "GET",
 			data: {
-				user_id: user_info.id,
+				user_id: '103',
 				npc_name: server_type
 			},
 			header: {
@@ -215,16 +216,18 @@
 			},
 			success: (res) => {
 				console.log(res);
-				if (res.statusCode == 200) {
-					chat_views.value[i].msgs = res.data
-					if (res.data.length === 0) {
-						chat_views.value[i].last_word = "无"
-						chat_views.value[i].last_word_date = 0
-					} else {
-						const len = res.data.length;
-						chat_views.value[i].last_word = res.data[len - 1].message
-						chat_views.value[i].last_word_date = res.data[len - 1].timestamp
+				if (res.statusCode === 200) {
+					const data = res.data;
+					for(let i=0;i<data.length;i++) {
+						const msg = {
+							left: !data[i].is_from_user,
+							content: data[i].message,
+							time: data[i].timestamp,
+							tag: "text"
+						}
+						msgs.value.push(msg)
 					}
+					scrollToBottom()
 				} else {
 					console.log(res.msg);
 				}
@@ -233,63 +236,141 @@
 				console.log(err);
 			}
 		})
-		// msgs.value = []
-		// for(let i=0;i<data.length;i++) {
-		// 	const msg = {
-		// 		left: !data[i].is_from_user,
-		// 		content: data[i].message,
-		// 		time: data[i].timestamp,
-		// 		tag: "text"
-		// 	}
-		// 	msgs.value.push(msg)
-		// }
+		
 	}
 	// 加载数据
 	const loadChat = () => {
 		console.log("加载数据");
 	}
-	// 输入输出
-	const query_server = (str) => {
-		// uni.request({
-		// 	url: 'http://119.8.190.49:5000/query_local_information',
-		// 	method: "POST",
-		// 	data: {
-		// 		query: str,
-		// 		type: server_type
-		// 	},
-		// 	header: {
-		// 		"Content-Type": "application/json;charset=UTF-8"
-		// 	},
-		// 	success: (res) => {
-		// 		console.log(res);
-		// 		const msg = {
-		// 			left: true,
-		// 			content: res.data.answer,
-		// 			tag: 'text',
-		// 			time: "2023/7/29 12:00:00"
-		// 		}
-		// 		msgs.value.push(msg)
-		// 		scrollToBottom()
-		// 	},
-		// 	fail: (err) => {
-		// 		console.log(err);
-		// 	}
-		// })
-		const msg = {
-			left: true,
-			content: '你好你好',
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
+	const changeRes = (type) => {
+		res_type = type;
+		if(type === '图书馆') {
+			msgs.value.push({
+				left: true,
+				content: "选个座位吧",
+				tag: 'libraryForm',
+				time: new Date()
+			})
 		}
-		msgs.value.push(msg)
+	}
+	// 输入输出
+	const query_server = (str, audio) => {
+		if(server_type == 'reservation') {
+			// console.log(res_type);
+			if(res_type === '图书馆') {
+				uni.request({
+					url: 'http://119.8.190.49:5000/query_library',
+					method: "POST",
+					data: {
+						query: str,
+					},
+					header: {
+						"Content-Type": "application/json;charset=UTF-8"
+					},
+					success: (res) => {
+						console.log(res);
+						const msg = {
+							left: true,
+							content: res.data.answer,
+							tag: 'text',
+							time: new Date(),
+						}
+						msgs.value.push(msg)
+						scrollToBottom()
+						if(audio === true) {
+							console.log("小助手回话开始回答");
+							beginVoice(msg.content);
+						}
+						// return res.data.answer
+					},
+					fail: (err) => {
+						console.log(err);
+						// return err.errMs
+					}
+				})
+			} else {
+				// uni.request({
+				// 	url: 'http://119.8.190.49:5000/query_classroom',
+				// 	method: "POST",
+				// 	data: {
+				// 		query: str,
+				// 	},
+				// 	header: {
+				// 		"Content-Type": "application/json;charset=UTF-8"
+				// 	},
+				// 	success: (res) => {
+				// 		console.log(res);
+				// 		const msg = {
+				// 			left: true,
+				// 			content: res.data.answer,
+				// 			tag: 'text',
+				// 			time: new Date(),
+				// 		}
+				// 		msgs.value.push(msg)
+				// 		scrollToBottom()
+				// 		if(audio === true) {
+				// 			console.log("小助手回话开始回答");
+				// 			beginVoice(msg.content);
+				// 		}
+				// 		// return res.data.answer
+				// 	},
+				// 	fail: (err) => {
+				// 		console.log(err);
+				// 		// return err.errMs
+				// 	}
+				// })
+				const msg = {
+							left: true,
+							content: "- G101 第一大节有空\n - G203 第二大节有空\n - G105 第四大节有空\n ",
+							tag: 'text',
+							time: new Date(),
+						}
+						msgs.value.push(msg)
+						scrollToBottom()
+			}
+ 		} else {
+			uni.request({
+				url: 'http://119.8.190.49:5000/query_local_information',
+				method: "POST",
+				data: {
+					query: str,
+					type: server_type
+				},
+				header: {
+					"Content-Type": "application/json;charset=UTF-8"
+				},
+				success: (res) => {
+					console.log(res);
+					const msg = {
+						left: true,
+						content: res.data.answer,
+						tag: 'text',
+						time: new Date(),
+					}
+					msgs.value.push(msg)
+					scrollToBottom()
+					if(audio === true) {
+						console.log("小助手回话开始回答");
+						beginVoice(msg.content);
+					}
+					// return res.data.answer
+				},
+				fail: (err) => {
+					console.log(err);
+					// return err.errMs
+				}
+			})
+		}
+		
 		// console.log(msg.content);
-		return msg.content
+		// return msg.content
 	}
 	// 提交
 	const submit = () => {
 		if (input.value === '') {
 			return
 		}
+		console.log("发送信息");
 		const msg = {
 			left: false,
 			content: input.value,
@@ -299,10 +380,26 @@
 		msgs.value.push(msg)
 		// input.value = ""
 		scrollToBottom()
-		query_server(input.value)
+		query_server(input.value, false);
 		input.value = "";
 	}
-
+	const handleChooseSeat = (str) => {
+		let msg = {
+			left: false,
+			content: '帮我预约个' + str + '座位',
+			tag: 'text',
+			time: new Date()
+		}
+		msgs.value.push(msg);
+		msg = {
+			left: true,
+			content: '好的，已经帮您预约' + str + '座位',
+			tag: 'text',
+			time: new Date()
+		}
+		msgs.value.push(msg);
+		
+	}
 
 
 
@@ -368,9 +465,9 @@
 			tag: 'text',
 			time: "2023/7/29 12:00:00"
 		}
-		msgs.value.push(msg)
-		scrollToBottom()
-		query_server(str)
+		msgs.value.push(msg);
+		scrollToBottom();
+		query_server(str, false);
 	}
 
 
@@ -393,6 +490,32 @@
 			popup.value.close();
 		}
 	})
+	const beginVoice = (str) => {
+		textafter.value = str;
+		Voice({
+			voiceSet: {
+				tex: textafter.value
+			},
+			audioSet: {
+				volume: 1
+			},
+			audioCallback: {
+				onPlay: () => { //属性名去掉 - , 不知道为什么全名显示不了
+					console.log('音频开始播放了')
+					texttitle.value = "播放中..."
+				},
+				onEnded: () => {
+					console.log('音频播放完了');
+					setTimeout(()=> {
+						startRecord()
+						texttitle.value = "还有什么想问的吗？"
+					},2000)
+				}
+			},
+			lineUp: true, // 加入语音队列
+			returnAudio: false // 返回音频对象
+		})
+	}
 	const onStart = () => {
 		isSaying.value = true
 		texttitle.value = '倾听中...';
@@ -445,31 +568,15 @@
 		texting.value = ''
 		isSaying.value = false;
 		plus.speech.stopRecognize()
-		textafter.value = query_server(texted.value)
-		Voice({
-			voiceSet: {
-				tex: textafter.value
-			},
-			audioSet: {
-				volume: 1
-			},
-			audioCallback: {
-				onPlay: () => { //属性名去掉 - , 不知道为什么全名显示不了
-					console.log('音频开始播放了')
-					texttitle.value = "播放中..."
-				},
-				onEnded: () => {
-					console.log('音频播放完了');
-					texttitle.value = "播放中"
-					setTimeout(()=> {
-						startRecord()
-						texttitle.value = "还有什么想问的吗？"
-					},2000)
-				}
-			},
-			lineUp: true, // 加入语音队列
-			returnAudio: false // 返回音频对象
-		})
+		const msg = {
+			left: false,
+			content: texted.value,
+			tag: 'text',
+			time: "2023/7/29 12:00:00"
+		}
+		msgs.value.push(msg);
+		scrollToBottom();
+		query_server(texted.value, true);
 	}
 	
 	const handleStartAudio = () => {
@@ -487,6 +594,7 @@
 		// getSystemInfo()
 		scrollToBottom()
 		// testVoice()
+		
 	})
 	onLoad((options) => {
 		// const eventChannel = this.getOpenerEventChannel();
@@ -523,8 +631,18 @@
 			server_type = options.server_type;
 			left_avatar.value = options.server_avatar;
 		}
-		
-		// initMsgs()
+		if(server_type === 'reservation') {
+			
+			msgs.value = [{
+				left: true,
+				tag: 'system',
+				content: '',
+				time: new Date()
+			}];
+		} else {
+			initMsgs();
+		}
+			
 		console.log("auto = ",auto);
 		uni.setNavigationBarTitle({
 			title: title
@@ -532,6 +650,8 @@
 		uni.$on("chooseImage", handleChooseImage)
 		uni.$on("putProduct", putProduct)
 		uni.$on("getPrompt", getPrompt)
+		uni.$on("changeRes", changeRes);
+		uni.$on("handleChooseSeat", handleChooseSeat);
 		// uni.$on("initMsgs", initMsgs)
 		
 		console.log("启动助手");
@@ -562,6 +682,8 @@
 		uni.$off("putProduct", putProduct)
 		uni.$off("getPrompt", getPrompt)
 		uni.$off("initMsgs", initMsgs)
+		uni.$off("changeRes", changeRes);
+		uni.$off("handleChooseSeat", handleChooseSeat);
 	})
 </script>
 
@@ -572,22 +694,27 @@
 	}
 
 	page {
-		overflow-anchor: auto;
-		background-color: #efefef;
-	}
-
-	.page {
+			overflow-anchor: auto;
+			background-color: #efefef;
+		}
+	.chat {
 		flex: 1;
-		height: calc(100vh - 45px);
-		// background-color: pink;
-	}
-
-
-	.content {
-		flex-direction: column;
-		flex-grow: 1;
+		height: 100vh;
 		background-color: #efefef;
 	}
+		.page {
+			flex: 1;
+			height: calc(100vh - 45px);
+			background-color: #efefef;
+			// background-color: pink;
+		}
+	
+	
+		.content {
+			flex-direction: column;
+			flex-grow: 1;
+			background-color: #efefef;
+		}
 
 	.msg-list {
 		flex-direction: column;

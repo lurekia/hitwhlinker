@@ -324,10 +324,15 @@
 			overflow-anchor: auto;
 			background-color: #efefef;
 		}
-	
+		.chat {
+			flex: 1;
+			height: 100vh;
+			background-color: #efefef;
+		}
 		.page {
 			flex: 1;
 			height: calc(100vh - 45px);
+			background-color: #efefef;
 			// background-color: pink;
 		}
 	

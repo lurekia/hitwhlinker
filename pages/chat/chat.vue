@@ -31,11 +31,13 @@
 				</view>
 				<view class="audio-output">
 					<view class="right-audio">
-						<text v-if="texted != ''">{{texted}}</text>
+						<mp-html :content="texted" v-if="texted != ''"/>
+						<!-- <text v-if="texted != ''">{{texted}}</text> -->
 						<text v-else>...</text>
 					</view>
 					<view class="left-audio">
-						<text v-if="textafter != ''">{{textafter}}</text>
+						<mp-html :content="textafter" v-if="textafter != ''"/>
+						<!-- <text v-if="textafter != ''">{{textafter}}</text> -->
 						<text v-else>...</text>
 					</view>
 				</view>
@@ -170,9 +172,9 @@
 	const input = ref("");
 	let res_type = '';
 	let msgs = ref([]);
-	const initMsgs = (data) => {
-		console.log(data);
-		// msgs.value = [];
+	const initMsgs = () => {
+		// console.log(data);
+		msgs.value = [];
 		uni.request({
 			url: 'http://119.8.190.49:5000/get_chat_history',
 			method: "GET",
@@ -196,6 +198,18 @@
 						}
 						msgs.value.push(msg)
 					}
+					if(word && word !== '') {
+						const msg = {
+							left: false,
+							content: word,
+							time: new Date(),
+							tag: "text"
+						}
+						msgs.value.push(msg);
+						console.log('有新信息');
+						query_server(word, auto);
+						word = '';
+					} 
 					scrollToBottom()
 				} else {
 					console.log(res.msg);
@@ -205,7 +219,6 @@
 				console.log(err);
 			}
 		})
-
 	}
 	// 加载数据
 	const loadChat = () => {
@@ -320,7 +333,7 @@
 						temp = res.data.choices[0].message.content;
 						// rs(res);
 						console.log('意图识别回答：', temp);
-						if (temp === '8' || temp === '9') {
+						if (temp === '10' || temp === '11') {
 							let messageList = [{
 									role: 'system',
 									content: '你是哈工大威海AI智慧助手，你将竭尽全力为使用者提供服务'
@@ -542,6 +555,7 @@
 	let auto = false;
 	const audioShow = ref(false)
 	// 语音框
+	let word = '';
 	const isSaying = ref(false)
 	const texting = ref("")
 	const texted = ref("")
@@ -550,7 +564,9 @@
 	const popup = ref();
 	watch(audioShow, (newValue, oldValue) => {
 		if (newValue === true) {
-			startRecord()
+			if(!word || word === '') {
+				startRecord()
+			}
 			popup.value.open();
 		} else {
 			endRecord()
@@ -674,10 +690,12 @@
 		'输出3的适用场景:跳转到商场看所有商品',
 		'输出4的适用场景:询问学习助手关于学习的事',
 		'输出5的适用场景:询问政策小助手关于学校政策的事',
-		'输出6的适用场景:帮助用户进行图书馆预约',
-		'输出7的适用场景:帮助用户进行空教室查询',
-		'输出8的适用场景:用户只是想聊聊天',
-		'如果场景都不适合,就输出9',
+		'输出6的适用场景:询问关于学校餐厅和伙食信息的事',
+		'输出7的适用场景:询问关于学校活动的事',
+		'输出8的适用场景:帮助用户进行图书馆预约',
+		'输出9的适用场景:帮助用户进行空教室查询',
+		'输出10的适用场景:用户只是想聊聊天',
+		'如果场景都不适合,就输出11',
 		// '输出8的使用场景:'
 		'正确示例:',
 		'用户输入:推荐一些社团给我',
@@ -694,8 +712,9 @@
 	const take_action = (temp, word) => {
 		console.log('开始行动：', temp);
 		temp = temp.match(/\d+/g)[0];
+		let isauto = audioShow.value === true?'&auto=2':'';
 		if (temp === '1') {
-			uni.swhitchTab({
+			uni.switchTab({
 				url: '/pages/home/home',
 			})
 			return;
@@ -718,7 +737,7 @@
 			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg";
 			uni.navigateTo({
 				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word,
+					head_img_url + '&word=' + word + isauto,
 			})
 			return;
 		}
@@ -728,31 +747,51 @@
 			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg";
 			uni.navigateTo({
 				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word,
+					head_img_url + '&word=' + word + isauto,
 			})
 			return;
 		}
 		if (temp === '6') {
-			const name = "预约助手";
-			const type = "reservation";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			const name = "餐厅探店侠";
+			const type = "Canteen";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img3_20231017141058A003.jpg";
 			uni.navigateTo({
 				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&res_type=1' + '&word=' + word,
+					head_img_url + '&word=' + word + isauto,
 			})
 			return;
 		}
 		if (temp === '7') {
+			const name = "活动我先知";
+			const type = "Activity";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img1_20231017141016A001.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&word=' + word + isauto,
+			})
+			return;
+		}
+		if (temp === '8') {
 			const name = "预约助手";
 			const type = "reservation";
 			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
 			uni.navigateTo({
 				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&res_type=2' + '&word=' + word,
+					head_img_url + '&res_type=1' + '&word=' + word + isauto,
 			})
 			return;
 		}
-		if (temp === '8') {
+		if (temp === '9') {
+			const name = "预约助手";
+			const type = "reservation";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&res_type=2' + '&word=' + word + isauto,
+			})
+			return;
+		}
+		if (temp === '10' || temp === '11') {
 			return;
 		}
 		uni.showToast({
@@ -791,14 +830,29 @@
 					url: '/pages/login/login',
 					animationDuration: 300
 				})
+				
 			}
 		});
-
+		word = options.word
+		console.log("上个界面的信息：",word);
 		if (options.auto) {
-			auto = true;
-			title = "hitwhlinker";
-			server_type = 'hitwhlinker';
-			left_avatar.value = 'http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg';
+			if(options.auto === '1') {
+				auto = true;
+				// word = '';
+				title = "hitwhlinker";
+				server_type = 'hitwhlinker';
+				left_avatar.value = 'http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg';
+			} else {
+				auto = true;
+				// audioShow.value = true;
+				texted.value = options.word;
+				textafter.value = '...';
+				texttitle.value = '思考中...';
+				title = options.server_name
+				server_type = options.server_type;
+				left_avatar.value = options.server_avatar;
+			}
+			
 			// audioShow.value = true;
 		} else {
 			auto = false;
@@ -838,18 +892,7 @@
 					time: new Date()
 				}];
 			} else {
-				if (options.word) {
-					msgs.value = [{
-						left: false,
-						tag: 'text',
-						content: options.word,
-						time: new Date()
-					}];
-					query_server(options.word, false);
-				} else {
-					msgs.value = [];
-				}
-				initMsgs();
+				initMsgs()
 			}
 		}
 
@@ -877,6 +920,7 @@
 	onReady(() => {
 		if (auto === true) {
 			audioShow.value = true;
+			// popup.value.open();
 		}
 	})
 	onUnload(() => {
@@ -1025,6 +1069,7 @@
 				margin-left: 10px;
 				margin-top: 20px;
 				padding: 10px;
+				position: relative;
 
 				text {
 					height: 25px;

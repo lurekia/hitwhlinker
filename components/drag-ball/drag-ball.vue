@@ -49,7 +49,7 @@
 		}}
 </script>
 
-<style lang="less">
+<style>
 	.holdon{
 		width: 100%;
 		height: 100%;

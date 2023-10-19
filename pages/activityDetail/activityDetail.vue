@@ -5,8 +5,8 @@
 		<view class="page-header" :style="{'background-image': `url('${item.cover}')`}" >
 			<!-- -->
 			<view class="back">
-				<uni-icons type="back" size="22" color="#21231e" class="go-back" @click="goBack"></uni-icons>
-				<text>返回</text>
+				<uni-icons type="back" size="22" color="black" class="go-back" @click="goBack"></uni-icons>
+				<text style="color: black;">返回</text>
 			</view>
 			
 			
@@ -22,7 +22,7 @@
 					</view>
 					<text class="person-name">{{item.nickName}}</text>
 				</view>
-				<view class="act-date">
+				<view class="act-date" style="color: #2c7bfe;">
 					{{item.startDate}} {{getFormattedTime(item.startTime)}}
 				</view>
 			</view>
@@ -235,6 +235,7 @@
 			font-size: 30rpx;
 			display: flex;
 			justify-content: space-between;
+			border-bottom: 0.5px solid #d3eaf5;
 			.act-person {
 					  display: flex;
 					  .radius {
@@ -242,7 +243,7 @@
 						  margin-right: 5rpx;
 					  }
 					  .person-name{
-						  color: #21231e;
+						  color: #2c7bfe;
 					  }
 			}
 		}

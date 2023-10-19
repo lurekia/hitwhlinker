@@ -19,25 +19,27 @@
 				</view>
 				<turns :data="data" @achieve="achieve"></turns>
 			</view>
-			<view class="campus-recommend">
-				<view class="today-date">
-					<view class="date-day">
-						{{currentDate.slice(-2)}}
-					</view>
-					<view class="date-month">{{currentDate.slice(0,7)}}</view>
+			<view >
+				<view class="part-in-text">
+					猜你想知道
 				</view>
-				<view class="recommend-part">
-					<view v-for="(item,index) in todayData" :key="index" class="recommend-li">
-						<view class="content-wrapper">
-							<uni-icons type="sound" size="15" color="#e6db74" class="view-num"></uni-icons>
-							<text class="item-text">{{ item }}</text>
+				<view class="campus-recommend">
+						<view v-for="(item,index) in recommend_data" :key="index" class="content-item" @click="toNPC(index)">
+							<view class="flex-content">
+								<uni-icons type="notification-filled" size="30" color="#306af1" class="star-num" ></uni-icons>
+								<view class="recommend-content">
+									{{item}}
+								</view>
+							</view>
+							<uni-icons type="forward" size="20" color="#306af1" class="star-num" ></uni-icons>
+							
 						</view>
-					</view>
+					
 				</view>
 			</view>
 			<view class="may-want">
 				<view class="part-in-text">
-					猜你想要
+					猜你想逛逛
 				</view>
 				<view class="product-list">
 					<product-item v-for="item in products_data" class="product-item" :key="item.id" :data="item"
@@ -74,6 +76,88 @@
 	// 	proxy.iny = wz.y;
 	// }
 	import productItem from '@/components/post/productItem.vue'
+	const data = [
+			{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片
+			date: '2023-10-21',
+			time: '9:00',
+			title: '谭忆秋校长谈“当你与哈工大有了交集”',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id:30,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片
+			date: '2023-10-21',
+			time: '9:00',
+			title: '宣讲会｜勤工助学管理中心',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 29,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片
+			date: '2023-10-20',
+			time: '9:00',
+			title: '学生国际交流协会',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 28,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片
+			date: '2023-10-19',
+			time: '9:00',
+			title: '吉协路演',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 27,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片//活动的图片
+			date: '2023-10-20',
+			time: '9:00',
+			title: '校舞蹈队×“社团巡礼”',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 26,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+			
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片//活动的图片
+			date: '2023-10-20',
+			time: '9:00',
+			title: '6666666”',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 26,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+			
+		},{
+			src: 'https://94.74.87.251:8080/profile/upload/2023/10/19/psc (35)_20231019191905A033.jpg', //活动的图片//活动的图片
+			date: '2023-10-20',
+			time: '9:00',
+			title: '555”',
+			position: 'G101',
+			tag: '学术讲座', //活动所属分类
+			id: 26,
+			detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
+			status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum: 0, //活动的浏览量
+			
+		}]
 	const products_data = [{
     "id": 27,
     "title": "45646",
@@ -126,85 +210,59 @@
     "starCounts": 0,
     "isStar": 0
 }]
-	const data = reactive(
+	const loadActData = () => {
+		uni.request({
+			url: "http://94.74.87.251:8080/school/activity/list?pageNum=1&pageSize=100",
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				// console.log(res);
+				if (res.data.code == 200) {
+					act_data.value = [...act_data.value, ...res.data.rows];
+					console.log('act_data.value',act_data.value);
+					act_data.value.forEach(obj => {
+					  // 处理 detail 属性
+					  if (obj.detail) {
+						  const regex = /<img[^>]+src="([^">]+)"/g;
+						  obj.detail = obj.detail.replace(regex, '<img src="http://94.74.87.251:8080$1"');
+					  }
+					
+					  // 处理 avatar 属性
+					  if (obj.avatar) {
+					    obj.avatar = 'http://94.74.87.251:8080' + obj.avatar;
+					  }
+					  if(obj.cover){
+						  obj.cover = 'http://94.74.87.251:8080' + obj.cover;
+					  }
+					  console.log('修改后的值',act_data.value);
+					});
+					
+				} else {
+					uni.showToast({
+						title: '加载失败，请检查网络',
+						icon: 'none'
+					})
 	
-	[
-		
-		{
-			authorId:null,
-			nickName:'',//发布人名称
-			avatar:'',//发布人头像
-			cover:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的封面
-			detail:'56656556',//活动的详细信息
-			position:'G101',
-			// remark:'',
-			// searchValue:'',
-			startDate:'',//yyyy-MM-dd
-			startTime:"",//HH：mm：ss
-			status:1,//0 未开始  1已结束
-			tag:'学术讲座',//活动所属分类
-			id:1,
-			// date:'2023-08-20',
-			// time:'9:00',
-			title:'发布会',
-			// updateBy:'',   //不用管
-			viewNum:0,//活动的浏览量
-			isLike: false, // 默认没点赞
-			likeCount: 26, // 点赞数量
-		},{
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '1',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	},{
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '1',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	},{
-		src: 'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png', //活动的图片
-		date: '2023-08-20',
-		time: '9:00',
-		title: '发布会',
-		position: 'G101',
-		tag: '学术讲座', //活动所属分类
-		id: '1',
-		detail: '<h1>这是一个公众号推文的标题</h1><p>这是第一段落的内容。</p><h2>这是一个副标题</h2><p>这是第二段落的内容。</p><p>这是带有<strong>加粗</strong>和<em>斜体</em>的文本。</p><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png" alt="图片描述"><p>这是一张图片的描述。</p><blockquote><p>这是一个引用块。</p></blockquote><p>这是最后一段的内容。</p><p>更多信息，请访问<a href="https://baidu.com">https://example.com</a></p><p><strong>潇洒的哈市</strong></p><ul><li><strong style="color: rgb(230, 0, 0);"><em>大撒大撒</em></strong></li></ul><blockquote>撒旦hi</blockquote><blockquote><img src="https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png"></blockquote>', //活动的详细信息
-		status: 1, //活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
-		viewNum: 0, //活动的浏览量
-		authorSrc: 'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg', //发布组织头像
-		authorName: 'HITwhLinker', //发布者名称
-		like: false, // 默认没点赞
-		likeCount: 26, // 点赞数量
-	}])
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}
 	let weather_info = ref("");
 	let city = ref("");
+	let token = null;
 	const achieve = (open) => {
 		console.log(open);
 		console.log('666');
 	}
 	var currentDate = ref('')
-	const todayData = ref(['现在图书馆有空余的靠窗座位啦！', '你有新出的成绩，请查收', '今日食堂有新出的菜品，要不要去看看？'])
 	const getCurrentDate = () => {
 		const date = new Date();
 		const year = date.getFullYear();
@@ -212,15 +270,61 @@
 		const day = String(date.getDate()).padStart(2, '0');
 		currentDate.value = `${year}.${month}.${day}`;
 	}
+	function toNPC(index) {
+		if(index === "CanteenNpc")
+		{
+			uni.navigateTo({
+				url:'/pages/chat/chat?server_name=餐厅探店侠&server_type=Canteen'
+			})
+		}
+		if(index === "ReservationNpc" ){
+			uni.navigateTo({
+				url:'/pages/chat/chat?server_name=预约助手&server_type=classroom'
+			})
+		}
+		if(index==="StudyNpc")
+		{
+			uni.navigateTo({
+				url:"/pages/chat/chat?server_name=学习助手&server_type=Learning_buddy"
+			})
+		}
+	}
+	function loadRecommendData(){
+		uni.request({
+			url:'http://119.8.190.49:5000/recommendation',
+			method: "GET",
+			success: (res) => {
+				console.log(res);
+				if (res.statusCode == 200) {
+					console.log('loadRecommendData',res);
+					recommend_data.value = res.data
+					console.log(recommend_data.value);
+				} else {
+					uni.showToast({
+						title: '加载失败，请检查网络',
+						icon: 'none'
+					})
+				
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			}
+		})
+	}
 	onLoad(() => {
 		getCurrentDate();
-
-	})
-	onShow(() => {
-		// 手写拦截器
+		loadRecommendData();
 		uni.getStorage({
 			key: 'token',
 			success: (res) => {
+				// console.log(res.data);
+				token = res.data;
+				loadActData();
+			
 			},
 			fail: (err) => {
 				uni.navigateTo({
@@ -229,6 +333,9 @@
 				})
 			}
 		});
+	})
+	onShow(() => {
+		
 	})
 	onMounted(()=>{
 		
@@ -340,69 +447,42 @@
 			font-weight: 600;
 			font-size: 50rpx;
 			margin-bottom: 40rpx;
+			margin-top: 40rpx;
 		}
 
 		.campus-recommend {
 			width: 95%;
 			margin: 30rpx auto;
-			background-color: #ebfdff;
-			border: 1rpx solid #ebfdff;
+			background-color: #f7f9fd;
+			border: 1rpx solid #f7f9fd;
+			box-shadow: 2rpx 6rpx 8rpx 4rpx rgba(0, 0, 0, 0.2), 3rpx 8rpx 15rpx 2rpx rgba(0, 0, 0, 0.19);
 			border-radius: 30rpx;
 			height: 300rpx;
 			display: flex;
-			align-items: center;
-
-			.today-date {
-				width: 160rpx;
-				height: 160rpx;
-				margin: 40rpx 0rpx;
-				background: url('../../static/images/todayTimeBGI.jpg') no-repeat;
-				background-size: contain;
-				color: #fff;
-				padding: 20rpx 0rpx 20rpx 0rpx;
-
-				.date-day {
-					font-size: 50rpx;
-					padding: 0rpx 50rpx 0rpx 50rpx;
-				}
-
-				.date-month {
-					font-size: 20rpx;
-					padding: 0rpx 30rpx 0rpx 40rpx;
-				}
-			}
-
-			.recommend-part {
-				flex: 1;
-				height: 90%;
-				margin: auto 20rpx;
-				border: 5rpx solid #cfe8fc;
-				border-radius: 3rpx;
+			flex-direction: column;
+			padding: 15rpx 20rpx;
+			.content-item {
+				width: 100%;
+				height: 33%;
 				display: flex;
-				flex-direction: column;
-				justify-content: center;
-
-				// white-space: nowrap; /* 禁止文字换行 */
-				// overflow: hidden; /* 隐藏溢出部分的文字 */
-				//    text-overflow: ellipsis; /* 显示省略号 */
-				.recommend-li {
-
-					border-bottom: 1rpx solid #cfe8fc;
-					padding-right: 10rpx;
-					color: #999;
-					margin-bottom: 20rpx;
-
-					.content-wrapper {
-						display: flex;
-						align-items: center;
+				align-items: center;
+				justify-content: space-between;
+				border-bottom: #e9ebec solid 1px;
+				.flex-content {
+					width: 90%;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					.recommend-content {
+						width: 100%;
+						padding-left: 20rpx;
+						font-size: 35rpx;
 						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
+					  white-space: nowrap;
+					  text-overflow: ellipsis;
 					}
 				}
 			}
 		}
-
-
 	}
 </style>

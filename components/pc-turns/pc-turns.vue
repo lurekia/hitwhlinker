@@ -50,9 +50,9 @@
 				contentList:[],
 				// 展示的三个
 				showlist:[
-					{src:'',left:'27.5',z_index:'100',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:'',detail:'',status:1,viewNum:0}},
-					{src:'',left:'52',z_index:'90',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:'',detail:'',status:1,viewNum:0}},
-					{src:'',left:'3',z_index:'90',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:'',detail:'',status:1,viewNum:0}},
+					{src:'',left:'27.5',z_index:'100',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:null,detail:'',status:1,viewNum:0}},
+					{src:'',left:'52',z_index:'90',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:null,detail:'',status:1,viewNum:0}},
+					{src:'',left:'3',z_index:'90',keys:0,scale:1,content:{date:'',time:'',title:'',position:'',tag:'',id:null,detail:'',status:1,viewNum:0}},
 				],
 			}
 		},
@@ -96,6 +96,7 @@
 							viewNum:item.viewNum
 						}}
 						this.imglist.push(obj)
+						console.log('imgListvalue',this.imglist);
 					}else if(this.keys && item.src){
 						let obj = {src:item.src,content:{
 							date:item.date,

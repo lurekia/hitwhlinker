@@ -12,23 +12,23 @@
 				    <view class="user">
 				    	<image :src="item.avatar" mode="aspectFill" class="avatar"></image>
 				    	<view class="more">
-				    		<text style="color: red;">{{item.nickName}}</text>
-				    		<!-- <text style="color: gray;font-size: 8px;margin-top: 4px;">{{date}}</text> -->
+				    		<text style="color: red;font-size: 25rpx;font-weight: 500;">{{item.nickName}}</text>
+				    		<text style="color: gray;font-size: 10px;margin-top: 4px;">{{formattedTime(item.createTime)}}</text>
 				    	</view>
 				    </view>
 				    <view class="head-right">
 				        <view v-if="item.getMethod !== undefined && item.getMethod !== null">
-							<view class="info-by" v-if="item.getMethod==1">
-								可配送
-							</view>
-							<view class="info-by" v-else-if="item.getMethod==0">
+							<!-- <view class="info-by" v-if="item.getMethod==1"> -->
+								<uni-tag :text="getMethodType[item.getMethod]" type="success" class="method"></uni-tag>
+							<!-- </view> -->
+							<!-- <view class="info-by" v-else-if="item.getMethod==0">
 								需自提
-							</view>
+							</view> -->
 						</view>
-						<view class="view-nums">
+						<!-- <view class="view-nums">
 							<uni-icons type="eye" size="15" color="#333" class="view-num" ></uni-icons>
 							<text>666</text>
-						</view>
+						</view> -->
 				    </view>
 				</view>
 				<view class="head-bottom">
@@ -45,10 +45,6 @@
 					</view>
 				</view>
 				<view class="info-detail">
-					出大物实验报告，目前有的种类：无线电力传输，电表改装 <br/>
-					可以发到微信电子版 <br/>
-					材质：电子版<br/>
-					质量：高<br/>
 					<view class="detail-content">
 					      <p class="detail-text">{{item.content}}</p>
 					</view>
@@ -88,6 +84,7 @@
 	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const is_fav = ref(false);
 	let token = null;
+	const getMethodType = ["需自取","可配送"];
 	function favClick() {
 	  is_fav.value = !is_fav.value ;
 	  uni.request({
@@ -128,32 +125,37 @@
 			animationDuration: 300,
 		})
 	}
-	// const avatarSrc = ref("../.././static/images/img5.jpg")
-	const name = ref("123鼠鼠")
-	const date = ref("8分钟前")
 	let item = ref({})
 	let pictureArray = ref([]);
 	let imageList = ref([]);
-	// onLoad((options) => {
-	// 	uni.$on('productListToDetail', (res) => {
-		 //  item.value = res
-		 //  console.log('item.value',item.value);
-		 //  console.log('item.value.picture',item.value.picture);
-		 //  // 将item.value.picture以逗号分隔成数组，并赋值给全局变量 pictureArray
-		 //  pictureArray.value = item.value.picture.split(',');
-		 //  goodsId.value = item.value.id
-		 //  console.log('id',goodsId.value);
-		 //  // 构建imageList数组
-		 //  imageList.value = pictureArray.value.map((url, index) => {
-			// return { id: index + 1, url: url };
-		 //  });
-		 //  //解决打开界面默认还是为收藏问题
-		 //  if(item.value.isStar===1){
-			//   is_fav.value =true
-		 //  }
-		 //  console.log('imageList',imageList.value);
-	// 	})
-	// })
+	function formattedTime(createTime) {
+      const now = new Date();
+      const publishDate = new Date(createTime);
+
+      // 获取年月日时分秒
+      const publishYear = publishDate.getFullYear();
+      const publishMonth = publishDate.getMonth() + 1;
+      const publishDay = publishDate.getDate();
+      const publishHour = publishDate.getHours();
+      const publishMinute = publishDate.getMinutes();
+
+      // 判断是否是昨天或今天
+      const isToday =
+        publishDate.toDateString() === now.toDateString();
+      const isYesterday = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - 1
+      ).toDateString() === publishDate.toDateString();
+
+      if (isToday) {
+        return `${publishHour}:${publishMinute}`;
+      } else if (isYesterday) {
+        return `昨天${publishHour}:${publishMinute}`;
+      } else {
+        return `${publishMonth}-${publishDay} ${publishHour}:${publishMinute}`;
+      }
+    }
 	const loadData = (id)=>{
 		goodsId.value = id
 		console.log(goodsId.value);
@@ -219,8 +221,12 @@
 <style lang="scss" scoped>
 	.detail-content {
 	  margin-top: 10px;
+	  font-size: 40rpx;
 	}
-	
+	.method {
+		margin-right: 5px;
+		font-size: 14px;
+	}
 	.detail-text {
 	  white-space: pre-wrap;
 	}
@@ -231,6 +237,7 @@
 	}
 	.bottom-bar {
 		height:100rpx;
+		
 		width: 100%;
 		position: absolute;
 		bottom: 0;
@@ -279,7 +286,7 @@
 		height: calc(100vh - 200rpx);
 		background-color: transparent;
 		margin: 20rpx auto;
-		margin-bottom: 0;
+		padding-bottom: 100rpx;
 		display: flex;
 		flex-direction: column;
 	}
@@ -326,7 +333,7 @@
 		margin: 20rpx 0;
 		.item-title {
 			font-weight: 710;
-			font-size: 35rpx;
+			font-size: 40rpx;
 			}
 		}	
 	}

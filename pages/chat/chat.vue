@@ -91,40 +91,6 @@
 	// import {chat} from '@/lib/gpt.js'
 	// 设备信息
 	let systemInfo = null
-<<<<<<< HEAD
-	let msgs = ref([
-		{
-			left: true,
-			content: "请问有什么为您服务的吗？",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: false,
-			content: "帮我预约个图书馆座位",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: true,
-			content: "已根据您的需求，为您找好座位，请看是否需要修改，否则三秒内即将自动为您选座",
-			tag: 'libraryForm',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: false,
-			content: "我觉得这个座位可以",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-		{
-			left: true,
-			content: "好的，已经为您预约好座位，请按时去图书馆自习",
-			tag: 'text',
-			time: "2023/7/29 12:00:00"
-		},
-	]);
-=======
 	const getSystemInfo = () => {
 		uni.getSystemInfo({
 			success: (res) => {
@@ -135,7 +101,6 @@
 			}
 		})
 	}
->>>>>>> 4524aa2e0c86d6c238602458f6c8dfcfbea0f80a
 
 	// 用户信息
 	// 对方用户信息

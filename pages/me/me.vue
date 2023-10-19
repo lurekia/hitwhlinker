@@ -370,8 +370,9 @@
 				nickName.value = user_info.name;
 				avatarSrc.value = user_info.avatar;
 				
-				console.log(avatarSrc.value);
-				userInfo.value = "大二 - 计算机科学与技术"
+				// console.log(avatarSrc.value);
+				userInfo.value = user_info.deptName
+				console.log(userInfo.value);
 			},
 			fail: (err) => {
 				uni.navigateTo({

@@ -128,6 +128,16 @@
 			last_word: "你好呀",
 			last_word_date: 1690702956056,
 			unread_count: 0
+		},
+		{
+			id: 6,
+			name: "hitwhlinker",
+			type: "hitwhlinker",
+			head_img_url: "http://94.74.87.251:8080/profile/avatar/2023/10/19/img6_20231019220237A050.jpg",
+			msgs: [],
+			last_word: "你好呀",
+			last_word_date: 1690702956056,
+			unread_count: 0
 		}
 	]);
 

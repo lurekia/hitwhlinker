@@ -62,12 +62,12 @@
 						<view></view>
 					</view>
 				</view>
-		
+
 			</view>
-		
+
 		</uni-popup>
 	</view>
-	
+
 </template>
 
 <script setup>
@@ -169,41 +169,10 @@
 	// 输入框
 	const input = ref("");
 	let res_type = '';
-	let msgs = ref([
-		// {
-		// 	left: true,
-		// 	content: "请问有什么为您服务的吗？",
-		// 	tag: 'text',
-		// 	time: "2023/7/29 12:00:00"
-		// },
-		// {
-		// 	left: false,
-		// 	content: "帮我预约个图书馆座位",
-		// 	tag: 'text',
-		// 	time: "2023/7/29 12:00:00"
-		// },
-		// {
-		// 	left: true,
-		// 	content: "已根据您的需求，为您找好座位，请看是否需要修改，否则三秒内即将自动为您选座",
-		// 	tag: 'libraryForm',
-		// 	time: "2023/7/29 12:00:00"
-		// },
-		// {
-		// 	left: false,
-		// 	content: "我觉得这个座位可以",
-		// 	tag: 'text',
-		// 	time: "2023/7/29 12:00:00"
-		// },
-		// {
-		// 	left: true,
-		// 	content: "好的，已经为您预约好座位，请按时去图书馆自习",
-		// 	tag: 'text',
-		// 	time: "2023/7/29 12:00:00"
-		// },
-	]);
+	let msgs = ref([]);
 	const initMsgs = (data) => {
 		console.log(data);
-		msgs.value = [];
+		// msgs.value = [];
 		uni.request({
 			url: 'http://119.8.190.49:5000/get_chat_history',
 			method: "GET",
@@ -218,7 +187,7 @@
 				console.log(res);
 				if (res.statusCode === 200) {
 					const data = res.data;
-					for(let i=0;i<data.length;i++) {
+					for (let i = 0; i < data.length; i++) {
 						const msg = {
 							left: !data[i].is_from_user,
 							content: data[i].message,
@@ -236,7 +205,7 @@
 				console.log(err);
 			}
 		})
-		
+
 	}
 	// 加载数据
 	const loadChat = () => {
@@ -244,7 +213,7 @@
 	}
 	const changeRes = (type) => {
 		res_type = type;
-		if(type === '图书馆') {
+		if (type === '图书馆') {
 			msgs.value.push({
 				left: true,
 				content: "选个座位吧",
@@ -255,9 +224,9 @@
 	}
 	// 输入输出
 	const query_server = (str, audio) => {
-		if(server_type == 'reservation') {
+		if (server_type == 'reservation') {
 			// console.log(res_type);
-			if(res_type === '图书馆') {
+			if (res_type === '图书馆') {
 				uni.request({
 					url: 'http://119.8.190.49:5000/query_library',
 					method: "POST",
@@ -277,7 +246,7 @@
 						}
 						msgs.value.push(msg)
 						scrollToBottom()
-						if(audio === true) {
+						if (audio === true) {
 							console.log("小助手回话开始回答");
 							beginVoice(msg.content);
 						}
@@ -320,48 +289,146 @@
 				// 	}
 				// })
 				const msg = {
+					left: true,
+					content: "- G101 第一大节有空\n - G203 第二大节有空\n - G105 第四大节有空\n ",
+					tag: 'text',
+					time: new Date(),
+				}
+				msgs.value.push(msg)
+				scrollToBottom()
+			}
+		} else {
+			if (server_type === 'hitwhlinker') {
+				let temp = '0';
+				uni.request({
+					url: "https://api.openai.com/v1/chat/completions",
+					method: "POST",
+					header: {
+						'Content-Type': 'application/json',
+						'Authorization': 'Bearer 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'
+					},
+					data: {
+						model: "gpt-3.5-turbo",
+						// stream: true,
+						messages: [{
+							role: 'system',
+							content: temp_template + str
+						}],
+					},
+					success: (res) => {
+						console.log(res);
+						temp = res.data.choices[0].message.content;
+						// rs(res);
+						console.log('意图识别回答：', temp);
+						if (temp === '8' || temp === '9') {
+							let messageList = [{
+									role: 'system',
+									content: '你是哈工大威海AI智慧助手，你将竭尽全力为使用者提供服务'
+								},
+								{
+									role: 'system',
+									content: '你熟练使用hitwhlinker这款软件，它是一个日常使用的APP, 正如名字中的link那样，可以通过它连接一切校园信息和校园服务,利用: - LLM(大语言模型) - RPA(机器人流程自动化) - VectorDatabase(向量数据库) - langchain 等先进的 AI 和智能交互技术，解决了传统校园产品和校园信息系统的各种痛点'
+								},
+								{
+									role: 'system',
+									content: '回答不需要具体，但要很热情，最好不要超过15个字'
+								}
+							]
+							for (let i = 0; i < msgs.value.length; i++) {
+								const msg = msgs.value[i];
+								messageList.push({
+									role: msg.left ? 'assistant' : 'user',
+									content: msg.content
+								})
+								// console.log(msg);
+							}
+							console.log(messageList);
+							uni.request({
+								url: "https://api.openai.com/v1/chat/completions",
+								method: "POST",
+								header: {
+									'Content-Type': 'application/json',
+									'Authorization': 'Bearer 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'
+								},
+								data: {
+									model: "gpt-3.5-turbo",
+									// stream: true,
+									messages: messageList,
+								},
+								success: (res) => {
+									console.log(res);
+									const resText = res.data.choices[0].message.content;
+									// rs(res);
+									const msg = {
+										left: true,
+										content: resText,
+										tag: 'text',
+										time: new Date(),
+									}
+									msgs.value.push(msg)
+									scrollToBottom()
+
+									if (audio === true) {
+										console.log("小助手开始回答");
+										beginVoice(msg.content, temp, str);
+									}
+
+								},
+								fail: (err) => {
+									console.log(err);
+									// rj(err);
+								}
+							});
+							
+							
+						} else {
+							take_action(temp, str);
+						}
+					},
+					fail: (err) => {
+						console.log(err);
+						// rj(err);
+					}
+				});
+
+
+
+			} else {
+				uni.request({
+					url: 'http://119.8.190.49:5000/query_local_information',
+					method: "POST",
+					data: {
+						query: str,
+						type: server_type
+					},
+					header: {
+						"Content-Type": "application/json;charset=UTF-8"
+					},
+					success: (res) => {
+						console.log(res);
+						const msg = {
 							left: true,
-							content: "- G101 第一大节有空\n - G203 第二大节有空\n - G105 第四大节有空\n ",
+							content: res.data.answer,
 							tag: 'text',
 							time: new Date(),
 						}
 						msgs.value.push(msg)
 						scrollToBottom()
+						if (audio === true) {
+							console.log("小助手回话开始回答");
+							beginVoice(msg.content, '0');
+						}
+						// return res.data.answer
+					},
+					fail: (err) => {
+						console.log(err);
+						// return err.errMs
+					}
+				})
 			}
- 		} else {
-			uni.request({
-				url: 'http://119.8.190.49:5000/query_local_information',
-				method: "POST",
-				data: {
-					query: str,
-					type: server_type
-				},
-				header: {
-					"Content-Type": "application/json;charset=UTF-8"
-				},
-				success: (res) => {
-					console.log(res);
-					const msg = {
-						left: true,
-						content: res.data.answer,
-						tag: 'text',
-						time: new Date(),
-					}
-					msgs.value.push(msg)
-					scrollToBottom()
-					if(audio === true) {
-						console.log("小助手回话开始回答");
-						beginVoice(msg.content);
-					}
-					// return res.data.answer
-				},
-				fail: (err) => {
-					console.log(err);
-					// return err.errMs
-				}
-			})
+
 		}
-		
+
 		// console.log(msg.content);
 		// return msg.content
 	}
@@ -398,7 +465,7 @@
 			time: new Date()
 		}
 		msgs.value.push(msg);
-		
+
 	}
 
 
@@ -506,10 +573,19 @@
 				},
 				onEnded: () => {
 					console.log('音频播放完了');
-					setTimeout(()=> {
+					// if (temp === '8' || temp === '0') {
+					setTimeout(() => {
 						startRecord()
 						texttitle.value = "还有什么想问的吗？"
-					},2000)
+					}, 2000)
+					// } else {
+					// 	setTimeout(() => {
+					// 		// startRecord()
+					// 		// texttitle.value = "还有什么想问的吗？"
+					// 		take_action(temp, word);
+					// 	}, 2000)
+					// }
+
 				}
 			},
 			lineUp: true, // 加入语音队列
@@ -535,10 +611,10 @@
 		texted.value = e.result;
 		textafter.value = '';
 		console.log('Event: recognition');
-		setTimeout(()=> {
+		setTimeout(() => {
 			endRecord()
 			console.log("结束录音");
-		},2000)
+		}, 2000)
 	}
 	const startRecord = () => {
 		var options = { // 语音转文字的设置
@@ -558,12 +634,12 @@
 			// 	icon: 'none'
 			// })
 			console.log("结束了");
-			return ;
+			return;
 		}
-		if(isSaying.value === false) {
-			return ;
+		if (isSaying.value === false) {
+			return;
 		}
-		
+
 		texttitle.value = '正在回答...';
 		texting.value = ''
 		isSaying.value = false;
@@ -578,7 +654,7 @@
 		scrollToBottom();
 		query_server(texted.value, true);
 	}
-	
+
 	const handleStartAudio = () => {
 		audioShow.value = !audioShow.value;
 		if (audioShow.value === true) {
@@ -587,15 +663,114 @@
 		scrollToBottom()
 	}
 
-	
+
+	// AI助手
+	const temp_template = [
+		'假如你是一个手机软件助手，你需要根据用户的输入，根据输出的适用场景选择应有的输出的编号。',
+		'注意:你的输出只能从我给的输出集合中选择，你的输出只能是单个数字，不要附带任何信息',
+		'输出集合：',
+		'输出1的适用场景:跳转到主页看每日推荐信息',
+		'输出2的适用场景:跳转到活动列表看所有活动信息',
+		'输出3的适用场景:跳转到商场看所有商品',
+		'输出4的适用场景:询问学习助手关于学习的事',
+		'输出5的适用场景:询问政策小助手关于学校政策的事',
+		'输出6的适用场景:帮助用户进行图书馆预约',
+		'输出7的适用场景:帮助用户进行空教室查询',
+		'输出8的适用场景:用户只是想聊聊天',
+		'如果场景都不适合,就输出9',
+		// '输出8的使用场景:'
+		'正确示例:',
+		'用户输入:推荐一些社团给我',
+		'输出:1',
+		'错误示例:',
+		'用户输入:推荐一些社团给我',
+		'输出:输出1',
+		'错误原因:没有只输出一个数字',
+		'正确输出:1',
+		'实际问题:',
+		'请给出你的编号选择',
+		'用户输入:',
+	].join('\n');
+	const take_action = (temp, word) => {
+		console.log('开始行动：', temp);
+		temp = temp.match(/\d+/g)[0];
+		if (temp === '1') {
+			uni.swhitchTab({
+				url: '/pages/home/home',
+			})
+			return;
+		}
+		if (temp === '2') {
+			uni.switchTab({
+				url: '/pages/trip/trip',
+			})
+			return;
+		}
+		if (temp === '3') {
+			uni.switchTab({
+				url: '/pages/shop/shop',
+			})
+			return;
+		}
+		if (temp === '4') {
+			const name = "学习助手";
+			const type = "Study";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&word=' + word,
+			})
+			return;
+		}
+		if (temp === '5') {
+			const name = "政策小帮手";
+			const type = "Policy";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&word=' + word,
+			})
+			return;
+		}
+		if (temp === '6') {
+			const name = "预约助手";
+			const type = "reservation";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&res_type=1' + '&word=' + word,
+			})
+			return;
+		}
+		if (temp === '7') {
+			const name = "预约助手";
+			const type = "reservation";
+			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			uni.navigateTo({
+				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+					head_img_url + '&res_type=2' + '&word=' + word,
+			})
+			return;
+		}
+		if (temp === '8') {
+			return;
+		}
+		uni.showToast({
+			title: '没有找到合适的操作',
+			icon: 'none'
+		})
+	}
+	console.log(temp_template);
 
 	// 钩子
 	onMounted(() => {
 		// getSystemInfo()
 		scrollToBottom()
 		// testVoice()
-		
+		// testChat();
 	})
+
+
 	onLoad((options) => {
 		// const eventChannel = this.getOpenerEventChannel();
 		// const pages = getCurrentPages(); // 无需import
@@ -618,8 +793,8 @@
 				})
 			}
 		});
-		
-		if(options.auto) {
+
+		if (options.auto) {
 			auto = true;
 			title = "hitwhlinker";
 			server_type = 'hitwhlinker';
@@ -631,19 +806,54 @@
 			server_type = options.server_type;
 			left_avatar.value = options.server_avatar;
 		}
-		if(server_type === 'reservation') {
-			
-			msgs.value = [{
-				left: true,
-				tag: 'system',
-				content: '',
-				time: new Date()
-			}];
+		if (server_type === 'reservation') {
+
+			if (options.res_type) {
+				if (options.res_type === '1') {
+					res_type = '图书馆'
+				} else {
+					res_type = '空座位'
+				}
+				msgs.value = [{
+					left: false,
+					tag: 'text',
+					content: options.word,
+					time: new Date()
+				}];
+				query_server(options.word, false);
+			} else {
+				msgs.value = [{
+					left: true,
+					tag: 'system',
+					content: '',
+					time: new Date()
+				}];
+			}
 		} else {
-			initMsgs();
+			if (server_type === 'hitwhlinker') {
+				msgs.value = [{
+					left: true,
+					tag: 'text',
+					content: '欢迎来到hitwhlinker，我将为你提供一站式服务',
+					time: new Date()
+				}];
+			} else {
+				if (options.word) {
+					msgs.value = [{
+						left: false,
+						tag: 'text',
+						content: options.word,
+						time: new Date()
+					}];
+					query_server(options.word, false);
+				} else {
+					msgs.value = [];
+				}
+				initMsgs();
+			}
 		}
-			
-		console.log("auto = ",auto);
+
+		console.log("auto = ", auto);
 		uni.setNavigationBarTitle({
 			title: title
 		})
@@ -653,7 +863,7 @@
 		uni.$on("changeRes", changeRes);
 		uni.$on("handleChooseSeat", handleChooseSeat);
 		// uni.$on("initMsgs", initMsgs)
-		
+
 		console.log("启动助手");
 		// #ifdef APP-PLUS
 		// 监听语音识别事件
@@ -665,7 +875,7 @@
 		// #endif
 	})
 	onReady(() => {
-		if(auto === true) {
+		if (auto === true) {
 			audioShow.value = true;
 		}
 	})
@@ -694,27 +904,29 @@
 	}
 
 	page {
-			overflow-anchor: auto;
-			background-color: #efefef;
-		}
+		overflow-anchor: auto;
+		background-color: #efefef;
+	}
+
 	.chat {
 		flex: 1;
 		height: 100vh;
 		background-color: #efefef;
 	}
-		.page {
-			flex: 1;
-			height: calc(100vh - 45px);
-			background-color: #efefef;
-			// background-color: pink;
-		}
-	
-	
-		.content {
-			flex-direction: column;
-			flex-grow: 1;
-			background-color: #efefef;
-		}
+
+	.page {
+		flex: 1;
+		height: calc(100vh - 45px);
+		background-color: #efefef;
+		// background-color: pink;
+	}
+
+
+	.content {
+		flex-direction: column;
+		flex-grow: 1;
+		background-color: #efefef;
+	}
 
 	.msg-list {
 		flex-direction: column;
@@ -769,6 +981,7 @@
 		background-color: #efefef;
 		padding-bottom: 60px;
 		width: 100vw;
+
 		.audio-title {
 			align-items: center;
 			justify-content: center;
@@ -778,13 +991,14 @@
 			// line-height: 20px;
 			margin-bottom: 5px;
 		}
+
 		.audio-output {
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: flex-start;
 			width: 100vw;
 			flex-grow: 1;
-	
+
 			.right-audio {
 				align-self: flex-end;
 				max-width: calc(80vw - 30px);
@@ -794,7 +1008,7 @@
 				margin-right: 10px;
 				padding: 10px;
 				margin-top: 20px;
-	
+
 				text {
 					height: 25px;
 					line-height: 25px;
@@ -802,7 +1016,7 @@
 					word-break: break-all;
 				}
 			}
-	
+
 			.left-audio {
 				max-width: calc(80vw - 30px);
 				min-height: 25px;
@@ -811,7 +1025,7 @@
 				margin-left: 10px;
 				margin-top: 20px;
 				padding: 10px;
-	
+
 				text {
 					height: 25px;
 					line-height: 25px;
@@ -820,14 +1034,14 @@
 				}
 			}
 		}
-	
+
 		.audio-input {
 			flex-direction: column;
 			align-items: center;
 			width: 100vw;
 			height: 60px;
 			margin: 10px 0;
-	
+
 			text {
 				display: block;
 				height: 30px;
@@ -838,222 +1052,222 @@
 			}
 		}
 	}
-	
+
 	// 语音效果
 	.music-container {
 		// width: 100vw;
 		height: 30px;
 	}
-	
+
 	.nomusic {
 		width: 84px;
 		height: 20px;
 		display: flex;
 	}
-	
+
 	.nomusic view {
 		width: 6px;
 		border-radius: 18px;
 		margin-right: 6px;
 	}
-	
+
 	.nomusic view:nth-child(1) {
 		/* 时间递增，参差不齐的效果 */
 		background: #f677b0;
 	}
-	
+
 	.nomusic view:nth-child(2) {
 		background: #df7ff2;
 	}
-	
+
 	.nomusic view:nth-child(3) {
 		background: #8c7ff2;
 	}
-	
+
 	.nomusic view:nth-child(4) {
 		background: #7fd0f2;
 	}
-	
+
 	.nomusic view:nth-child(5) {
 		background: #7ff2d3;
 	}
-	
+
 	.nomusic view:nth-child(6) {
 		background: #7ff2a0;
 	}
-	
+
 	.nomusic view:nth-child(7) {
 		background: #adf27f;
 	}
-	
+
 	.music view {
 		width: 6px;
 		border-radius: 18px;
 		margin-right: 6px;
 	}
-	
+
 	.music view:nth-child(1) {
 		/* 时间递增，参差不齐的效果 */
 		animation: bar1 2s 0.2s infinite linear;
 	}
-	
+
 	.music view:nth-child(2) {
 		animation: bar2 2s 0.4s infinite linear;
 	}
-	
+
 	.music view:nth-child(3) {
 		animation: bar3 2s 0.6s infinite linear;
 	}
-	
+
 	.music view:nth-child(4) {
 		animation: bar4 2s 0.8s infinite linear;
 	}
-	
+
 	.music view:nth-child(5) {
 		animation: bar5 2s 1.0s infinite linear;
 	}
-	
+
 	.music view:nth-child(6) {
 		animation: bar6 2s 1.2s infinite linear;
 	}
-	
+
 	.music view:nth-child(7) {
 		animation: bar7 2s 1.4s infinite linear;
 	}
-	
+
 	@keyframes bar1 {
 		0% {
 			background: #f677b0;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #f677b0;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #f677b0;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar2 {
 		0% {
 			background: #df7ff2;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #df7ff2;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #df7ff2;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar3 {
 		0% {
 			background: #8c7ff2;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #8c7ff2;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #8c7ff2;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar4 {
 		0% {
 			background: #7fd0f2;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #7fd0f2;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #7fd0f2;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar5 {
 		0% {
 			background: #7ff2d3;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #7ff2d3;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #7ff2d3;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar6 {
 		0% {
 			background: #7ff2a0;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #7ff2a0;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #7ff2a0;
 			height: 10%;
 			margin-top: 25%;
 		}
 	}
-	
+
 	@keyframes bar7 {
 		0% {
 			background: #adf27f;
 			margin-top: 25%;
 			height: 10%;
 		}
-	
+
 		50% {
 			background: #adf27f;
 			height: 100%;
 			margin-top: 0%;
 		}
-	
+
 		100% {
 			background: #adf27f;
 			height: 10%;

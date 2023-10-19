@@ -34,8 +34,8 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="picture!==''" class="img">
-			<image :src="picture" mode="aspectFill"
+		<view class="img">
+			<image :src="picture===''?'../../static/images/noimg.jpg':picture" mode="aspectFill"
 				style="width: 100%;height: 100%;border-radius: 5px;" ></image>
 		</view>
 	</view>
@@ -135,7 +135,7 @@
 	const productType = [
 		{
 			id: "0",
-			text: '人物匹配',
+			text: '教辅教材',
 		},
 		{
 			id: "1",
@@ -155,7 +155,7 @@
 		},
 		{
 			id: '5',
-			text: '其他',
+			text: '人物匹配',
 		}
 	]
 	const goToDetail = () => {

@@ -19,13 +19,13 @@
 						<text style="margin-right: 4px;">筛选</text>
 						<text style="margin-right: 4px;" class="iconfont">&#xe60f;</text>
 					</view>
-					<uni-search-bar class="search" placeholder="请输入查询内容" bgColor="#EEEEEE" @confirm="search" />
+					<uni-search-bar v-model="keyword" class="search" placeholder="请输入查询内容" bgColor="#EEEEEE" @confirm="search" />
 				</view>
 
 				<view class="want-tag">
 					<scroll-view class="tag-body" scroll-x="true" :show-scrollbar="false">
 						<view class="tag" @click="handleChangeTag(0)">
-							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60b;</view>
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60c;</view>
 							<text
 								:style="{fontSize: '14px',color:tag_content[0].active?'#2979ff':'#8f939c'}">{{tag_content[0].text}}</text>
 						</view>
@@ -50,7 +50,7 @@
 								:style="{fontSize: '14px',color:tag_content[4].active?'#2979ff':'#8f939c'}">{{tag_content[4].text}}</text>
 						</view>
 						<view class="tag" @click="handleChangeTag(5)">
-							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60c;</view>
+							<view style="margin-bottom: 4px;font-size: 26px;" class="iconfont">&#xe60b;</view>
 							<text
 								:style="{fontSize: '14px',color:tag_content[5].active?'#2979ff':'#8f939c'}">{{tag_content[5].text}}</text>
 						</view>
@@ -71,8 +71,8 @@
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType"
 				:content-text="contentText"></uni-load-more>
-
 		</scroll-view>
+		<!-- <dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball> -->
 		<uni-drawer ref="filter" mode="right" :mask-click="true">
 			<scroll-view style="height: 100%;padding: 10px;" scroll-y="true">
 				<button @click="closeFilter" type="primary">筛选</button>
@@ -222,7 +222,7 @@
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
 	import loginVue from '../login/login.vue';
-
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const {
 		proxy
 	} = getCurrentInstance()
@@ -232,6 +232,7 @@
 		name: "姜饼麻子",
 		avatar: "../.././static/images/img5.jpg"
 	};
+	const keyword = ref("")
 	let isLoading = ref(false);
 	let loadingType = ref("loading");
 	const contentText = {
@@ -266,7 +267,83 @@
 		text: '可配送',
 		value: 1
 	}];
+	const searchTag = (id) => {
+		isLoading.value = true;
+		loadingType.value = "loading"
+		products_data.value = [];
+		console.log("搜索开始");
+		uni.request({
+			url: 'http://94.74.87.251:8080/search/goods_type/'+ id +'?pageNum=0&pageSize=100',
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				console.log(res);
+				if (res.data.code == 200) {
+					// console.log(res);
+					products_data.value = res.data.rows;
+					
+					loadingType.value = "noMore"
+					// console.log(products_data.value);
+				} else {
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					})
+		
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			},
+			complete: () => {
+				isLoading.value = false;
+				keyword.value = "";
+			}
+		})
+	}
 	const search = () => {
+		isLoading.value = true;
+		loadingType.value = "loading"
+		products_data.value = [];
+		console.log("搜索开始");
+		uni.request({
+			url: 'http://94.74.87.251:8080/search/'+ keyword.value +'?pageNum=0&pageSize=100',
+			method: "GET",
+			header: {
+				"Authorization": token
+			},
+			success: (res) => {
+				console.log(res);
+				if (res.data.code == 200) {
+					console.log(res);
+					products_data.value = res.data.data.goodsList;
+					
+					loadingType.value = "noMore"
+					// console.log(products_data.value);
+				} else {
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					})
+		
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				})
+			},
+			complete: () => {
+				isLoading.value = false;
+				keyword.value = "";
+			}
+		})
 		return;
 	}
 	// // 选择标签模式
@@ -274,7 +351,7 @@
 
 	const tag_content = ref([{
 			id: '0',
-			text: '人物匹配',
+			text: '教辅教材',
 			icon: '&#xe60b;',
 			active: false,
 		},
@@ -304,7 +381,7 @@
 		},
 		{
 			id: "5",
-			text: '其他',
+			text: '人物匹配',
 			icon: '&#xe60b;',
 			active: false,
 		}
@@ -316,6 +393,7 @@
 		}
 		tag_content.value[id].active = true
 		selectedTagIndex.value = id
+		searchTag(id);
 	}
 
 	const products_data = ref([])
@@ -418,6 +496,9 @@
 			success: (res) => {
 				// console.log(res.data);
 				token = res.data;
+				for (let i = 0; i < tag_content.value.length; i++) {
+					tag_content.value[i].active = false;
+				}
 				initData();
 
 			},

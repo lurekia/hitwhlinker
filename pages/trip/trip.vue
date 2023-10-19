@@ -60,19 +60,147 @@
 		</scroll-view>
 	</view>
 	
-	
+	<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 </template>
 
 <script setup>
 	import { ref, nextTick,reactive,onMounted } from 'vue'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
+	const activities = reactive([
+		{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:1,
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'2',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'3',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'4',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'5',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'6',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'7',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},{
+			src:'https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png',//活动的图片
+			date:'2023-08-20',
+			time:'9:00',
+			title:'发布会',
+			position:'G101',
+			tag:'学术讲座',//活动所属分类
+			id:'8',
+			detail:'56656556',//活动的详细信息
+			status:1,//活动的喜欢or不喜欢  默认为喜欢 1   不喜欢为0
+			viewNum:0,//活动的浏览量
+			authorSrc:'https://cdn.pixabay.com/photo/2021/07/22/11/25/rabbit-6485072_1280.jpg',//发布组织头像
+			authorName:'HITwhLinker',//发布者名称
+			like: false, // 默认没点赞
+			likeCount: 26, // 点赞数量
+		},
+	])
+	const selected = reactive([])
 	import {
 		onLoad,
 		onInit,
 		onShow
 	} from '@dcloudio/uni-app'
+<<<<<<< HEAD
 	const activities = ref([])
 	const selected = ref([])
 	
+=======
+>>>>>>> 4524aa2e0c86d6c238602458f6c8dfcfbea0f80a
 	const showCalendar = ref(false)
 	nextTick(() => {
 	  showCalendar.value = true

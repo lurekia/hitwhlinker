@@ -76,6 +76,7 @@
 	import {
 		onLoad,onInit
 	} from '@dcloudio/uni-app'
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	const goBack = () => {
 		uni.navigateBack({
 			delta: 1

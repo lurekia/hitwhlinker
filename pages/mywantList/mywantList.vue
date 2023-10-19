@@ -7,10 +7,10 @@
 				
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType" :content-text="contentText"></uni-load-more>
+			<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 		</scroll-view> 
 		
 	</view>
-	
 </template>
 
 <script setup>
@@ -27,7 +27,7 @@
 		onInit
 	} from '@dcloudio/uni-app'
 	import productItem from '@/components/post/productItem.vue'
-	
+	import dragball from '@/components/drag-ball/drag-ball.vue'
 	let isLoading = ref(false);
 	let loadingType = ref("loading");
 	const contentText = {contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "没有更多数据了"}

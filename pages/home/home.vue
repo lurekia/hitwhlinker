@@ -10,7 +10,8 @@
 			<view class="today">
 				<text class="today-text">TODAY</text>
 				<view class="custom-sentence">
-					{{city}}{{weather_info}}
+					<!-- {{city}}{{weather_info}} -->
+					杭州今天天晴，祝您心情愉悦！
 				</view>
 			</view>
 			<view class="part-in">
@@ -215,7 +216,7 @@
 	let city = ref("");
 	let token = null;
 	const achieve = (open) => {
-		console.log(open);
+		// console.log(open);
 		console.log('666');
 	}
 	var currentDate = ref('')
@@ -252,11 +253,11 @@
 			url:'http://119.8.190.49:5000/recommendation',
 			method: "GET",
 			success: (res) => {
-				console.log(res);
+				// console.log(res);
 				if (res.statusCode == 200) {
 					console.log('loadRecommendData',res.data);
 					recommend_data.value = res.data
-					console.log(recommend_data.value);
+					// console.log(recommend_data.value);
 				} else {
 					uni.showToast({
 						title: '加载失败，请检查网络',
@@ -305,7 +306,7 @@
 				console.log('当前位置的经度：' + res.longitude);
 				console.log('当前位置的纬度：' + res.latitude);
 				const location = res.longitude + ',' + res.latitude;
-				console.log(location);
+				// console.log(location);
 				uni.request({
 					url:"https://devapi.qweather.com/v7/weather/3d",
 					method:"GET",

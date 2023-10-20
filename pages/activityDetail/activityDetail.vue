@@ -5,8 +5,8 @@
 		<view class="page-header" :style="{'background-image': `url('${item.cover}')`}" >
 			<!-- -->
 			<view class="back">
-				<uni-icons type="back" size="22" color="black" class="go-back" @click="goBack"></uni-icons>
-				<text style="color: black;">返回</text>
+				<uni-icons type="back" size="22" color="#fff" class="go-back" @click="goBack"></uni-icons>
+				<text style="color: #fff;">返回</text>
 			</view>
 			
 			
@@ -45,7 +45,7 @@
 			<view class="like-count">
 				<uni-icons type="heart" size="22" color="#ef5656" @click="toggleLike()" v-if="!is_fav"></uni-icons>
 				<uni-icons type="heart-filled" size="22" color="#ef5656" @click="toggleLike()" v-else="is_fav"></uni-icons>
-				    <text>{{ item.likeCount }}</text>
+				    <text style="color:#ef5656 ;">{{ item.likeCount }}</text>
 			</view>
 		</view>
 		<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
@@ -119,6 +119,7 @@
 				success: (res) => {
 					token = res.data;
 					loadData(option.id)
+					getFormattedTime(time) 
 				},
 				fail: (err) => {
 					uni.navigateTo({

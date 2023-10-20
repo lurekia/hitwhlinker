@@ -96,7 +96,7 @@
 				detail:item.detail
 			},
 		  	success: (res) => {
-		  		console.log('res',res.data.summary);
+		  		// console.log('res',res.data.summary);
 				uni.hideToast();//隐藏加载
 				 if (selectedItemID.value === item.id) {
 				        showToastText.value = res.data.summary
@@ -108,7 +108,7 @@
 				      }
 				
 		  		showToastText.value = res.data.summary
-				console.log('showToastText.value',showToastText.value);
+				// console.log('showToastText.value',showToastText.value);
 		  	},
 		  	fail: (err) => {
 		  		uni.showToast({
@@ -137,7 +137,7 @@
 				// console.log(res);
 				if (res.data.code == 200) {
 					activities.value = [...activities.value, ...res.data.rows];
-					console.log('activities.value',activities.value);
+					// console.log('activities.value',activities.value);
 					activities.value.forEach(obj => {
 					  // 处理 detail 属性
 					  if (obj.detail) {
@@ -152,7 +152,7 @@
 					  if(obj.cover){
 						  obj.cover = 'http://94.74.87.251:8080' + obj.cover;
 					  }
-					  console.log('修改后的值',activities.value);
+					  // console.log('修改后的值',activities.value);
 					});
 					
 				} else {
@@ -189,7 +189,7 @@
 		});
 	})
 	const showDetail = (item) => {
-		console.log('555');
+		// console.log('555');
 		uni.navigateTo({
 			url: '/pages/activityDetail/activityDetail?id=' + item.id // 通过查询参数传递项目ID
 		})
@@ -197,7 +197,7 @@
 	function changeDate(e) {
 		// 清空数组
 	  selected.value.splice(0);
-	  console.log('change 返回:', e)
+	  // console.log('change 返回:', e)
 	  activities.value.forEach(activity => {
 	     if (activity.startDate === e.fulldate) {
 			 console.log(activity.title);

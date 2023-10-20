@@ -2,7 +2,7 @@
 	<view class="page">
 		<view class="topbar">
 			<view class="topbar-content">
-				需求详情
+				信息详情
 			</view>
 			<uni-icons type="back" size="30" color="#fff" class="go-back" @click="goBack"></uni-icons>
 		</view>

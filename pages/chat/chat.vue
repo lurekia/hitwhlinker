@@ -31,12 +31,12 @@
 				</view>
 				<view class="audio-output">
 					<view class="right-audio">
-						<mp-html :content="texted" v-if="texted != ''"/>
+						<mp-html :content="texted" v-if="texted != ''" />
 						<!-- <text v-if="texted != ''">{{texted}}</text> -->
 						<text v-else>...</text>
 					</view>
 					<view class="left-audio">
-						<mp-html :content="textafter" v-if="textafter != ''"/>
+						<mp-html :content="textafter" v-if="textafter != ''" />
 						<!-- <text v-if="textafter != ''">{{textafter}}</text> -->
 						<text v-else>...</text>
 					</view>
@@ -116,13 +116,19 @@
 	// 	name: "小红",
 	// 	avatar: "../.././static/images/img2.jpg"
 	// };
+	let server = {
+		server_type: '',
+		res_type: '',
+		server_name: '',
+	}
 	// 对方用户名
 	let title = "";
 	// const server_id = null;
-	let server_type = "";
+	// let server_type = "";
+	let reaction = "";
 	// 头像
-	let left_avatar = ref("../.././static/images/img1.jpg");
-	let right_avatar = ref("../.././static/images/img5.jpg")
+	let left_avatar = ref("");
+	let right_avatar = ref("")
 
 
 
@@ -198,7 +204,7 @@
 						}
 						msgs.value.push(msg)
 					}
-					if(word && word !== '') {
+					if (word && word !== '') {
 						const msg = {
 							left: false,
 							content: word,
@@ -209,7 +215,7 @@
 						console.log('有新信息');
 						query_server(word, auto);
 						word = '';
-					} 
+					}
 					scrollToBottom()
 				} else {
 					console.log(res.msg);
@@ -233,43 +239,102 @@
 				tag: 'libraryForm',
 				time: new Date()
 			})
+			scrollToBottom();
 		}
 	}
 	// 输入输出
-	const query_server = (str, audio) => {
-		if (server_type == 'reservation') {
+	const query_server = (str, agent, audio) => {
+		const server_type = agent.server_type
+		const res_type = agent.res_type
+		const server_name = agent.server_name
+		console.log(agent.server_type);
+		if (server_type === 'reservation') {
 			// console.log(res_type);
 			if (res_type === '图书馆') {
-				uni.request({
-					url: 'http://119.8.190.49:5000/query_library',
-					method: "POST",
-					data: {
-						query: str,
-					},
-					header: {
-						"Content-Type": "application/json;charset=UTF-8"
-					},
-					success: (res) => {
-						console.log(res);
-						const msg = {
-							left: true,
-							content: res.data.answer,
-							tag: 'text',
-							time: new Date(),
-						}
-						msgs.value.push(msg)
-						scrollToBottom()
-						if (audio === true) {
-							console.log("小助手回话开始回答");
-							beginVoice(msg.content);
-						}
-						// return res.data.answer
-					},
-					fail: (err) => {
-						console.log(err);
-						// return err.errMs
-					}
-				})
+				// uni.request({
+				// 	url: 'http://119.8.190.49:5000/query_library',
+				// 	method: "POST",
+				// 	data: {
+				// 		query: str,
+				// 	},
+				// 	header: {
+				// 		"Content-Type": "application/json;charset=UTF-8"
+				// 	},
+				// 	success: (res) => {
+				// 		console.log(res);
+				// 		const msg = {
+				// 			left: true,
+				// 			content: res.data.answer,
+				// 			tag: 'text',
+				// 			time: new Date(),
+				// 		}
+				// 		msgs.value.push(msg)
+				// 		scrollToBottom()
+				// 		if (audio === true) {
+				// 			console.log("小助手回话开始回答");
+				// 			beginVoice(msg.content);
+				// 		}
+				// 		// return res.data.answer
+				// 	},
+				// 	fail: (err) => {
+				// 		console.log(err);
+				// 		// return err.errMs
+				// 	}
+				// })
+				// uni.request({
+				// 	url: "https://api.openai.com/v1/chat/completions",
+				// 	method: "POST",
+				// 	header: {
+				// 		'Content-Type': 'application/json',
+				// 		'Authorization': 'Bearer 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'
+				// 	},
+				// 	data: {
+				// 		model: "gpt-3.5-turbo",
+				// 		// stream: true,
+				// 		messages: [
+				// 			{
+				// 				role: 'system',
+				// 				content: '你是一个图书馆工作人员，你需要返回一个符合用户要求的座位的信息，并提醒用户预约成功',
+				// 			},
+				// 			{
+				// 				role: 'user',
+				// 				content: str,
+				// 			}
+				// 		],
+				// 	},
+				// 	success: (res) => {
+				// 		console.log(res);
+				// 		// resText = res.data.choices[0].message.content;
+				// 		// rs(res);
+				// 		const resText = res.data.choices[0].message.content;
+				// 		// rs(res);
+				// 		const msg = {
+				// 			left: true,
+				// 			content: resText,
+				// 			tag: 'text',
+				// 			time: new Date(),
+				// 		}
+				// 		msgs.value.push(msg)
+				// 		scrollToBottom()
+						
+				// 		if (audio === true) {
+				// 			console.log("小助手开始回答");
+				// 			beginVoice(msg.content, temp, str);
+				// 		}
+				// 	},
+				// 	fail: (err) => {
+				// 		console.log(err);
+				// 		// rj(err);
+				// 	}
+				// });
+				// msgs.value.push({
+				// 	left: true,
+				// 	tag: 'systemRes',
+				// 	content: '图书馆',
+				// 	time: new Date()
+				// });
+				// scrollToBottom()
+				changeRes('图书馆')
 			} else {
 				// uni.request({
 				// 	url: 'http://119.8.190.49:5000/query_classroom',
@@ -313,6 +378,28 @@
 		} else {
 			if (server_type === 'hitwhlinker') {
 				let temp = '0';
+				let messageList = []
+				for (let i = 0; i < msgs.value.length; i++) {
+					const msg = msgs.value[i];
+					if(msg.tag === 'text') {
+						messageList.push({
+							role: msg.left ? 'assistant' : 'user',
+							content: msg.content
+						})
+					} else {
+						if(msg.tag === 'system') {
+							messageList.push({
+								role: 'system',
+								content: "为您询问助手" + msg.content
+							})
+						}
+					}
+					// console.log(msg);
+				}
+				messageList.push({
+						role: 'system',
+						content: temp_template + str
+					})
 				uni.request({
 					url: "https://api.openai.com/v1/chat/completions",
 					method: "POST",
@@ -323,80 +410,15 @@
 					data: {
 						model: "gpt-3.5-turbo",
 						// stream: true,
-						messages: [{
-							role: 'system',
-							content: temp_template + str
-						}],
+						messages: messageList,
 					},
 					success: (res) => {
 						console.log(res);
 						temp = res.data.choices[0].message.content;
 						// rs(res);
 						console.log('意图识别回答：', temp);
-						if (temp === '10' || temp === '11') {
-							let messageList = [{
-									role: 'system',
-									content: '你是哈工大威海AI智慧助手，你将竭尽全力为使用者提供服务'
-								},
-								{
-									role: 'system',
-									content: '你熟练使用hitwhlinker这款软件，它是一个日常使用的APP, 正如名字中的link那样，可以通过它连接一切校园信息和校园服务,利用: - LLM(大语言模型) - RPA(机器人流程自动化) - VectorDatabase(向量数据库) - langchain 等先进的 AI 和智能交互技术，解决了传统校园产品和校园信息系统的各种痛点'
-								},
-								{
-									role: 'system',
-									content: '回答不需要具体，但要很热情，最好不要超过15个字'
-								}
-							]
-							for (let i = 0; i < msgs.value.length; i++) {
-								const msg = msgs.value[i];
-								messageList.push({
-									role: msg.left ? 'assistant' : 'user',
-									content: msg.content
-								})
-								// console.log(msg);
-							}
-							console.log(messageList);
-							uni.request({
-								url: "https://api.openai.com/v1/chat/completions",
-								method: "POST",
-								header: {
-									'Content-Type': 'application/json',
-									'Authorization': 'Bearer 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'
-								},
-								data: {
-									model: "gpt-3.5-turbo",
-									// stream: true,
-									messages: messageList,
-								},
-								success: (res) => {
-									console.log(res);
-									const resText = res.data.choices[0].message.content;
-									// rs(res);
-									const msg = {
-										left: true,
-										content: resText,
-										tag: 'text',
-										time: new Date(),
-									}
-									msgs.value.push(msg)
-									scrollToBottom()
-
-									if (audio === true) {
-										console.log("小助手开始回答");
-										beginVoice(msg.content, temp, str);
-									}
-
-								},
-								fail: (err) => {
-									console.log(err);
-									// rj(err);
-								}
-							});
-							
-							
-						} else {
-							take_action(temp, str);
-						}
+						temp = temp.match(/\d+/g)[0];
+						take_action(temp, str);
 					},
 					fail: (err) => {
 						console.log(err);
@@ -407,6 +429,7 @@
 
 
 			} else {
+				// 询问本地信息
 				uni.request({
 					url: 'http://119.8.190.49:5000/query_local_information',
 					method: "POST",
@@ -427,6 +450,7 @@
 						}
 						msgs.value.push(msg)
 						scrollToBottom()
+						// 磨人启动连续
 						if (audio === true) {
 							console.log("小助手回话开始回答");
 							beginVoice(msg.content, '0');
@@ -460,7 +484,7 @@
 		msgs.value.push(msg)
 		// input.value = ""
 		scrollToBottom()
-		query_server(input.value, false);
+		query_server(input.value, server, false);
 		input.value = "";
 	}
 	const handleChooseSeat = (str) => {
@@ -524,8 +548,6 @@
 
 				}
 			});
-
-
 		})
 	}
 	const putProduct = () => {
@@ -551,11 +573,11 @@
 	}
 
 
-	// 语音控制
+	// 默认进入hitwhlinker开始语音控制
 	let auto = false;
 	const audioShow = ref(false)
 	// 语音框
-	let word = '';
+	// let word = '';
 	const isSaying = ref(false)
 	const texting = ref("")
 	const texted = ref("")
@@ -564,9 +586,7 @@
 	const popup = ref();
 	watch(audioShow, (newValue, oldValue) => {
 		if (newValue === true) {
-			if(!word || word === '') {
-				startRecord()
-			}
+			startRecord()
 			popup.value.open();
 		} else {
 			endRecord()
@@ -590,10 +610,13 @@
 				onEnded: () => {
 					console.log('音频播放完了');
 					// if (temp === '8' || temp === '0') {
-					setTimeout(() => {
-						startRecord()
-						texttitle.value = "还有什么想问的吗？"
-					}, 2000)
+					if (audioShow.value === true) {
+						setTimeout(() => {
+							startRecord()
+							texttitle.value = "还有什么想问的吗？"
+						}, 2000)
+					}
+
 					// } else {
 					// 	setTimeout(() => {
 					// 		// startRecord()
@@ -668,7 +691,7 @@
 		}
 		msgs.value.push(msg);
 		scrollToBottom();
-		query_server(texted.value, true);
+		query_server(texted.value, server, true);
 	}
 
 	const handleStartAudio = () => {
@@ -682,16 +705,16 @@
 
 	// AI助手
 	const temp_template = [
-		'假如你是一个手机软件助手，你需要根据用户的输入，根据输出的适用场景选择应有的输出的编号。',
+		'假如你是一个手机软件助手，你需要根据用户的输入，根据输出的适用场景选择应有的输出的编号。且根据历史聊天信息决定要不要更换之前的意图',
 		'注意:你的输出只能从我给的输出集合中选择，你的输出只能是单个数字，不要附带任何信息',
 		'输出集合：',
-		'输出1的适用场景:跳转到主页看每日推荐信息',
-		'输出2的适用场景:跳转到活动列表看所有活动信息',
-		'输出3的适用场景:跳转到商场看所有商品',
+		'输出1的适用场景:跳转到推荐服务，给用户推荐活动，商品，信息',
+		// '输出2的适用场景:跳转到活动列表看所有活动信息',
+		'输出3的适用场景:跳转到商场列表看所有商品',
 		'输出4的适用场景:询问学习助手关于学习的事',
-		'输出5的适用场景:询问政策小助手关于学校政策的事',
-		'输出6的适用场景:询问关于学校餐厅和伙食信息的事',
-		'输出7的适用场景:询问关于学校活动的事',
+		'输出5的适用场景:询问哈小助关于学校信息的事',
+		'输出6的适用场景:询问食堂探店侠关于学校餐厅和伙食信息的事',
+		'输出7的适用场景:询问活动我先知关于最近学校活动的事',
 		'输出8的适用场景:帮助用户进行图书馆预约',
 		'输出9的适用场景:帮助用户进行空教室查询',
 		'输出10的适用场景:用户只是想聊聊天',
@@ -705,14 +728,54 @@
 		'输出:输出1',
 		'错误原因:没有只输出一个数字',
 		'正确输出:1',
-		'实际问题:',
+		'给出你与用户的对话',
 		'请给出你的编号选择',
-		'用户输入:',
 	].join('\n');
-	const take_action = (temp, word) => {
-		console.log('开始行动：', temp);
-		temp = temp.match(/\d+/g)[0];
-		let isauto = audioShow.value === true?'&auto=2':'';
+	const getReactionPrompt = (per, heared) => {
+		return '你是' + per + '，请拓展这则系统信息：{' + heared + '}，要求吸引用户回答，且简短精炼，注意要以朋友的口吻'
+		// return '您的朋友新出的概率论成绩100分，但是他有门课《近代史纲要》还没复习好，请劝劝他好好复习，并给他出几道题，要求短小精悍，注意要以朋友的口吻'
+	}
+	const putReaction = () => {
+		let messageList = [{
+			role: 'system',
+			content: getReactionPrompt(title, reaction),
+		}, ]
+		// console.log(messageList);
+		uni.request({
+			url: "https://api.openai.com/v1/chat/completions",
+			method: "POST",
+			header: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer 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'
+			},
+			data: {
+				model: "gpt-3.5-turbo",
+				// stream: true,
+				messages: messageList,
+			},
+			success: (res) => {
+				console.log(res);
+				const resText = res.data.choices[0].message.content;
+				// rs(res);
+				const msg = {
+					left: true,
+					content: resText,
+					tag: 'text',
+					time: new Date(),
+				}
+				msgs.value.push(msg)
+				scrollToBottom()
+			},
+			fail: (err) => {
+				console.log(err);
+				// rj(err);
+			}
+		});
+	}
+	let now_agent = null;
+	const take_action = (temp, word, audio) => {
+		// console.log('开始行动：', temp);
+		// let isauto = audioShow.value === true ? '&auto=2' : '';
 		if (temp === '1') {
 			uni.switchTab({
 				url: '/pages/home/home',
@@ -731,68 +794,251 @@
 			})
 			return;
 		}
+		// 咨询助手
 		if (temp === '4') {
-			const name = "学习助手";
-			const type = "Study";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'Study',
+				res_type: '',
+				server_name: '学习助手'
+			}
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			} 
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			query_server(word, agent, audio);
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '5') {
-			const name = "政策小帮手";
-			const type = "Policy";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'Policy',
+				res_type: '',
+				server_name: '哈小助'
+			}
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			} 
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			query_server(word, agent, audio);
+			// const name = "政策小帮手";
+			// const type = "Policy";
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img2_20231017141039A002.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '6') {
-			const name = "餐厅探店侠";
-			const type = "Canteen";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img3_20231017141058A003.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'Canteen',
+				res_type: '',
+				server_name: '餐厅探店侠'
+			}
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			}
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			query_server(word, agent, audio);
+			// const name = "餐厅探店侠";
+			// const type = "Canteen";
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img3_20231017141058A003.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '7') {
-			const name = "活动我先知";
-			const type = "Activity";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img1_20231017141016A001.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'Activity',
+				res_type: '',
+				server_name: '活动我先知'
+			}
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			}
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			query_server(word, agent, audio);
+			// const name = "活动我先知";
+			// const type = "Activity";
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img1_20231017141016A001.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '8') {
-			const name = "预约助手";
-			const type = "reservation";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&res_type=1' + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'reservation',
+				res_type: '图书馆',
+				server_name: '预约助手'
+			}
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			}
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			query_server(word, agent, audio);
+			// const name = "预约助手";
+			// const type = "reservation";
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&res_type=1' + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '9') {
-			const name = "预约助手";
-			const type = "reservation";
-			const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
-			uni.navigateTo({
-				url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
-					head_img_url + '&res_type=2' + '&word=' + word + isauto,
-			})
+			const agent = {
+				server_type: 'reservation',
+				res_type: '空教室',
+				server_name: '预约助手'
+			}
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: agent.server_name,
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			if(audio) {
+				texttitle.value = '正在询问:' + agent.server_name;
+			}
+			
+			query_server(word, agent, audio);
+			// const name = "预约助手";
+			// const type = "reservation";
+			// const head_img_url = "http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg";
+			// uni.navigateTo({
+			// 	url: '/pages/chat/chat?server_name=' + name + '&server_type=' + type + '&server_avatar=' +
+			// 		head_img_url + '&res_type=2' + '&word=' + word + isauto,
+			// })
 			return;
 		}
 		if (temp === '10' || temp === '11') {
-			return;
+			const agent = {
+				server_type: 'hitwhlinker',
+				res_type: '',
+				server_name: 'hitwhlinker'
+			}
+			if(now_agent == null || agent.server_name!= now_agent) {
+				msgs.value.push({
+					left: true,
+					tag: 'system',
+					content: '我回来了',
+					time: new Date(),
+				});
+			}
+			now_agent = agent.server_name;
+			let messageList = [
+				{
+					role: 'system',
+					content: '你是哈工大威海AI智慧助手，你将竭尽全力为使用者提供服务'
+				},
+				{
+					role: 'system',
+					content: '你熟练使用hitwhlinker这款软件，它是一个日常使用的APP, 正如名字中的link那样，可以通过它连接一切校园信息和校园服务,利用: - LLM(大语言模型) - RPA(机器人流程自动化) - VectorDatabase(向量数据库) - langchain 等先进的 AI 和智能交互技术，解决了传统校园产品和校园信息系统的各种痛点'
+				},
+				{
+					role: 'system',
+					content: '回答不需要具体，但要很热情，最好不要超过15个字'
+				}
+			]
+			for (let i = 0; i < msgs.value.length; i++) {
+				const msg = msgs.value[i];
+				if(msg.tag === 'text') {
+					messageList.push({
+						role: msg.left ? 'assistant' : 'user',
+						content: msg.content
+					})
+				}
+				// console.log(msg);
+			}
+			console.log(messageList);
+			uni.request({
+				url: "https://api.openai.com/v1/chat/completions",
+				method: "POST",
+				header: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer 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'
+				},
+				data: {
+					model: "gpt-3.5-turbo",
+					// stream: true,
+					messages: messageList,
+				},
+				success: (res) => {
+					console.log(res);
+					const resText = res.data.choices[0].message.content;
+					// rs(res);
+					const msg = {
+						left: true,
+						content: resText,
+						tag: 'text',
+						time: new Date(),
+					}
+					msgs.value.push(msg)
+					scrollToBottom()
+
+					if (audio === true) {
+						console.log("小助手开始回答");
+						beginVoice(msg.content, temp, str);
+					}
+
+				},
+				fail: (err) => {
+					console.log(err);
+					// rj(err);
+				}
+			});
+			// return;
 		}
 		uni.showToast({
 			title: '没有找到合适的操作',
@@ -830,61 +1076,79 @@
 					url: '/pages/login/login',
 					animationDuration: 300
 				})
-				
+
 			}
 		});
-		word = options.word
-		console.log("上个界面的信息：",word);
+		console.log(options);
+		// 找话题聊天
+		reaction = options.reaction
+		// word = options.word
+		// console.log("上个界面的信息：", word);
 		if (options.auto) {
-			if(options.auto === '1') {
+			if (options.auto === '1') {
 				auto = true;
 				// word = '';
 				title = "hitwhlinker";
-				server_type = 'hitwhlinker';
-				left_avatar.value = 'http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg';
-			} else {
-				auto = true;
-				// audioShow.value = true;
-				texted.value = options.word;
-				textafter.value = '...';
-				texttitle.value = '思考中...';
-				title = options.server_name
-				server_type = options.server_type;
-				left_avatar.value = options.server_avatar;
-			}
-			
+				server = {
+					server_name: 'hitwhlinker',
+					server_type: 'hitwhlinker',
+					res_type: ''
+				}
+				// server_type = 'hitwhlinker';
+				left_avatar.value =
+					'http://94.74.87.251:8080/profile/avatar/2023/10/17/img6_20231017141159A006.jpg';
+			} 
+			// else {
+			// 	auto = true;
+			// 	// audioShow.value = true;
+			// 	texted.value = options.word;
+			// 	textafter.value = '...';
+			// 	texttitle.value = '思考中...';
+			// 	title = options.server_name
+			// 	server_type = options.server_type;
+			// 	left_avatar.value = options.server_avatar;
+			// }
+
 			// audioShow.value = true;
 		} else {
 			auto = false;
 			title = options.server_name
-			server_type = options.server_type;
+			server = {
+				server_name: options.server_name,
+				server_type: options.server_type,
+				res_type: ''
+			}
+			// server_type = options.server_type;
 			left_avatar.value = options.server_avatar;
 		}
-		if (server_type === 'reservation') {
+		if (server.server_type === 'reservation') {
 
-			if (options.res_type) {
-				if (options.res_type === '1') {
-					res_type = '图书馆'
-				} else {
-					res_type = '空座位'
+			// if (options.res_type) {
+			// 	if (options.res_type === '1') {
+			// 		server.res_type = '图书馆'
+			// 	} else {
+			// 		server.res_type = '空座位'
+			// 	}
+			// 	msgs.value = [{
+			// 		left: false,
+			// 		tag: 'text',
+			// 		content: options.word,
+			// 		time: new Date()
+			// 	}];
+			// 	// query_server(options.word, false);
+			// } else {
+				if (reaction == '' || reaction == null) {
+					msgs.value = [{
+						left: true,
+						tag: 'systemRes',
+						content: '',
+						time: new Date()
+					}];
 				}
-				msgs.value = [{
-					left: false,
-					tag: 'text',
-					content: options.word,
-					time: new Date()
-				}];
-				query_server(options.word, false);
-			} else {
-				msgs.value = [{
-					left: true,
-					tag: 'system',
-					content: '',
-					time: new Date()
-				}];
-			}
+
+			// }
 		} else {
-			if (server_type === 'hitwhlinker') {
+			if (server.server_type === 'hitwhlinker') {
 				msgs.value = [{
 					left: true,
 					tag: 'text',
@@ -895,7 +1159,6 @@
 				initMsgs()
 			}
 		}
-
 		console.log("auto = ", auto);
 		uni.setNavigationBarTitle({
 			title: title
@@ -921,6 +1184,9 @@
 		if (auto === true) {
 			audioShow.value = true;
 			// popup.value.open();
+		}
+		if (reaction && reaction !== '') {
+			putReaction();
 		}
 	})
 	onUnload(() => {

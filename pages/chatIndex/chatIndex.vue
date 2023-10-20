@@ -79,7 +79,8 @@
 		name: "姜饼麻子",
 		avatar: "../.././static/images/img5.jpg"
 	};
-	const chat_views = ref([{
+	const chat_views = ref([
+	{
 			id: 1,
 			name: "活动我先知",
 			type: "Activity",

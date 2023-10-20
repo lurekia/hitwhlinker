@@ -71,8 +71,8 @@
 			</view>
 			<uni-load-more v-if="isLoading||loadingType=='noMore'" :status="loadingType"
 				:content-text="contentText"></uni-load-more>
+				<dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball>
 		</scroll-view>
-		<!-- <dragball :x='100' :y='50' image='http://pic27.nipic.com/20130321/9678987_225139671149_2.jpg'></dragball> -->
 		<uni-drawer ref="filter" mode="right" :mask-click="true">
 			<scroll-view style="height: 100%;padding: 10px;" scroll-y="true">
 				<button @click="closeFilter" type="primary">筛选</button>

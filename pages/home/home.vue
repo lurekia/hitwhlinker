@@ -24,7 +24,7 @@
 					校园脉动感知
 				</view>
 				<view class="campus-recommend">
-						<view v-for="(item,index) in recommend_data" :key="index" class="content-item" @click="toNPC(index)">
+						<view v-for="(item,index) in recommend_data" :key="index" class="content-item" @click="toNPC(index,item)">
 							<view class="flex-content">
 								<uni-icons type="notification-filled" size="30" color="#306af1" class="star-num" ></uni-icons>
 								<view class="recommend-content">
@@ -226,22 +226,22 @@
 		const day = String(date.getDate()).padStart(2, '0');
 		currentDate.value = `${year}.${month}.${day}`;
 	}
-	function toNPC(index) {
+	function toNPC(index, reaction) {
 		if(index === "CanteenNpc")
 		{
 			uni.navigateTo({
-				url:'/pages/chat/chat?server_name=餐厅探店侠&server_type=Canteen'
+				url:'/pages/chat/chat?server_name=餐厅探店侠&server_type=Canteen&server_avatar=http://94.74.87.251:8080/profile/avatar/2023/10/17/img3_20231017141058A003.jpg&reaction='+ reaction,
 			})
 		}
 		if(index === "ReservationNpc" ){
 			uni.navigateTo({
-				url:'/pages/chat/chat?server_name=预约助手&server_type=classroom'
+				url:'/pages/chat/chat?server_name=预约助手&server_type=reservation&server_avatar=http://94.74.87.251:8080/profile/avatar/2023/10/17/img4_20231017141118A004.jpg&reaction='+ reaction,
 			})
 		}
 		if(index==="StudyNpc")
 		{
 			uni.navigateTo({
-				url:"/pages/chat/chat?server_name=学习助手&server_type=Learning_buddy"
+				url:'/pages/chat/chat?server_name=学习助手&server_type=Study&server_avatar=http://94.74.87.251:8080/profile/avatar/2023/10/17/img5_20231017141139A005.jpg&reaction='+ reaction,
 			})
 		}
 	}

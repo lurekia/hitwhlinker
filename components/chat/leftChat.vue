@@ -1,15 +1,17 @@
 <template>
-	<view class="container">
-		
+	<view v-if="props.msg.tag === 'system'" class="container" style="width: 100vw;justify-content: center;">
+		<uni-tag :text="'为你代理:'+content" type="default"></uni-tag>
+	</view>
+	
+	<view v-else class="container">
 		<image :src="props.head_img_url" class="left" mode="aspectFill"></image>
 		<view class="right">
-			<view v-if="props.msg.tag === 'system'" class="system-container">
+			<view v-if="props.msg.tag === 'systemRes'" class="system-container">
 				<text>请选择您要预约的类型：{{res_type}}</text>
-				<view class="btn-container">
+				<view class="btn-container" v-if="content == ''">
 					<button size="mini" type="primary" @click="handleClick('图书馆')">图书馆预约</button>
 					<button size="mini" type="primary" @click="handleClick('空教室')">空教室预约</button>
 				</view>
-				
 			</view>
 			<view v-if="props.msg.tag === 'text'" class="text-container">
 				<mp-html :content="content" />
@@ -35,7 +37,7 @@
 	</view>
 </template>
 <script setup>
-	import {ref, reactive} from 'vue'
+	import {ref, reactive, onMounted} from 'vue'
 	import {
 		onLoad
 	} from '@dcloudio/uni-app'
@@ -52,6 +54,14 @@
 	}
 	onLoad((obj) => {
 		content.value = props.msg.content;
+		
+			
+	})
+	onMounted(() =>　{
+		if(props.msg.tag === 'systemRes') {
+			res_type.value = props.msg.content;
+			// handleClick(res_type)
+		}
 	})
 </script>
 <style lang="scss" scoped>
